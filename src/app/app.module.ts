@@ -1,3 +1,4 @@
+import { MisObjetosEscaperoomComponent } from './paginas/mis-escenarios-escaperoom/mis-objetos-escaperoom/mis-objetos-escaperoom.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -291,6 +292,11 @@ import { MisFamiliasmemoramaComponent } from './paginas/mis-familiasmemorama/mis
 import { JuegoDeMemoramaSeleccionadoInactivoComponent } from './paginas/juego-seleccionado-inactivo/juego-de-memorama-seleccionado-inactivo/juego-de-memorama-seleccionado-inactivo.component';
 import { JuegoDeMemoramaSeleccionadoActivoComponent } from './paginas/juego-seleccionado-activo/juego-de-memorama-seleccionado-activo/juego-de-memorama-seleccionado-activo.component';
 import { AsignacionFamiliaJuegoComponent } from './paginas/juego/asignacion-familia-juego/asignacion-familia-juego.component';
+import { MisEscenariosEscaperoomComponent } from './paginas/mis-escenarios-escaperoom/mis-escenarios-escaperoom.component';
+import { MisEnigmasEscaperoomComponent } from './paginas/mis-escenarios-escaperoom/mis-enigmas-escaperoom/mis-enigmas-escaperoom.component';
+import { MisSkinsEscaperoomComponent } from './paginas/mis-escenarios-escaperoom/mis-skins-escaperoom/mis-skins-escaperoom.component';
+import { MisMapasEscaperoomComponent } from './paginas/mis-escenarios-escaperoom/mis-mapas-escaperoom/mis-mapas-escaperoom.component';
+import { MisEscenasEscaperoomComponent } from './paginas/mis-escenarios-escaperoom/mis-mapas-escaperoom/mis-escenas-escaperoom/mis-escenas-escaperoom.component';
 
 
 
@@ -466,7 +472,13 @@ import { AsignacionFamiliaJuegoComponent } from './paginas/juego/asignacion-fami
     MisFamiliasmemoramaComponent,
     JuegoDeMemoramaSeleccionadoInactivoComponent,
     JuegoDeMemoramaSeleccionadoActivoComponent,
-    AsignacionFamiliaJuegoComponent
+    AsignacionFamiliaJuegoComponent,
+    MisEscenariosEscaperoomComponent,
+    MisObjetosEscaperoomComponent,
+    MisEnigmasEscaperoomComponent,
+    MisSkinsEscaperoomComponent,
+    MisMapasEscaperoomComponent,
+    MisEscenasEscaperoomComponent
 
   ],
   imports: [

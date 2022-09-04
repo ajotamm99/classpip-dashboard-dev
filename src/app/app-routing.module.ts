@@ -1,3 +1,5 @@
+import { MisMapasEscaperoomComponent } from './paginas/mis-escenarios-escaperoom/mis-mapas-escaperoom/mis-mapas-escaperoom.component';
+import { MisEscenariosEscaperoomComponent } from './paginas/mis-escenarios-escaperoom/mis-escenarios-escaperoom.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -174,6 +176,10 @@ import { EditarRubricaComponent } from './paginas/editar-rubrica/editar-rubrica.
 import { CrearFamiliasmemoramaComponent } from './paginas/crear-familiasmemorama/crear-familiasmemorama.component';
 import { MisFamiliasmemoramaComponent } from './paginas/mis-familiasmemorama/mis-familiasmemorama.component';
 import { DeactivateGuardCrearFamiliaMemorama } from './guardas/canExitCrearFamiliaMemorama.guard';
+import { MisEnigmasEscaperoomComponent } from './paginas/mis-escenarios-escaperoom/mis-enigmas-escaperoom/mis-enigmas-escaperoom.component';
+import { MisObjetosEscaperoomComponent } from './paginas/mis-escenarios-escaperoom/mis-objetos-escaperoom/mis-objetos-escaperoom.component';
+import { MisEscenasEscaperoomComponent } from './paginas/mis-escenarios-escaperoom/mis-mapas-escaperoom/mis-escenas-escaperoom/mis-escenas-escaperoom.component';
+import { MisSkinsEscaperoomComponent } from './paginas/mis-escenarios-escaperoom/mis-skins-escaperoom/mis-skins-escaperoom.component';
 
 const routes: Routes = [
 
@@ -376,7 +382,14 @@ const routes: Routes = [
   {path: 'inicio/:id/verRecursosCuento', component: MisRecursosCuentoComponent},
   {path: 'grupo/:id/juego/juegoSeleccionadoActivo/reproductorCuento', component: ReproductorCuentoComponent},
 
-  
+  // EscapeRoom
+  {path: 'inicio/:id/recursos/misRecursosEscaperoom', component: MisEscenariosEscaperoomComponent},
+  {path: 'inicio/:id/recursos/misRecursosEscaperoom/misMapas', component: MisMapasEscaperoomComponent},
+  {path: 'inicio/:id/recursos/misRecursosEscaperoom/misObjetos', component: MisObjetosEscaperoomComponent},
+  {path: 'inicio/:id/recursos/misRecursosEscaperoom/misEnigmas', component: MisEnigmasEscaperoomComponent},
+  {path: 'inicio/:id/recursos/misRecursosEscaperoom/misSkins', component: MisSkinsEscaperoomComponent},
+  {path: 'inicio/:id/recursos/misRecursosEscaperoom/misMapas/misEscenas', component: MisEscenasEscaperoomComponent},
+
   // JUEGOS RAPIDOS
 
   { path: 'inicio/:id/misJuegosRapidos', component: MisJuegosRapidosComponent},

@@ -114,3 +114,17 @@ export * from './Familia';
 export * from './JuegoMemorama';
 export * from './EquipoJuegoDeMemorama';
 export * from './TablaAlumnoJuegoDeMemorama';
+
+export * from './clasesParaJuegoDeEscapeRoom/AlumnoJuegoDeEscaperoom';
+export * from './clasesParaJuegoDeEscapeRoom/EquipoJuegoDeEscaperoom';
+export * from './clasesParaJuegoDeEscapeRoom/Enigma';
+export * from './clasesParaJuegoDeEscapeRoom/EnigmaActivo';
+export * from './clasesParaJuegoDeEscapeRoom/ObjetoEscaperoom';
+export * from './clasesParaJuegoDeEscapeRoom/ObjetoActivo';
+export * from './clasesParaJuegoDeEscapeRoom/Skin';
+export * from './clasesParaJuegoDeEscapeRoom/SkinActiva';
+export * from './clasesParaJuegoDeEscapeRoom/EscenarioEscaperoom';
+export * from './clasesParaJuegoDeEscapeRoom/EscenaEscaperoom';
+export * from './clasesParaJuegoDeEscapeRoom/EscenaActiva';
+export * from './clasesParaJuegoDeEscapeRoom/JuegoDeEscaperoom';
+
