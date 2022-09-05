@@ -2,16 +2,20 @@ export class EscenaEscaperoom {
 
     Archivo: string;
     id: number;
-    EscenarioId: number;
+    juegoDeEscaperoomId: number;
     Tilesheet: string;
     Nombre: string;
-  
-    constructor(EscenarioId?: number, Archivo?: string, Tilesheet?: string, id?: number, Nombre?: string) {
-  
+    profesorId: number;
+    escenarioEscaperoomId: number
+
+    constructor(escenarioEscaperoomId?: number, profesorId?: number, juegoDeEscaperoomId?: number, Archivo?: string, Tilesheet?: string, id?: number, Nombre?: string) {
       this.Archivo = Archivo;
+      
+      this.escenarioEscaperoomId= escenarioEscaperoomId;
       this.id = id;
       this.Tilesheet=Tilesheet;
       this.Nombre= Nombre;
-      this.EscenarioId = EscenarioId;  
+      this.juegoDeEscaperoomId = juegoDeEscaperoomId; 
+      this.profesorId = profesorId;
     }
   }

@@ -1,18 +1,18 @@
 export class EquipoJuegoDeEscaperoom {
 
-    PuntosTotalesAlumno: number;
+    PuntosTotalesEquipo: number;
     id: number;
-    EquipoId: number;
-    JuegoDeEscaperoomId: number;
+    equipoId: number;
+    juegoDeEscaperoomId: number;
     TiempoEnResolver: number;
     Resuelto: boolean;
   
-    constructor(EquipoId?: number, JuegoDeEscaperoomId?: number, PuntosTotalesAlumno?: number, id?: number) {
+    constructor(equipoId?: number, juegoDeEscaperoomId?: number, PuntosTotalesEquipo?: number, id?: number) {
   
-      this.PuntosTotalesAlumno = PuntosTotalesAlumno;
+      this.PuntosTotalesEquipo = PuntosTotalesEquipo;
       this.id = id;
-      this.EquipoId = EquipoId;
-      this.JuegoDeEscaperoomId = JuegoDeEscaperoomId;
+      this.equipoId = equipoId;
+      this.juegoDeEscaperoomId = juegoDeEscaperoomId;
       this.TiempoEnResolver = 0;
       this.Resuelto = false;
     }

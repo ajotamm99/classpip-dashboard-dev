@@ -2,15 +2,15 @@ export class Enigma {
 
     Nombre: string;
     id: number;
-    ProfesorId: number;
+    profesorId: number;
     Tipo: string;
     Dificultad: string;
   
-    constructor(ProfesorId?: number, Tipo?: string, Nombre?: string, id?: number, Dificultad?:string) {
+    constructor(profesorId?: number, Tipo?: string, Nombre?: string, id?: number, Dificultad?:string) {
   
       this.Nombre = Nombre;
       this.id = id;
-      this.ProfesorId = ProfesorId;
+      this.profesorId = profesorId;
       this.Tipo = Tipo;
       this.Dificultad = Dificultad; 
   

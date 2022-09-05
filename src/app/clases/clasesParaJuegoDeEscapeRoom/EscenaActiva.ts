@@ -1,15 +1,15 @@
 export class EscenaActiva {
 
     id: number;
-    EscenarioId: number;
-    EscenaId: number;
-    JuegoDeEscaperoomId: number;
+    escenarioEscaperoomId: number;
+    escenaEscaperoomId: number;
+    juegoDeEscaperoomId: number;
   
-    constructor(EscenarioId?: number, EscenaId?: number, id?: number, JuegoDeEscaperoomId?: number) {
+    constructor(escenarioEscaperoomId?: number, escenaEscaperoomId?: number, id?: number, juegoDeEscaperoomId?: number) {
   
       this.id = id;
-      this.EscenarioId = EscenarioId;  
-      this.EscenaId = EscenaId;
-      this.JuegoDeEscaperoomId= JuegoDeEscaperoomId;
+      this.escenarioEscaperoomId = escenarioEscaperoomId 
+      this.escenaEscaperoomId = escenaEscaperoomId;
+      this.juegoDeEscaperoomId= juegoDeEscaperoomId;
     }
   }

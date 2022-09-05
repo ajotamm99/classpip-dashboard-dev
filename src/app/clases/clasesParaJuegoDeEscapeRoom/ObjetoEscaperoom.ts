@@ -4,13 +4,13 @@ export class ObjetoEscaperoom {
     Imagen: string;
     Tipo: String;
     id: number;
-    ProfesorId: number;
+    profesorId: number;
   
-    constructor(ProfesorId?: number, Nombre?: string, Imagen?: string, id?: number, Tipo?: string) {
+    constructor(profesorId?: number, Nombre?: string, Imagen?: string, id?: number, Tipo?: string) {
   
       this.Nombre = Nombre;
       this.id = id;
-      this.ProfesorId = ProfesorId;
+      this.profesorId = profesorId;
       this.Imagen = Imagen;
       this.Tipo = Tipo;
     }

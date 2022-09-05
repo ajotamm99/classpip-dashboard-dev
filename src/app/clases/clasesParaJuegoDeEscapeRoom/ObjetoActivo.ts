@@ -1,22 +1,20 @@
 export class ObjetoActivo {
 
-    Resuelto: boolean;
     id: number;
-    EnigmaId: number;
-    AlumnoJuegoDeEscaperoomId: number;
-    EquipoJuegoDeEscaperoomId: number;
+    objetoEscaperoomId: number;
+    alumnoJuegoDeEscaperoomId: number;
+    equipoJuegoDeEscaperoomId: number;
     Usado: boolean;
     EnMochila: boolean;
     
 
   
-    constructor(EnigmaId?: number, AlumnoJuegoDeEscaperoomId?: number, EquipoJuegoDeEscaperoomId?: number, id?: number) {
+    constructor(objetoEscaperoomId?: number, alumnoJuegoDeEscaperoomId?: number, equipoJuegoDeEscaperoomId?: number, id?: number) {
   
       this.id = id;
-      this.EnigmaId = EnigmaId;
-      this.AlumnoJuegoDeEscaperoomId = AlumnoJuegoDeEscaperoomId;
-      this.EquipoJuegoDeEscaperoomId = EquipoJuegoDeEscaperoomId;
-      this.Resuelto = false;
+      this.objetoEscaperoomId = objetoEscaperoomId;
+      this.alumnoJuegoDeEscaperoomId = alumnoJuegoDeEscaperoomId;
+      this.equipoJuegoDeEscaperoomId = equipoJuegoDeEscaperoomId;
       this.Usado =false;
       this.EnMochila =false;
     }

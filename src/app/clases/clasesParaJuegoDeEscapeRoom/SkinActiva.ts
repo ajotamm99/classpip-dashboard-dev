@@ -1,16 +1,14 @@
 export class SkinActiva {
 
-    PuntosTotalesAlumno: number;
     id: number;
-    AlumnoId: number;
-    JuegoDeCompeticionFormulaUnoId: number;
+    skinId: number;
+    alumnoId: number;
   
-    constructor(AlumnoId?: number, JuegoDeCompeticionFormulaUnoId?: number, PuntosTotalesAlumno?: number, id?: number) {
+    constructor(alumnoId?: number, skinId?: number, id?: number) {
   
-      this.PuntosTotalesAlumno = PuntosTotalesAlumno;
       this.id = id;
-      this.AlumnoId = AlumnoId;
-      this.JuegoDeCompeticionFormulaUnoId = JuegoDeCompeticionFormulaUnoId;
+      this.alumnoId = alumnoId;
+      this.skinId = skinId;
   
     }
   }

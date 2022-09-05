@@ -1,16 +1,16 @@
 export class Skin {
 
-    PuntosTotalesAlumno: number;
+    Nombre: string;
     id: number;
-    AlumnoId: number;
-    JuegoDeCompeticionFormulaUnoId: number;
+    profesorId: number;
+    Spritesheet: string;
   
-    constructor(AlumnoId?: number, JuegoDeCompeticionFormulaUnoId?: number, PuntosTotalesAlumno?: number, id?: number) {
+    constructor(profesorId?: number, Spritesheet?: string, Nombre?: string, id?: number) {
   
-      this.PuntosTotalesAlumno = PuntosTotalesAlumno;
+      this.Nombre = Nombre;
       this.id = id;
-      this.AlumnoId = AlumnoId;
-      this.JuegoDeCompeticionFormulaUnoId = JuegoDeCompeticionFormulaUnoId;
+      this.profesorId = profesorId;
+      this.Spritesheet = Spritesheet;
   
     }
   }
