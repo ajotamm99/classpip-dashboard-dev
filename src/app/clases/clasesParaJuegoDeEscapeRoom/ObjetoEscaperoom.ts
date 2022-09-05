@@ -4,7 +4,8 @@ export class ObjetoEscaperoom {
     Imagen: string;
     Tipo: String;
     id: number;
-    profesorId: number;
+    profesorId: number;    
+    Publica: boolean;
   
     constructor(profesorId?: number, Nombre?: string, Imagen?: string, id?: number, Tipo?: string) {
   
@@ -13,5 +14,6 @@ export class ObjetoEscaperoom {
       this.profesorId = profesorId;
       this.Imagen = Imagen;
       this.Tipo = Tipo;
+      this.Publica=false;
     }
   }

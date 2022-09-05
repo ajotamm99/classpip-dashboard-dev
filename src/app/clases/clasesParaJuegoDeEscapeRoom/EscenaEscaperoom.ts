@@ -6,7 +6,8 @@ export class EscenaEscaperoom {
     Tilesheet: string;
     Nombre: string;
     profesorId: number;
-    escenarioEscaperoomId: number
+    escenarioEscaperoomId: number    
+    Publica: boolean;
 
     constructor(escenarioEscaperoomId?: number, profesorId?: number, juegoDeEscaperoomId?: number, Archivo?: string, Tilesheet?: string, id?: number, Nombre?: string) {
       this.Archivo = Archivo;
@@ -17,5 +18,6 @@ export class EscenaEscaperoom {
       this.Nombre= Nombre;
       this.juegoDeEscaperoomId = juegoDeEscaperoomId; 
       this.profesorId = profesorId;
+      this.Publica=false;
     }
   }
