@@ -1,3 +1,4 @@
+import { EscenaEscaperoom } from './../clases/clasesParaJuegoDeEscapeRoom/EscenaEscaperoom';
 import { Injectable } from '@angular/core';
 import {Observable, Subject , of } from 'rxjs';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
@@ -15,7 +16,7 @@ import { Profesor, Grupo, Alumno, Matricula, Juego, Punto, Nivel, AlumnoJuegoDeP
         RespuestaJuegoDeCuestionario, JuegoDeVotacionUnoATodos, AlumnoJuegoDeVotacionUnoATodos, Rubrica,
         JuegoDeVotacionTodosAUno, AlumnoJuegoDeVotacionTodosAUno, FamiliaDeImagenesDePerfil,
         CuestionarioSatisfaccion, JuegoDeCuestionarioSatisfaccion, AlumnoJuegoDeCuestionarioSatisfaccion,
-        JuegoDeEncuestaRapida, JuegoDeVotacionRapida, JuegoDeCuestionarioRapido, JuegoDeCogerTurnoRapido, JuegoDePuntos, AlumnoJuegoDeControlDeTrabajoEnEquipo, EquipoJuegoDeCuestionario, Evento, JuegoDeControlDeTrabajoEnEquipo, JuegoDeVotacionAOpciones, AlumnoJuegoDeVotacionAOpciones, Familia} from '../clases/index';
+        JuegoDeEncuestaRapida, JuegoDeVotacionRapida, JuegoDeCuestionarioRapido, JuegoDeCogerTurnoRapido, JuegoDePuntos, AlumnoJuegoDeControlDeTrabajoEnEquipo, EquipoJuegoDeCuestionario, Evento, JuegoDeControlDeTrabajoEnEquipo, JuegoDeVotacionAOpciones, AlumnoJuegoDeVotacionAOpciones, Familia, EscenarioEscaperoom, JuegoDeEscapeRoom} from '../clases/index';
 
 import { Escenario } from '../clases/Escenario';
 import { PuntoGeolocalizable } from '../clases/PuntoGeolocalizable';
@@ -110,6 +111,8 @@ export class PeticionesAPIService {
   private APIUrlImagenNivel = this.host + ':3000/api/imagenes/ImagenNivel';
   private APIUrlImagenInsignia = this.host + ':3000/api/imagenes/ImagenInsignia';
   private APIUrlLogosEquipos = this.host + ':3000/api/imagenes/LogosEquipos';
+  private APIUrlImagenesEscenas = this.host + ':3000/api/imagenes/ImagenesEscenas';
+  private APIUrlArchivosEscenas = this.host + ':3000/api/imagenes/ArchivosEscenas';
 
   private APIUrlImagenesAvatares = this.host + ':3000/api/imagenes/ImagenesAvatares';
   private APIUrlJuegoDeAvatar = this.host + ':3000/api/juegosDeAvatar';
@@ -180,7 +183,9 @@ export class PeticionesAPIService {
   private APIUrlImagenesCartasMemorama = this.host + ':3000/api/imagenes/ImagenesCartasMemorama';
   private APIUrlImagenesFamiliaMemorama = this.host + ':3000/api/imagenes/ImagenesFamiliasMemorama';
 
-
+  private APIURLJuegoDeEscaperoom = this.host + ':3000/api/juegoescaperoom';
+  private APIURLEscenariosEscaperoom = this.host + ':3000/api/escenarioescaperoom';
+  private APIURLEscenasEscaperoom = this.host + ':3000/api/escenasescaperoom';
 
   constructor(
     private http: HttpClient,
@@ -220,6 +225,13 @@ export class PeticionesAPIService {
     GESTION DE ALUMNOS EN JUEGOS DE AVATARES
 
     GESTION JUEGO DE CUENTOS
+
+    GESTION JUEGO DE ESCAPEROOM
+    RECURSOS DE ESCAPEROOM
+    GESTION DE ESCENARIOSESCAPEROOM
+    GESTION DE OBJETOSESCAPEROOM
+    GESTION DE ESCENASESCAPEROOM
+    GESTION DE ENIGMASESCAPEROOM
 
     GESTIÓN DE REGISTRO DE ACTIVIDAD (EVENTOS)
 
@@ -2611,11 +2623,66 @@ public ModificaInscripcionAlumnoJuegoDeVotacionAOpciones(inscripcion: AlumnoJueg
 
   }
 
+  //////////////////////////////////////// GESTION DE JUEGO DE ESCAPEROOM ////////////////////////////////////////
+
+  public CreaEscenarioEscaperoom(EscenariEscaperoom: EscenarioEscaperoom, profesorId: number){
+    return this.http.post<EscenarioEscaperoom>(this.APIUrlProfesores + '/'+profesorId + '/escenarioEscapeRooms',EscenariEscaperoom);
+  }
   
+  public DameEscenariosEscaperoomDelProfesor(profesorId: number): Observable<EscenarioEscaperoom[]> {
 
+    return this.http.get<EscenarioEscaperoom[]>(this.APIUrlProfesores + '/' + profesorId + '/escenarioEscapeRooms');
+  
+  }
 
+  public DameEscenariosEscaperoomPublicos(): Observable<EscenarioEscaperoom[]> {
 
+    return this.http.get<EscenarioEscaperoom[]>(this.APIURLEscenariosEscaperoom + '?filter[where][Publica]=true');
+  
+  }
 
+  public BorrarEscenarioEscaperoom(EscenarioEscaperoomId: number): Observable<any>{
+    return this.http.delete<any>(this.APIURLEscenariosEscaperoom + '/' + EscenarioEscaperoomId);
 
+  }
 
+  public BorrarEscenaEscaperoom(EscenaEscaperoomId: number): Observable<any>{
+    return this.http.delete<any>(this.APIURLEscenasEscaperoom + '/' + EscenaEscaperoomId);
+
+  }
+
+  public DameEscenasdeEscenariosEscaperoom(EscenarioEscaperoomId: number): Observable<EscenaEscaperoom[]>{
+    return this.http.get<EscenaEscaperoom[]>(this.APIURLEscenasEscaperoom + '?filter[where][escenarioEscapeRoomId]='+EscenarioEscaperoomId);
+  }
+
+  public DameJuegosEscaperoomdeEscenarioId(EscenarioEscaperoomId: number): Observable<JuegoDeEscapeRoom[]>{
+    return this.http.get<JuegoDeEscapeRoom[]>(this.APIURLJuegoDeEscaperoom + '?filter[where][escenarioEscaperoomId]='+EscenarioEscaperoomId);
+  }
+
+  public ModificaEscenarioEscaperoom(EscenarioEscaperoom: EscenarioEscaperoom, profesorId: number, escenarioEscaperoomId: number):Observable<EscenarioEscaperoom>{
+    return this.http.put<EscenarioEscaperoom>(this.APIUrlProfesores+ '/Profesores/'+profesorId +'escenarioEscapeRooms/'+escenarioEscaperoomId,EscenarioEscaperoom);
+  }
+
+  public PonEscenaEscenario(escena: EscenaEscaperoom, escenarioEscaperoomID: number): Observable<EscenaEscaperoom> {
+    return this.http.post<EscenaEscaperoom>(this.APIURLEscenariosEscaperoom + '/' + escenarioEscaperoomID + '/escenaEscapeRooms', escena);
+  }
+
+  public PonImagenEscena(formData: FormData): Observable<any> {
+    return this.http.post<any>(this.APIUrlImagenesEscenas + '/upload', formData);
+  }
+
+  public PonArchivoEscena(formData: FormData): Observable<any> {
+    return this.http.post<any>(this.APIUrlArchivosEscenas + '/upload', formData);
+  }
+
+  
+  public BorrarImagenEscena(ImagenEscena: string): Observable<any> {
+
+    return this.http.delete<any>(this.APIUrlImagenesEscenas + '/files/' + ImagenEscena);
+  }
+
+  public BorrarArchivoEscena(ArchivoEscena: string): Observable<any> {
+
+    return this.http.delete<any>(this.APIUrlArchivosEscenas + '/files/' + ArchivoEscena);
+  }
 }

@@ -11,9 +11,8 @@ export class JuegoDeEscapeRoom {
     Online: boolean;
     Terminado:boolean;
 
-    constructor(id?: number, escenarioEscaperoomId?: number, grupoId?:number, TiempoLimite?: number, Nombre?: string, Tipo?: string, Modo?: string, Online?: boolean, Activo?:boolean){
+    constructor(escenarioEscaperoomId?: number, grupoId?:number, TiempoLimite?: number, Nombre?: string, Tipo?: string, Modo?: string, Online?: boolean, Activo?:boolean){
         this.Terminado =false; 
-        this.id =id;
         this.escenarioEscaperoomId =escenarioEscaperoomId;
         this.grupoId=grupoId;
         this.TiempoLimite=TiempoLimite;

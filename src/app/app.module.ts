@@ -297,6 +297,12 @@ import { MisEnigmasEscaperoomComponent } from './paginas/mis-escenarios-escapero
 import { MisSkinsEscaperoomComponent } from './paginas/mis-escenarios-escaperoom/mis-skins-escaperoom/mis-skins-escaperoom.component';
 import { MisMapasEscaperoomComponent } from './paginas/mis-escenarios-escaperoom/mis-mapas-escaperoom/mis-mapas-escaperoom.component';
 import { MisEscenasEscaperoomComponent } from './paginas/mis-escenarios-escaperoom/mis-mapas-escaperoom/mis-escenas-escaperoom/mis-escenas-escaperoom.component';
+import { GuardarMapaComponent } from './paginas/mis-escenarios-escaperoom/mis-mapas-escaperoom/guardar-mapa/guardar-mapa.component';
+import { EditarMapaComponent } from './paginas/mis-escenarios-escaperoom/mis-mapas-escaperoom/editar-mapa/editar-mapa.component';
+import { MostrarEscenasPublicasComponent } from './paginas/mis-escenarios-escaperoom/mis-mapas-escaperoom/mostrar-escenas-publicas/mostrar-escenas-publicas.component';
+import { CrearMapaComponent } from './paginas/mis-escenarios-escaperoom/mis-mapas-escaperoom/crear-mapa/crear-mapa.component';
+import { AgregarEscenaDialogComponent } from './paginas/mis-escenarios-escaperoom/mis-mapas-escaperoom/agregar-escena-dialog/agregar-escena-dialog.component';
+import { EditarEscenaDialogComponent } from './paginas/mis-escenarios-escaperoom/mis-mapas-escaperoom/editar-escena-dialog/editar-escena-dialog.component';
 
 
 
@@ -478,7 +484,13 @@ import { MisEscenasEscaperoomComponent } from './paginas/mis-escenarios-escapero
     MisEnigmasEscaperoomComponent,
     MisSkinsEscaperoomComponent,
     MisMapasEscaperoomComponent,
-    MisEscenasEscaperoomComponent
+    MisEscenasEscaperoomComponent,
+    GuardarMapaComponent,
+    EditarMapaComponent,
+    MostrarEscenasPublicasComponent,
+    CrearMapaComponent,
+    AgregarEscenaDialogComponent,
+    EditarEscenaDialogComponent
 
   ],
   imports: [
@@ -538,7 +550,7 @@ import { MisEscenasEscaperoomComponent } from './paginas/mis-escenarios-escapero
     InformacionJuegoDeCuestionarioDialogComponent, AsignaEscenarioComponent, AsignaPreguntasComponent, InformacionJuegoDeGeocachingDialogComponent,
     InformacionRespuestasJuegoDeCuestionarioDialogComponent,
     RespuestasAlumnoJuegoDeCuestionarioComponent,
-    AsignarFamiliaImagenesPerfilComponent, EvaluacionDialogoComponent, EvaluacionBorrarDialogoComponent
+    AsignarFamiliaImagenesPerfilComponent, EvaluacionDialogoComponent, EvaluacionBorrarDialogoComponent, AgregarEscenaDialogComponent
   ],
   bootstrap: [AppComponent],
   providers: [

@@ -1,3 +1,5 @@
+import { EscenaEscaperoom } from './../clases/clasesParaJuegoDeEscapeRoom/EscenaEscaperoom';
+import { EscenarioEscaperoom } from './../clases/clasesParaJuegoDeEscapeRoom/EscenarioEscaperoom';
 import { Injectable } from '@angular/core';
 import { Profesor, Grupo, Juego, Equipo, Alumno, Coleccion, Cromo, Punto, Insignia, AlumnoJuegoDeCompeticionLiga,
          // tslint:disable-next-line:max-line-length
@@ -92,6 +94,9 @@ export class SesionService {
   contenedor: any;
   rubrica: Rubrica;
   editarRubrica: boolean; // indica si la rubrica nos la pasan para editarla (true) o solo para verla.
+  EscenarioEscaperoom: EscenarioEscaperoom;
+  EscenasdeEscenario: EscenaEscaperoom[]=[];
+  EscenaEscaperoom: EscenaEscaperoom;
 
   constructor() { }
   public TomaProfesor(profesor: Profesor) {
@@ -672,5 +677,30 @@ public RubricaParaEditar (): boolean {
   return this.editarRubrica;
 }
 
+//Escaperoom
+
+public TomaEscenarioEscaperoom (EscenarioEscaperoom: EscenarioEscaperoom){
+  this.EscenarioEscaperoom = EscenarioEscaperoom;
+}
+
+public DameEscenarioEscaperoom (): EscenarioEscaperoom{
+  return this.EscenarioEscaperoom;
+}
+
+public TomaEscenasdeEscenario(EscenasEscaperoom: EscenaEscaperoom[]){
+  this.EscenasdeEscenario=EscenasEscaperoom;
+}
+
+public DameEscenasdeEscenario(){
+  return this.EscenasdeEscenario;
+}
+
+public TomaEscenaEscaperoom(EscenaEscaperoom: EscenaEscaperoom){
+  this.EscenaEscaperoom =EscenaEscaperoom;
+}
+
+public DameEscenaEscaperoom(){
+  return this.EscenaEscaperoom;
+}
 
 }

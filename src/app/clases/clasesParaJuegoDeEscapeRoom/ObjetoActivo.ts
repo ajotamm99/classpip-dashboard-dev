@@ -9,9 +9,8 @@ export class ObjetoActivo {
     
 
   
-    constructor(objetoEscaperoomId?: number, alumnoJuegoDeEscaperoomId?: number, equipoJuegoDeEscaperoomId?: number, id?: number) {
+    constructor(objetoEscaperoomId?: number, alumnoJuegoDeEscaperoomId?: number, equipoJuegoDeEscaperoomId?: number) {
   
-      this.id = id;
       this.objetoEscaperoomId = objetoEscaperoomId;
       this.alumnoJuegoDeEscaperoomId = alumnoJuegoDeEscaperoomId;
       this.equipoJuegoDeEscaperoomId = equipoJuegoDeEscaperoomId;

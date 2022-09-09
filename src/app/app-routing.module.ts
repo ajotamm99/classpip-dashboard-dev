@@ -180,6 +180,10 @@ import { MisEnigmasEscaperoomComponent } from './paginas/mis-escenarios-escapero
 import { MisObjetosEscaperoomComponent } from './paginas/mis-escenarios-escaperoom/mis-objetos-escaperoom/mis-objetos-escaperoom.component';
 import { MisEscenasEscaperoomComponent } from './paginas/mis-escenarios-escaperoom/mis-mapas-escaperoom/mis-escenas-escaperoom/mis-escenas-escaperoom.component';
 import { MisSkinsEscaperoomComponent } from './paginas/mis-escenarios-escaperoom/mis-skins-escaperoom/mis-skins-escaperoom.component';
+import { GuardarMapaComponent } from './paginas/mis-escenarios-escaperoom/mis-mapas-escaperoom/guardar-mapa/guardar-mapa.component';
+import { MostrarEscenasPublicasComponent } from './paginas/mis-escenarios-escaperoom/mis-mapas-escaperoom/mostrar-escenas-publicas/mostrar-escenas-publicas.component';
+import { EditarMapaComponent } from './paginas/mis-escenarios-escaperoom/mis-mapas-escaperoom/editar-mapa/editar-mapa.component';
+import { CrearMapaComponent } from './paginas/mis-escenarios-escaperoom/mis-mapas-escaperoom/crear-mapa/crear-mapa.component';
 
 const routes: Routes = [
 
@@ -389,6 +393,10 @@ const routes: Routes = [
   {path: 'inicio/:id/recursos/misRecursosEscaperoom/misEnigmas', component: MisEnigmasEscaperoomComponent},
   {path: 'inicio/:id/recursos/misRecursosEscaperoom/misSkins', component: MisSkinsEscaperoomComponent},
   {path: 'inicio/:id/recursos/misRecursosEscaperoom/misMapas/misEscenas', component: MisEscenasEscaperoomComponent},
+  {path: 'inicio/:id/recursos/misRecursosEscaperoom/misMapas/guardarMapa', component: GuardarMapaComponent},
+  {path: 'inicio/:id/recursos/misRecursosEscaperoom/misMapas/escenasPublicas', component: MostrarEscenasPublicasComponent},
+  {path: 'inicio/:id/recursos/misRecursosEscaperoom/misMapas/editarMapa', component: EditarMapaComponent},
+  {path: 'inicio/:id/recursos/misRecursosEscaperoom/crearMapa', component: CrearMapaComponent},
 
   // JUEGOS RAPIDOS
 

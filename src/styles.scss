@@ -423,6 +423,12 @@ table {
   --altoImagenCromo:225px;
   --anchoCromo:250px;
   --altoCromo:500px;
+  --anchoImagenEscenaEscaperoom:156px;
+  --anchoEscenaEscaperoom:156px;
+  --altoImagenEscenaEscaperoom: 225px;
+  --anchoEscenaEscaperoom: 250px;
+  --altoEscenaEscaperoom: 500px;
+
 }
 
 // Para mostrar los cromos del album en tres columnas
@@ -497,11 +503,28 @@ span.album5col {
   margin-top: 0px !important;
   margin: 0px;
 }
+
+.imagenEscena{
+  max-width: var(--anchoImagenEscenaEscaperoom);
+  max-height: var(--altoImagenEscenaEscaperoom);
+  margin-top: 0px !important;
+  margin: 0px;
+
+}
+
 .cromo {
   max-width: var(--anchoCromo);
   max-height: var(--altoCromo);
   width: var(--anchoCromo);
   height: var(--altoCromo);
+}
+
+.escenaEscaperoom {
+  max-width: var(--anchoEscenaEscaperoom);
+  max-height: var(--altoEscenaEscaperoom);
+  width: var(--anchoEscenaEscaperoom);
+  height: var(--altoEscenaEscaperoom);
+
 }
 
 .Diamante {

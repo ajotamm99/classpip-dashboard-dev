@@ -7,10 +7,9 @@ export class AlumnoJuegoDeEscaperoom {
     TiempoEnResolver: number;
     Resuelto: boolean;
   
-    constructor(alumnoId?: number, juegoDeEscaperoomId?: number, PuntosTotalesAlumno?: number, id?: number) {
+    constructor(alumnoId?: number, juegoDeEscaperoomId?: number, PuntosTotalesAlumno?: number) {
   
       this.PuntosTotalesAlumno = PuntosTotalesAlumno;
-      this.id = id;
       this.alumnoId = alumnoId;
       this.juegoDeEscaperoomId = juegoDeEscaperoomId;
       this.TiempoEnResolver = 0;

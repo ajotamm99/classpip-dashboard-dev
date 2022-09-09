@@ -4,9 +4,8 @@ export class SkinActiva {
     skinId: number;
     alumnoId: number;
   
-    constructor(alumnoId?: number, skinId?: number, id?: number) {
+    constructor(alumnoId?: number, skinId?: number) {
   
-      this.id = id;
       this.alumnoId = alumnoId;
       this.skinId = skinId;
   

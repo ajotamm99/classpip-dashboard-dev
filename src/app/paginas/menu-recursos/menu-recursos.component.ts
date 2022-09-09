@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router} from '@angular/router';
 import { SesionService} from '../../servicios/index';
+import { Location } from '@angular/common';
 
 
  
