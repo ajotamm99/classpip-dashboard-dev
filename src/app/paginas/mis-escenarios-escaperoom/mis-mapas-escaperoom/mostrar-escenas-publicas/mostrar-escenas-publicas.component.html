@@ -1,3 +1,50 @@
-<p>
-  mostrar-escenas-publicas works!
-</p>
+<div class="titulo">Editar Escenario</div>
+<mat-divider class="lineaDivisoria"></mat-divider>
+
+<div class="contenedor">
+  <div class="enColumna">
+   <div class="enFila">
+
+        <div class="enColumna">
+              <span style="font-weight: bold;">Nombre: </span>
+              <label style="background-color: transparent">{{nombreEscenario}}</label>
+              <br>
+              <br>
+              <p style="background-color: transparent; font-size: 70%">{{descripcionEscenario}}</p>
+              <br>
+        </div>
+    </div>
+    <br>
+    <br>
+    <mat-divider class="lineaDivisoria"></mat-divider>
+    <mat-grid-list cols="3" rowHeight="100px" style="width: 100%;" >
+      <mat-grid-tile
+          *ngFor="let escena of EscenasdeEscenario; let i = index"
+          [colspan]="1"
+          [rowspan]="4"
+          [style.background]="white">
+          <mat-card class="escenaEscaperoom">
+            <div class= "enColumna">
+            <mat-card-header style = "margin-top: 20%;">
+              <!-- <div style="display: flex; justify-content:space-between; width: 250px "> -->
+                <mat-card-title align = "center">{{escena.Nombre}}</mat-card-title>
+
+            </mat-card-header>
+            <!-- <mat-card-content style="display: flex; align-items: center;justify-content: center;"> -->
+            <mat-card-content>
+                <div class="posicionImagen">
+                  <img class ="imagenEscenaEscaperoom" *ngIf="imagenesEscenas[i]"  mat-card-image [src]="imagenesEscenas[i]" >
+                </div>
+
+            </mat-card-content>
+            </div>
+          </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <button type="button" class="btn Back" (click)="goBack()">Volver </button>
+
+
+  </div>
+
+</div>

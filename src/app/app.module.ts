@@ -550,7 +550,7 @@ import { EditarEscenaDialogComponent } from './paginas/mis-escenarios-escaperoom
     InformacionJuegoDeCuestionarioDialogComponent, AsignaEscenarioComponent, AsignaPreguntasComponent, InformacionJuegoDeGeocachingDialogComponent,
     InformacionRespuestasJuegoDeCuestionarioDialogComponent,
     RespuestasAlumnoJuegoDeCuestionarioComponent,
-    AsignarFamiliaImagenesPerfilComponent, EvaluacionDialogoComponent, EvaluacionBorrarDialogoComponent, AgregarEscenaDialogComponent
+    AsignarFamiliaImagenesPerfilComponent, EvaluacionDialogoComponent, EvaluacionBorrarDialogoComponent, AgregarEscenaDialogComponent, EditarEscenaDialogComponent
   ],
   bootstrap: [AppComponent],
   providers: [

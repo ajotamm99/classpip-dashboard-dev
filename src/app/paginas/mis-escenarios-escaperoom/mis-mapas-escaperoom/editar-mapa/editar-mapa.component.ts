@@ -1,3 +1,4 @@
+import { EditarEscenaDialogComponent } from './../editar-escena-dialog/editar-escena-dialog.component';
 import { ArchivosEscenas } from './../../../../URLs/urls';
 import { AgregarEscenaDialogComponent } from './../agregar-escena-dialog/agregar-escena-dialog.component';
 import { EscenaEscaperoom } from './../../../../clases/clasesParaJuegoDeEscapeRoom/EscenaEscaperoom';
@@ -11,6 +12,8 @@ import { AgregarCromoDialogComponent } from 'src/app/paginas/mis-colecciones/agr
 import { EditarCromoDialogComponent } from 'src/app/paginas/mis-colecciones/editar-cromo-dialog/editar-cromo-dialog.component';
 import { SesionService, PeticionesAPIService } from 'src/app/servicios';
 import Swal from 'sweetalert2';
+
+import 'rxjs';
 import { Location } from '@angular/common';
 
 import * as URL from '../../../../URLs/urls';
@@ -65,6 +68,7 @@ export class EditarMapaComponent implements OnInit {
     this.EscenarioEscaperoom = this.sesion.DameEscenarioEscaperoom();
     this.EscenasdeEscenario = this.sesion.DameEscenasdeEscenario();
     this.nombreEscenario = this.EscenarioEscaperoom.Nombre;
+    this.descripcionEscenario = this.EscenarioEscaperoom.Descripcion;
     console.log ('escenas');
     console.log (this.EscenasdeEscenario);
     // Me traigo la imagen de la colección y las imagenes de cada cromo
@@ -166,7 +170,7 @@ export class EditarMapaComponent implements OnInit {
   // TAMBIEN EDITAREMOS EL CROMO EN UN DIALOGO
   AbrirDialogoEditarCromo(escena: EscenaEscaperoom): void {
 
-    const dialogRef = this.dialog.open ( EditarCromoDialogComponent , {
+    const dialogRef = this.dialog.open ( EditarEscenaDialogComponent , {
       width: '900px',
       maxHeight: '600px',
       data: {
