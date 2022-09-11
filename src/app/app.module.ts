@@ -296,7 +296,6 @@ import { MisEscenariosEscaperoomComponent } from './paginas/mis-escenarios-escap
 import { MisEnigmasEscaperoomComponent } from './paginas/mis-escenarios-escaperoom/mis-enigmas-escaperoom/mis-enigmas-escaperoom.component';
 import { MisSkinsEscaperoomComponent } from './paginas/mis-escenarios-escaperoom/mis-skins-escaperoom/mis-skins-escaperoom.component';
 import { MisMapasEscaperoomComponent } from './paginas/mis-escenarios-escaperoom/mis-mapas-escaperoom/mis-mapas-escaperoom.component';
-import { MisEscenasEscaperoomComponent } from './paginas/mis-escenarios-escaperoom/mis-mapas-escaperoom/mis-escenas-escaperoom/mis-escenas-escaperoom.component';
 import { GuardarMapaComponent } from './paginas/mis-escenarios-escaperoom/mis-mapas-escaperoom/guardar-mapa/guardar-mapa.component';
 import { EditarMapaComponent } from './paginas/mis-escenarios-escaperoom/mis-mapas-escaperoom/editar-mapa/editar-mapa.component';
 import { MostrarEscenasPublicasComponent } from './paginas/mis-escenarios-escaperoom/mis-mapas-escaperoom/mostrar-escenas-publicas/mostrar-escenas-publicas.component';
@@ -484,7 +483,6 @@ import { EditarEscenaDialogComponent } from './paginas/mis-escenarios-escaperoom
     MisEnigmasEscaperoomComponent,
     MisSkinsEscaperoomComponent,
     MisMapasEscaperoomComponent,
-    MisEscenasEscaperoomComponent,
     GuardarMapaComponent,
     EditarMapaComponent,
     MostrarEscenasPublicasComponent,

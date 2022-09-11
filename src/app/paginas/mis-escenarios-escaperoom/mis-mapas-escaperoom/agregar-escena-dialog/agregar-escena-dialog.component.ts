@@ -74,7 +74,7 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
           // this.CromosAgregados(res);
   
           // Hago el POST de la imagen de delante SOLO si hay algo cargado.
-          if (this.imagenEscena !== undefined) {
+          if (this.imagenCargadaEscena === true) {
   
             // Hacemos el POST de la nueva imagen en la base de datos recogida de la función ExaminarImagenCromo
             const formData: FormData = new FormData();
@@ -84,7 +84,7 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
           }
   
           // Hago el POST de la imagen de detras SOLO si hay algo cargado.
-          if (this.ArchivoEscena !== undefined) {
+          if (this.archivoCargadoEscena === true) {
   
             // Hacemos el POST de la nueva imagen en la base de datos recogida de la función ExaminarImagenCromo
             const formData: FormData = new FormData();

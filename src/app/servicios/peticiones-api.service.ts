@@ -2667,6 +2667,10 @@ public ModificaInscripcionAlumnoJuegoDeVotacionAOpciones(inscripcion: AlumnoJueg
     return this.http.post<EscenaEscaperoom>(this.APIURLEscenariosEscaperoom + '/' + escenarioEscaperoomID + '/escenaEscapeRooms', escena);
   }
 
+  public ModificaEscenaEscenario(escena: EscenaEscaperoom, escenarioEscaperoomID: number, escenaEscaperoomID: number): Observable<EscenaEscaperoom> {
+    return this.http.put<EscenaEscaperoom>(this.APIURLEscenariosEscaperoom + '/' + escenaEscaperoomID + '/escenaEscapeRooms/' + escenaEscaperoomID, escena);
+  }
+
   public PonImagenEscena(formData: FormData): Observable<any> {
     return this.http.post<any>(this.APIUrlImagenesEscenas + '/upload', formData);
   }

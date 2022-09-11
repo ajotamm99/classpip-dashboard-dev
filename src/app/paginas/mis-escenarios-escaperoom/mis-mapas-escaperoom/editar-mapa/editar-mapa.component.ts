@@ -174,7 +174,7 @@ export class EditarMapaComponent implements OnInit {
       width: '900px',
       maxHeight: '600px',
       data: {
-        escena : escena,
+        escena: escena,
         escenario: this.EscenarioEscaperoom,
       }
     });
