@@ -23,6 +23,9 @@ export const ImagenesCartas = host + ':3000/api/imagenes/ImagenesCartasMemorama/
 export const ImagenesEscenas = host + ':3000/api/imagenes/ImagenesEscenas/download/';
 export const ArchivosEscenas = host + ':3000/api/imagenes/ArchivosEscenas/download/';
 
+export const ImagenesObjetos = host + ':3000/api/imagenes/ImagenesObjetos/download/';
+
+export const ImagenesSkins = host + ':3000/api/imagenes/ImagenesSkins/download/';
 
 // export const Servidor = hostServer + ':8200';
 export const Servidor = "";

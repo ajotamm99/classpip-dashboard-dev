@@ -1,0 +1,48 @@
+<div class="titulo">Editar objeto</div>
+<mat-divider class="lineaDivisoria"></mat-divider>
+
+<div class="contenedor">
+  <div class= "enColumna">
+  <mat-card class="panel">
+    <mat-card-content>
+
+
+            <div class="texto" style=" text-align: left;">
+                <mat-form-field style="margin: 15px;">
+                    <mat-label style="color: white;">Nombre </mat-label>
+                    <input matInput type="text" style="color: yellow;" placeholder="Nombre" required [(ngModel)]="nombreObjeto" (change) = "cambios=true">
+                    <mat-error>Este campo es obligatorio</mat-error>
+                  </mat-form-field>
+                <br>
+                <br>
+                <mat-form-field appearance="fill">
+                  <mat-label>Tipo</mat-label>
+                  <mat-select name="Type" placeholder="Selecciona el tipo" (change)="AsignarTipo()" [(ngModel)]="selectedType" required>
+                    <mat-option *ngFor="let type of types" [value]="type.id">
+                      {{type.nombre}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="enFila" style="width: 100%">
+              <div>
+                <input #file id = "inputObjetoImagen" type="file" accept= 'image/*' (change)="ExaminarImagenObjeto($event)" style="display:none">
+                <img class="imagenObjeto" *ngIf="imagenObjeto" mat-card-image [src]="imagenObjeto">
+                <button (click) = "ActivarInputImagenObjeto()" type="button" class="btn Agregar">
+                Imagen<i class="material-icons">add_photo_alternate</i>
+                </button>
+              </div>
+            </div>
+            <button *ngIf="cambios" type="button" class="btn Aceptar"  (click)= "EditarObjeto()">Aceptar Cambios 
+              <i class="material-icons">check </i>
+            </button>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-dialog-actions align= "end">
+  <!-- <button mat-button [mat-dialog-close] class="btn Cerrar">Cerrar</button> routerLink= "editarColeccion" -->
+    <button mat-button (click)= "Cerrar();" class="btn Cerrar">Cerrar</button>
+  </mat-dialog-actions>
+</div>
+</div>

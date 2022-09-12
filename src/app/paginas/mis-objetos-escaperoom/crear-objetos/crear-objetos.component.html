@@ -1,0 +1,79 @@
+
+<div class="titulo"><h2>Crear Objeto</h2></div>
+<mat-divider style="width: 100%; margin-left : 15%"></mat-divider>
+<div class="contenedor">
+  <mat-tab-group>
+          <mat-tab label="Crear objeto">
+
+              <!-- STEPPER -->
+
+                <mat-card class="panel" style= "width: 100%">
+
+                  <mat-card-content>
+
+                  <mat-horizontal-stepper #linearHorizontalStepper="matHorizontalStepper" [linear]="true" #stepper>
+
+
+                    <!-- PRIMER PASO -->
+                    <mat-step [stepControl]="myForm">
+
+                    <form [formGroup]="myForm">
+                      <ng-template matStepLabel>Nombre y Tipo</ng-template>
+                      <mat-form-field>
+                        <mat-label>Nombre</mat-label>
+                        <input matInput formControlName="nombreObjeto" required>
+                        <mat-error>Este campo es obligatorio</mat-error>
+                      </mat-form-field>
+                      <br>
+                      <br>
+                      <mat-form-field appearance="fill">
+                        <mat-label>Tipo</mat-label>
+                        <mat-select name="Type" placeholder="Selecciona el tipo" (change)="AsignarTipo()" [(ngModel)]="selectedType" required>
+                          <mat-option *ngFor="let type of types" [value]="type.id">
+                            {{type.nombre}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+
+                      <div class="btnCambiarStep">
+                        <button class="btn Next" matStepperNext (click)= DatosObjeto() >Siguiente</button>
+                      </div>
+                    </form>
+                    </mat-step>
+
+                    <!-- PASO AÑADIR ESCENAS -->
+                    <mat-step>
+                      <ng-template matStepLabel>Imagen del Objeto</ng-template>
+
+                      <mat-card class="panel" >
+                        <mat-card-header>
+                          <mat-card-title>Carga la imagen del objeto</mat-card-title>
+                      </mat-card-header>
+
+                      <div class="enFila" style="width: 100%">
+                        <div>
+                          <input #file id = "inputObjetoImagen" type="file" accept= 'image/*' (change)="ExaminarImagenObjeto($event)" style="display:none">
+                          <img class="imagenObjeto" *ngIf="imagenCargadaObjeto" mat-card-image [src]="imagenObjeto">
+                          <button (click) = "ActivarInputImagenObjeto()" type="button" class="btn Agregar">
+                          Imagen<i class="material-icons">add_photo_alternate</i>
+                          </button>
+                        </div>
+
+                      <mat-card-actions align="end">
+                        <button  matStepperBack (click) = "LimpiarCampos()" type="button" class="btn Back">Limpiar Campos</button>
+                        <button  (click) = "CrearObjeto()"  class="btn Aceptar">Agregar Objeto y Finalizar</button>
+                      </mat-card-actions>
+
+                        </mat-card>
+                    </mat-step>
+
+                  </mat-horizontal-stepper>
+                </mat-card-content>
+              </mat-card>
+
+
+          </mat-tab>
+  </mat-tab-group>
+</div>
+
+

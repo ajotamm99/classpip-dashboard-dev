@@ -46,7 +46,7 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
 
   constructor(
                 private formBuilder: FormBuilder,
-                public dialogRef: MatDialogRef<AgregarCromoDialogComponent>,
+                public dialogRef: MatDialogRef<AgregarEscenaDialogComponent>,
                 private peticionesAPI: PeticionesAPIService,
                 @Inject(MAT_DIALOG_DATA) public data: any) { }
 

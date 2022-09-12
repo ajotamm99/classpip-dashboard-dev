@@ -1,3 +1,6 @@
+import { Enigma } from './../clases/clasesParaJuegoDeEscapeRoom/Enigma';
+import { Skin } from './../clases/clasesParaJuegoDeEscapeRoom/Skin';
+import { ObjetoEscaperoom } from './../clases/clasesParaJuegoDeEscapeRoom/ObjetoEscaperoom';
 import { EscenaEscaperoom } from './../clases/clasesParaJuegoDeEscapeRoom/EscenaEscaperoom';
 import { EscenarioEscaperoom } from './../clases/clasesParaJuegoDeEscapeRoom/EscenarioEscaperoom';
 import { Injectable } from '@angular/core';
@@ -97,6 +100,9 @@ export class SesionService {
   EscenarioEscaperoom: EscenarioEscaperoom;
   EscenasdeEscenario: EscenaEscaperoom[]=[];
   EscenaEscaperoom: EscenaEscaperoom;
+  objetoEscaperoom: ObjetoEscaperoom;
+  skinEscaperoom: Skin;
+  enigmaEscaperoom: Enigma;
 
   constructor() { }
   public TomaProfesor(profesor: Profesor) {
@@ -701,6 +707,30 @@ public TomaEscenaEscaperoom(EscenaEscaperoom: EscenaEscaperoom){
 
 public DameEscenaEscaperoom(){
   return this.EscenaEscaperoom;
+}
+
+public TomaObjetoEscaperoom(Objeto: ObjetoEscaperoom){
+  this.objetoEscaperoom = Objeto;
+}
+
+public DameObjetoEscaperoom(){
+  return this.objetoEscaperoom;
+}
+
+public TomaSkinEscaperoom(Skin: Skin){
+  this.skinEscaperoom= Skin;
+}
+
+public DameSkinEscaperoom(){
+  return this.skinEscaperoom;
+}
+
+public TomaEnigmaEscaperoom(Enigma: Enigma){
+  this.enigmaEscaperoom =Enigma;
+}
+
+public DameEnigmaEscaperoom(){
+  return this.enigmaEscaperoom;
 }
 
 }

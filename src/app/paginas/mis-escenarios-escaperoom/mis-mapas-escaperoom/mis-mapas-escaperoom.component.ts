@@ -76,12 +76,10 @@ export class MisMapasEscaperoomComponent implements OnInit {
     .subscribe (res => {
 
       if (res[0] !== undefined) {
-        if (this.EscenariosPublicos.length === 0) {
-          this.EscenariosPublicos = undefined;
-        } else {
+
           this.EscenariosPublicos= res;
           this.dataSourcePublicas = new MatTableDataSource(this.EscenariosPublicos);
-        }
+        
       }
     });
   }
@@ -128,8 +126,8 @@ BorrarEscenarioEscaperoom(EscenarioEscaperoom: EscenarioEscaperoom) {
         this.EscenasdeEscenario=res;
         for(let i = 0; i < (this.EscenasdeEscenario.length); i++) {
           this.peticionesAPI.BorrarEscenaEscaperoom(this.EscenasdeEscenario[i].id).subscribe();
-          //this.peticionesAPI.BorrarImagenEscena
-          //this.peticionesAPI.BorrarJSONEscena
+          this.peticionesAPI.BorrarImagenEscena(this.EscenasdeEscenario[i].Tilesheet);
+          this.peticionesAPI.BorrarArchivoEscena(this.EscenasdeEscenario[i].Archivo);
         }
         this.peticionesAPI.BorrarEscenarioEscaperoom(EscenarioEscaperoom.id).subscribe();
       }
@@ -180,12 +178,7 @@ BorrarEscenarioEscaperoom(EscenarioEscaperoom: EscenarioEscaperoom) {
               this.BorrarEscenarioEscaperoom(EscenarioEscaperoom);
               Swal.fire('Eliminado', EscenarioEscaperoom.Nombre + ' eliminado correctamente', 'success');
             }
-          
-
         });
-        
-        
-
       }
     });
   }

@@ -7,7 +7,7 @@ export class ObjetoEscaperoom {
     profesorId: number;    
     Publica: boolean;
   
-    constructor(profesorId?: number, Nombre?: string, Imagen?: string, Tipo?: string) {
+    constructor( Nombre?: string, Imagen?: string, Tipo?: string, profesorId?: number,) {
   
       this.Nombre = Nombre;
       this.profesorId = profesorId;

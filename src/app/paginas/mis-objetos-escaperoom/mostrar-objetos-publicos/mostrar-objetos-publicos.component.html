@@ -1,0 +1,36 @@
+<div class="titulo">Editar objeto</div>
+<mat-divider class="lineaDivisoria"></mat-divider>
+
+<div class="contenedor">
+  <div class= "enColumna">
+  <mat-card class="panel">
+    <mat-card-content>
+
+
+            <div class="texto" style=" text-align: left;">
+                <mat-form-field style="margin: 15px;">
+                    <mat-label style="color: white;">Nombre </mat-label>
+                    <mat-label style="background-color: transparent">{{nombreObjeto}}</mat-label>
+                  </mat-form-field>
+                <br>
+                <br>
+                <mat-form-field appearance="fill">
+                  <mat-label>Tipo</mat-label>
+                  <mat-label style="background-color: transparent">{{tipoObjeto}}</mat-label>
+                </mat-form-field>
+            </div>
+
+            <div class="enFila" style="width: 100%">
+              <div>
+                <img class="imagenObjeto" *ngIf="imagenObjeto" mat-card-image [src]="imagenObjeto">
+              </div>
+            </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-dialog-actions align= "end">
+  <!-- <button mat-button [mat-dialog-close] class="btn Cerrar">Cerrar</button> routerLink= "editarColeccion" -->
+    <button mat-button (click)= "Cerrar();" class="btn Cerrar">Cerrar</button>
+  </mat-dialog-actions>
+</div>
+</div>

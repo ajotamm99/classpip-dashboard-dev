@@ -176,9 +176,9 @@ import { EditarRubricaComponent } from './paginas/editar-rubrica/editar-rubrica.
 import { CrearFamiliasmemoramaComponent } from './paginas/crear-familiasmemorama/crear-familiasmemorama.component';
 import { MisFamiliasmemoramaComponent } from './paginas/mis-familiasmemorama/mis-familiasmemorama.component';
 import { DeactivateGuardCrearFamiliaMemorama } from './guardas/canExitCrearFamiliaMemorama.guard';
-import { MisEnigmasEscaperoomComponent } from './paginas/mis-escenarios-escaperoom/mis-enigmas-escaperoom/mis-enigmas-escaperoom.component';
-import { MisObjetosEscaperoomComponent } from './paginas/mis-escenarios-escaperoom/mis-objetos-escaperoom/mis-objetos-escaperoom.component';
-import { MisSkinsEscaperoomComponent } from './paginas/mis-escenarios-escaperoom/mis-skins-escaperoom/mis-skins-escaperoom.component';
+import { MisEnigmasEscaperoomComponent } from './paginas/mis-enigmas-escaperoom/mis-enigmas-escaperoom.component'
+import { MisObjetosEscaperoomComponent } from './paginas/mis-objetos-escaperoom/mis-objetos-escaperoom.component';
+import { MisSkinsEscaperoomComponent } from './paginas/mis-skins-escaperoom/mis-skins-escaperoom.component';
 import { GuardarMapaComponent } from './paginas/mis-escenarios-escaperoom/mis-mapas-escaperoom/guardar-mapa/guardar-mapa.component';
 import { MostrarEscenasPublicasComponent } from './paginas/mis-escenarios-escaperoom/mis-mapas-escaperoom/mostrar-escenas-publicas/mostrar-escenas-publicas.component';
 import { EditarMapaComponent } from './paginas/mis-escenarios-escaperoom/mis-mapas-escaperoom/editar-mapa/editar-mapa.component';

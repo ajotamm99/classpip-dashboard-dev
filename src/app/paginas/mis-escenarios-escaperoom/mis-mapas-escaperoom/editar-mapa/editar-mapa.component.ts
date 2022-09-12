@@ -101,35 +101,6 @@ export class EditarMapaComponent implements OnInit {
 
   }
 
-  // Busca la imagen que tiene el nombre del cromo.Imagen y lo carga en imagenCromo
-
-
-  // AL CLICAR EN AGREGAR LOGO NOS ACTIVARÁ LA FUNCIÓN MOSTRAR DE ABAJO
-  /*ActivarInput() {
-    console.log('Activar input');
-    document.getElementById('input').click();
-  }
-
-
-   // Seleccionamos una foto y guarda el nombre de la foto en la variable logo
-  Mostrar($event) {
-    this.file = $event.target.files[0];
-
-    console.log('fichero ' + this.file.name);
-    this.nombreImagenColeccion = this.file.name;
-
-    const reader = new FileReader();
-    reader.readAsDataURL(this.file);
-    reader.onload = () => {
-      console.log('ya');
-      this.cambios = true;
-      this.imagenCambiada = true;
-      this.imagenColeccion = reader.result.toString();
-    };
-  }
-*/
-
-
   // SI QUEREMOS AÑADIR CROMOS MANUALMENTE LO HAREMOS EN UN DIALOGO
   AbrirDialogoAgregarEscenaEscenario(): void {
     const dialogRef = this.dialog.open(AgregarEscenaDialogComponent, {

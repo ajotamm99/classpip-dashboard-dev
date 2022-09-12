@@ -1,3 +1,6 @@
+import { ObjetoActivo } from './../clases/clasesParaJuegoDeEscapeRoom/ObjetoActivo';
+import { Enigma } from './../clases/clasesParaJuegoDeEscapeRoom/Enigma';
+import { ObjetoEscaperoom } from './../clases/clasesParaJuegoDeEscapeRoom/ObjetoEscaperoom';
 import { EscenaEscaperoom } from './../clases/clasesParaJuegoDeEscapeRoom/EscenaEscaperoom';
 import { Injectable } from '@angular/core';
 import {Observable, Subject , of } from 'rxjs';
@@ -16,7 +19,7 @@ import { Profesor, Grupo, Alumno, Matricula, Juego, Punto, Nivel, AlumnoJuegoDeP
         RespuestaJuegoDeCuestionario, JuegoDeVotacionUnoATodos, AlumnoJuegoDeVotacionUnoATodos, Rubrica,
         JuegoDeVotacionTodosAUno, AlumnoJuegoDeVotacionTodosAUno, FamiliaDeImagenesDePerfil,
         CuestionarioSatisfaccion, JuegoDeCuestionarioSatisfaccion, AlumnoJuegoDeCuestionarioSatisfaccion,
-        JuegoDeEncuestaRapida, JuegoDeVotacionRapida, JuegoDeCuestionarioRapido, JuegoDeCogerTurnoRapido, JuegoDePuntos, AlumnoJuegoDeControlDeTrabajoEnEquipo, EquipoJuegoDeCuestionario, Evento, JuegoDeControlDeTrabajoEnEquipo, JuegoDeVotacionAOpciones, AlumnoJuegoDeVotacionAOpciones, Familia, EscenarioEscaperoom, JuegoDeEscapeRoom} from '../clases/index';
+        JuegoDeEncuestaRapida, JuegoDeVotacionRapida, JuegoDeCuestionarioRapido, JuegoDeCogerTurnoRapido, JuegoDePuntos, AlumnoJuegoDeControlDeTrabajoEnEquipo, EquipoJuegoDeCuestionario, Evento, JuegoDeControlDeTrabajoEnEquipo, JuegoDeVotacionAOpciones, AlumnoJuegoDeVotacionAOpciones, Familia, EscenarioEscaperoom, JuegoDeEscapeRoom, Skin} from '../clases/index';
 
 import { Escenario } from '../clases/Escenario';
 import { PuntoGeolocalizable } from '../clases/PuntoGeolocalizable';
@@ -113,6 +116,8 @@ export class PeticionesAPIService {
   private APIUrlLogosEquipos = this.host + ':3000/api/imagenes/LogosEquipos';
   private APIUrlImagenesEscenas = this.host + ':3000/api/imagenes/ImagenesEscenas';
   private APIUrlArchivosEscenas = this.host + ':3000/api/imagenes/ArchivosEscenas';
+  private APIUrlImagenesObjetos = this.host + ':3000/api/imagenes/ImagenesObjetos';
+  private APIUrlImagenesSkins = this.host + ':3000/api/imagenes/ImagenesSkins';
 
   private APIUrlImagenesAvatares = this.host + ':3000/api/imagenes/ImagenesAvatares';
   private APIUrlJuegoDeAvatar = this.host + ':3000/api/juegosDeAvatar';
@@ -186,6 +191,11 @@ export class PeticionesAPIService {
   private APIURLJuegoDeEscaperoom = this.host + ':3000/api/juegoescaperoom';
   private APIURLEscenariosEscaperoom = this.host + ':3000/api/escenarioescaperoom';
   private APIURLEscenasEscaperoom = this.host + ':3000/api/escenasescaperoom';
+
+  private APIURLObjetosEscaperoom = this.host + ':3000/api/objetosescaperoom';
+  private APIUrlObjetosActivos= this.host + ':3000/api/objetoactivoescaperoom';
+  private APIURLEnigmasEscaperoom = this.host + ':3000/api/enigmasescaperoom';
+  private APIURLSkinsEscaperoom = this.host + ':3000/api/skins';
 
   constructor(
     private http: HttpClient,
@@ -2688,5 +2698,83 @@ public ModificaInscripcionAlumnoJuegoDeVotacionAOpciones(inscripcion: AlumnoJueg
   public BorrarArchivoEscena(ArchivoEscena: string): Observable<any> {
 
     return this.http.delete<any>(this.APIUrlArchivosEscenas + '/files/' + ArchivoEscena);
+  }
+
+  public PonObjetoEscaperoom(objetoEscaperoom:ObjetoEscaperoom, profesorId: number): Observable<ObjetoEscaperoom>{
+    return this.http.post<ObjetoEscaperoom>(this.APIUrlProfesores + '/'+ profesorId + '/objetoEscaperoom'+ '', objetoEscaperoom);
+  }
+
+  public PonImagenObjeto(formData: FormData): Observable<any> {
+    return this.http.post<any>(this.APIUrlImagenesObjetos + '/upload', formData);
+  }
+
+  public BorrarImagenObjeto(imagenObjeto: string): Observable<any> {
+
+    return this.http.delete<any>(this.APIUrlImagenesObjetos + '/files/' + imagenObjeto);
+  }
+
+  public DameObjetosEscaperoomDelProfesor(profesorId: number): Observable<ObjetoEscaperoom[]> {
+
+    return this.http.get<ObjetoEscaperoom[]>(this.APIUrlProfesores + '/' + profesorId + '/objetoEscaperooms');
+  
+  }
+
+  public BorrarObjetoEscaperoom(objetoEscaperoomId: number): Observable<any>{
+    return this.http.delete<any>(this.APIURLObjetosEscaperoom + '/'+objetoEscaperoomId)
+  }
+
+  public DameObjetoActivoId(objetoEscaperoomId: number): Observable<ObjetoActivo>{
+    return this.http.get<ObjetoActivo>(this.APIUrlObjetosActivos + '/' + objetoEscaperoomId)
+  }
+
+  public ModificaObjeto(objetoEscaperom: ObjetoEscaperoom, objetoEscaperoomId: number, profesorId: number): Observable<ObjetoEscaperoom>{
+    return this.http.put<ObjetoEscaperoom>(this.APIUrlProfesores + '/' + profesorId + '/objetoEscaperooms/' + objetoEscaperoomId, objetoEscaperom);
+  }
+
+  public DameObjetosEscaperoomPublicos(): Observable<ObjetoEscaperoom[]> {
+
+    return this.http.get<ObjetoEscaperoom[]>(this.APIURLObjetosEscaperoom + + '?filter[where][Publica]=true');
+  
+  }
+
+  public DameEnigmasEscaperoomDelProfesor(profesorId: number): Observable<Enigma[]> {
+
+    return this.http.get<Enigma[]>(this.APIUrlProfesores + '/' + profesorId + '/enigmaEscaperooms');
+  
+  }
+
+  public DameEnigmasEscaperoomPublicos(): Observable<Enigma[]> {
+
+    return this.http.get<Enigma[]>(this.APIURLEnigmasEscaperoom + + '?filter[where][Publica]=true');
+  
+  }
+
+  public PonEnigmaEscaperoom(enigmaEscaperoom:Enigma, profesorId: number): Observable<Enigma>{
+    return this.http.post<Enigma>(this.APIUrlProfesores + '/'+ profesorId + '/enigmaEscaperooms'+ '', enigmaEscaperoom);
+  }
+
+  public DameSkinsEscaperoomDelProfesor(profesorId: number): Observable<Skin[]> {
+
+    return this.http.get<Skin[]>(this.APIUrlProfesores + '/' + profesorId + '/skins');
+  
+  }
+
+  public DameSkinsEscaperoomPublicas(): Observable<Skin[]> {
+
+    return this.http.get<Skin[]>(this.APIURLSkinsEscaperoom + + '?filter[where][Publica]=true');
+  
+  }
+
+  public PonSkinEscaperoom(skinEscaperoom:ObjetoEscaperoom, profesorId: number): Observable<Skin>{
+    return this.http.post<Skin>(this.APIUrlProfesores + '/'+ profesorId + '/skins'+ '', skinEscaperoom);
+  }
+
+  public PonImagenSkin(formData: FormData): Observable<any> {
+    return this.http.post<any>(this.APIUrlImagenesSkins + '/upload', formData);
+  }
+
+  public BorrarImagenSkin(imagenSkin: string): Observable<any> {
+
+    return this.http.delete<any>(this.APIUrlImagenesSkins + '/files/' + imagenSkin);
   }
 }

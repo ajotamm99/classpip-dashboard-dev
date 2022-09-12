@@ -56,7 +56,7 @@ export class EditarEscenaDialogComponent implements OnInit {
               private sesion: SesionService,
               private peticionesAPI: PeticionesAPIService,
               private formBuilder: FormBuilder,
-              public dialogRef: MatDialogRef<EditarCromoDialogComponent>,
+              public dialogRef: MatDialogRef<EditarEscenaDialogComponent>,
               private http: Http,
               @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
@@ -106,12 +106,13 @@ export class EditarEscenaDialogComponent implements OnInit {
           this.peticionesAPI.PonImagenEscena(formData)
           .subscribe(() => console.log('Imagen cargado'));
         }
+        
+        this.cambios = false;
       } else {
         console.log('fallo editando');
       }
     });
     // this.dialogRef.close(this.cromosEditados);
-    this.cambios = false;
  }
 
    // Activa la función ExaminarImagenCromo
@@ -129,7 +130,7 @@ ExaminarImagenEscena($event) {
   this.fileImagenEscena = $event.target.files[0];
 
   console.log('fichero ' + this.fileImagenEscena.name);
-  this.nombreArchivoEscenaAntiguo=this.nombreImagenEscenaNueva;
+  this.nombreImagenEscenaAntigua=this.nombreImagenEscenaNueva;
   this.nombreImagenEscenaNueva = this.fileImagenEscena.name;
 
   const reader = new FileReader();
