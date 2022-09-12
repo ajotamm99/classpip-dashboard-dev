@@ -15,25 +15,14 @@ import * as URL from '../../../URLs/urls';
 })
 export class MostrarObjetosPublicosComponent implements OnInit {
   ObjetoEscaperoom: ObjetoEscaperoom;
-  ObjetoEscaperoomCambiado: ObjetoEscaperoom;
 
   nombreObjeto: string;
   tipoObjeto: string;
   imagenObjeto: string;
-  imagenObjetoAntigua: string;
 
 
   // imagen y archivo escena
-  nombreImagenObjetoAntigua: string;
-  nombreImagenObjetoNueva: string;
-  fileImagenObjeto: File;
-
-  // tslint:disable-next-line:ban-types
-  imagenObjetoCargada: Boolean = false;
-
-  // tslint:disable-next-line:ban-types
-  cambios: Boolean = false;
-  profesorId: number;
+  nombreImagenObjeto: string;
 
 
 
@@ -49,11 +38,11 @@ export class MostrarObjetosPublicosComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.profesorId =this.sesion.DameProfesor().id;
     this.ObjetoEscaperoom = this.data.objeto;
     this.nombreObjeto = this.data.objeto.Nombre;
-    this.nombreImagenObjetoNueva= this.data.objeto.Imagen;
+    this.nombreImagenObjeto= this.data.objeto.Imagen;
     this.tipoObjeto = this.data.objeto.Tipo;
+    this.imagenObjeto=URL.ImagenesObjetos + this.nombreImagenObjeto;
     console.log(this.ObjetoEscaperoom);
   }
 

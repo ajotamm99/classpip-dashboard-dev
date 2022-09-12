@@ -1,3 +1,4 @@
+import { EnigmaActivo } from './../clases/clasesParaJuegoDeEscapeRoom/EnigmaActivo';
 import { ObjetoActivo } from './../clases/clasesParaJuegoDeEscapeRoom/ObjetoActivo';
 import { Enigma } from './../clases/clasesParaJuegoDeEscapeRoom/Enigma';
 import { ObjetoEscaperoom } from './../clases/clasesParaJuegoDeEscapeRoom/ObjetoEscaperoom';
@@ -19,7 +20,7 @@ import { Profesor, Grupo, Alumno, Matricula, Juego, Punto, Nivel, AlumnoJuegoDeP
         RespuestaJuegoDeCuestionario, JuegoDeVotacionUnoATodos, AlumnoJuegoDeVotacionUnoATodos, Rubrica,
         JuegoDeVotacionTodosAUno, AlumnoJuegoDeVotacionTodosAUno, FamiliaDeImagenesDePerfil,
         CuestionarioSatisfaccion, JuegoDeCuestionarioSatisfaccion, AlumnoJuegoDeCuestionarioSatisfaccion,
-        JuegoDeEncuestaRapida, JuegoDeVotacionRapida, JuegoDeCuestionarioRapido, JuegoDeCogerTurnoRapido, JuegoDePuntos, AlumnoJuegoDeControlDeTrabajoEnEquipo, EquipoJuegoDeCuestionario, Evento, JuegoDeControlDeTrabajoEnEquipo, JuegoDeVotacionAOpciones, AlumnoJuegoDeVotacionAOpciones, Familia, EscenarioEscaperoom, JuegoDeEscapeRoom, Skin} from '../clases/index';
+        JuegoDeEncuestaRapida, JuegoDeVotacionRapida, JuegoDeCuestionarioRapido, JuegoDeCogerTurnoRapido, JuegoDePuntos, AlumnoJuegoDeControlDeTrabajoEnEquipo, EquipoJuegoDeCuestionario, Evento, JuegoDeControlDeTrabajoEnEquipo, JuegoDeVotacionAOpciones, AlumnoJuegoDeVotacionAOpciones, Familia, EscenarioEscaperoom, JuegoDeEscapeRoom, Skin, SkinActiva} from '../clases/index';
 
 import { Escenario } from '../clases/Escenario';
 import { PuntoGeolocalizable } from '../clases/PuntoGeolocalizable';
@@ -195,7 +196,11 @@ export class PeticionesAPIService {
   private APIURLObjetosEscaperoom = this.host + ':3000/api/objetosescaperoom';
   private APIUrlObjetosActivos= this.host + ':3000/api/objetoactivoescaperoom';
   private APIURLEnigmasEscaperoom = this.host + ':3000/api/enigmasescaperoom';
+  
+  private APIURLEnigmasActivos= this.host + ':3000/api/enigmaactivoescaperoom';
   private APIURLSkinsEscaperoom = this.host + ':3000/api/skins';
+  
+  private APIURLSkinsActivas = this.host + ':3000/api/skinactivas';
 
   constructor(
     private http: HttpClient,
@@ -2743,6 +2748,14 @@ public ModificaInscripcionAlumnoJuegoDeVotacionAOpciones(inscripcion: AlumnoJueg
   
   }
 
+  public DameEnigmaActivoId(enigmaEscaperoomId: number): Observable<EnigmaActivo>{
+    return this.http.get<EnigmaActivo>(this.APIURLEnigmasActivos + '/' + enigmaEscaperoomId)
+  }
+
+  public BorrarEnigmaEscaperoom(enigmaEscaperoomId: number): Observable<any>{
+    return this.http.delete<any>(this.APIURLEnigmasEscaperoom + '/'+enigmaEscaperoomId)
+  }
+
   public DameEnigmasEscaperoomPublicos(): Observable<Enigma[]> {
 
     return this.http.get<Enigma[]>(this.APIURLEnigmasEscaperoom + + '?filter[where][Publica]=true');
@@ -2757,6 +2770,14 @@ public ModificaInscripcionAlumnoJuegoDeVotacionAOpciones(inscripcion: AlumnoJueg
 
     return this.http.get<Skin[]>(this.APIUrlProfesores + '/' + profesorId + '/skins');
   
+  }
+
+  public DameSkinActivaId(skinEscaperoomId: number): Observable<SkinActiva>{
+    return this.http.get<SkinActiva>(this.APIURLSkinsActivas + '/' + skinEscaperoomId)
+  }
+
+  public BorrarSkinEscaperoom(skinEscaperoomId: number): Observable<any>{
+    return this.http.delete<any>(this.APIURLSkinsEscaperoom + '/'+skinEscaperoomId)
   }
 
   public DameSkinsEscaperoomPublicas(): Observable<Skin[]> {
