@@ -6,7 +6,7 @@ export class Skin {
     Spritesheet: string;    
     Publica: boolean;
   
-    constructor(profesorId?: number, Spritesheet?: string, Nombre?: string) {
+    constructor( Spritesheet?: string, Nombre?: string, profesorId?: number) {
   
       this.Nombre = Nombre;
       this.profesorId = profesorId;

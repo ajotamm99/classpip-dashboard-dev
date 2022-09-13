@@ -2756,6 +2756,10 @@ public ModificaInscripcionAlumnoJuegoDeVotacionAOpciones(inscripcion: AlumnoJueg
     return this.http.delete<any>(this.APIURLEnigmasEscaperoom + '/'+enigmaEscaperoomId)
   }
 
+  public ModificaEnigma(enigmaEscaperoom: Enigma, enigmaEscaperoomId: number, profesorId: number): Observable<Enigma>{
+    return this.http.put<Enigma>(this.APIUrlProfesores + '/' + profesorId + '/enigmaEscaperooms/' + enigmaEscaperoomId, enigmaEscaperoom);
+  }
+
   public DameEnigmasEscaperoomPublicos(): Observable<Enigma[]> {
 
     return this.http.get<Enigma[]>(this.APIURLEnigmasEscaperoom + + '?filter[where][Publica]=true');
@@ -2780,13 +2784,17 @@ public ModificaInscripcionAlumnoJuegoDeVotacionAOpciones(inscripcion: AlumnoJueg
     return this.http.delete<any>(this.APIURLSkinsEscaperoom + '/'+skinEscaperoomId)
   }
 
+  public ModificaSkin(skinEscaperoom: Skin, skinEscaperoomId: number, profesorId: number): Observable<Skin>{
+    return this.http.put<Skin>(this.APIUrlProfesores + '/' + profesorId + '/skins/' + skinEscaperoomId, skinEscaperoom);
+  }
+
   public DameSkinsEscaperoomPublicas(): Observable<Skin[]> {
 
     return this.http.get<Skin[]>(this.APIURLSkinsEscaperoom + + '?filter[where][Publica]=true');
   
   }
 
-  public PonSkinEscaperoom(skinEscaperoom:ObjetoEscaperoom, profesorId: number): Observable<Skin>{
+  public PonSkinEscaperoom(skinEscaperoom:Skin, profesorId: number): Observable<Skin>{
     return this.http.post<Skin>(this.APIUrlProfesores + '/'+ profesorId + '/skins'+ '', skinEscaperoom);
   }
 

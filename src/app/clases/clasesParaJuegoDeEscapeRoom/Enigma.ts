@@ -7,7 +7,7 @@ export class Enigma {
     Dificultad: string;
     Publica: boolean;
   
-    constructor(profesorId?: number, Tipo?: string, Nombre?: string, Dificultad?:string) {
+    constructor( Tipo?: string, Nombre?: string, Dificultad?:string, profesorId?: number) {
   
       this.Nombre = Nombre;
       this.profesorId = profesorId;

@@ -567,7 +567,7 @@ import { EditarSkinDialogComponent } from './paginas/mis-skins-escaperoom/editar
     InformacionRespuestasJuegoDeCuestionarioDialogComponent,
     RespuestasAlumnoJuegoDeCuestionarioComponent,
     AsignarFamiliaImagenesPerfilComponent, EvaluacionDialogoComponent, EvaluacionBorrarDialogoComponent, AgregarEscenaDialogComponent, EditarEscenaDialogComponent,
-    EditarObjetoDialogComponent, EditarEnigmasDialogComponent, EditarSkinDialogComponent, MostrarObjetosPublicosComponent
+    EditarObjetoDialogComponent, EditarEnigmasDialogComponent, EditarSkinDialogComponent, MostrarObjetosPublicosComponent, MostrarSkinsPublicasComponent, MostrarEnigmasPublicosComponent
   ],
   bootstrap: [AppComponent],
   providers: [

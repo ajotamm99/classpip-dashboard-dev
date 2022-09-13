@@ -164,7 +164,7 @@ BorrarObjetoEscaperoom(objetoEscaperoom: ObjetoEscaperoom) {
 
   // Si queremos borrar un equipo, antes nos saldrá un aviso para confirmar la acción como medida de seguridad. Esto se
   // hará mediante un diálogo al cual pasaremos el mensaje y el nombre del equipo
-  AbrirDialogoConfirmacionBorrarEscenario(objetoEscaperoom: ObjetoEscaperoom): void {
+  AbrirDialogoConfirmacionBorrarObjeto(objetoEscaperoom: ObjetoEscaperoom): void {
     Swal.fire({
       title: 'Eliminar',
       text: "Estas segura/o de que quieres eliminar el objeto?: " + objetoEscaperoom.Nombre,

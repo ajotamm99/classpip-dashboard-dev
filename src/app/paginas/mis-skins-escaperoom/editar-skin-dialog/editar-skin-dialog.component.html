@@ -1,3 +1,38 @@
-<p>
-  editar-skin-dialog works!
-</p>
+<div class="titulo">Editar skin</div>
+<mat-divider class="lineaDivisoria"></mat-divider>
+
+<div class="contenedor">
+  <div class= "enColumna">
+  <mat-card class="panel">
+    <mat-card-content>
+
+
+            <div class="texto" style=" text-align: left;">
+                <mat-form-field style="margin: 15px;">
+                    <mat-label style="color: white;">Nombre </mat-label>
+                    <input matInput type="text" style="color: yellow;" placeholder="Nombre" required [(ngModel)]="nombreSkin" (change) = "cambios=true">
+                    <mat-error>Este campo es obligatorio</mat-error>
+                  </mat-form-field>
+            </div>
+
+            <div class="enFila" style="width: 100%">
+              <div>
+                <input #file id = "inputSkinImagen" type="file" accept= 'image/*' (change)="ExaminarImagenSkin($event)" style="display:none">
+                <img class="imagenSkin" *ngIf="imagenSkin" mat-card-image [src]="imagenSkin">
+                <button (click) = "ActivarInputImagenSkin()" type="button" class="btn Agregar">
+                Imagen<i class="material-icons">add_photo_alternate</i>
+                </button>
+              </div>
+            </div>
+            <button *ngIf="cambios" type="button" class="btn Aceptar"  (click)= "EditarSkin()">Aceptar Cambios 
+              <i class="material-icons">check </i>
+            </button>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-dialog-actions align= "end">
+  <!-- <button mat-button [mat-dialog-close] class="btn Cerrar">Cerrar</button> routerLink= "editarColeccion" -->
+    <button mat-button (click)= "Cerrar();" class="btn Cerrar">Cerrar</button>
+  </mat-dialog-actions>
+</div>
+</div>

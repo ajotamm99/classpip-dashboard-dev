@@ -1,3 +1,110 @@
-<p>
-  mis-enigmas-escaperoom works!
-</p>
+<div class="titulo">Enigmas</div>
+<mat-divider class="lineaDivisoria"></mat-divider>
+
+<div class="contenedor">
+
+  <mat-tab-group>
+    <mat-tab label="Mis Enigmas">
+      <br>
+      <div class ='enColumna'>
+        <form style = "width: 100%"  *ngIf="EnigmasProfesor;else Aviso_no_enigmas">
+
+          <div class = "filter">
+            <mat-form-field>
+              <input matInput (keyup)="applyFilterProfesor($event.target.value)" placeholder="Filtro para buscar enigmas...">
+              <i class="material-icons" matSuffix>search</i>
+            </mat-form-field>
+          </div>
+          <table style = "width: 80%" align= "center" mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+
+            <ng-container matColumnDef="nombre">
+              <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla"> Nombre </th>
+              <td mat-cell *matCellDef="let enigma"> {{enigma.Nombre}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="iconos">
+                <th  mat-header-cell *matHeaderCellDef class="tituloColumnaTabla"></th>
+                <td  mat-cell *matCellDef="let enigma">
+                  <div  style = "display: flex; align-items: right">
+                    <button  (click) = "VerEnigmaDialog(enigma)" mat-icon-button matTooltip="Ver el enigma">
+                      <i class="material-icons green md-36">edit</i>
+                    </button>
+                    <button (click) = "AbrirDialogoConfirmacionBorrarEnigma(enigma)" mat-icon-button matTooltip="Eliminar el enigma">
+                      <i class="material-icons red md-36">delete</i>
+                    </button>
+                    <button (click) = "Descargar(enigma)" mat-icon-button matTooltip="Descargar enigma">
+                      <i class="material-icons blue md-36">get_app</i>
+                    </button>
+                    <!-- TODAVÍA NO ESTÁ CLARA LA ESTRATEGIA DE PUBLICACION DE ESCENARIOS EN LA APP 
+                    <button *ngIf = "!coleccion.Publica" (click) = "HazPublica(coleccion)" mat-icon-button matTooltip="Haz pública la colección">
+                      <i class="material-icons grey md-36">public_off</i>
+                    </button>
+                    <button *ngIf = "coleccion.Publica" (click) = "HazPrivada(coleccion)" mat-icon-button matTooltip="Haz privada la colección">
+                      <i class="material-icons green md-36">public</i>
+                    </button>
+                    -->
+                  </div>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+            </tr>
+          </table>
+        </form>
+
+        <div class="contenedor">
+            <ng-template  #Aviso_no_enigmas><div class="texto">No tienes enigmas</div></ng-template>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label= "Enigmas públicos">
+      <br>
+      <div class ='enColumna'>
+        <form style = "width: 100%" *ngIf="EnigmasPublicos;else Aviso_no_enigmas_publicas">
+
+          <div class = "filter">
+            <mat-form-field>
+              <input matInput (keyup)="applyFilterPublica($event.target.value)" placeholder="Filtro para buscar enigmas...">
+              <i class="material-icons" matSuffix>search</i>
+            </mat-form-field>
+          </div>
+          <table style = "width: 80%" align= "center" mat-table [dataSource]="dataSourcePublicas" class="mat-elevation-z8">
+
+            <!-- Titulo Column -->
+            <ng-container matColumnDef="nombre">
+              <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla"> Nombre </th>
+              <td mat-cell *matCellDef="let enigma; let i = index">
+                {{enigma.Nombre}} 
+              </td>
+
+            </ng-container>
+
+
+            <ng-container matColumnDef="iconos">
+              <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla"></th>
+              <td mat-cell *matCellDef="let enigma">
+                <button (click) = "VerEnigmaPublicoDialog(enigma)" mat-icon-button matTooltip="Ver enigma">
+                  <i class="material-icons green md-36">visibility</i>
+                </button>
+                <button (click) = "Descargar(enigma)" mat-icon-button matTooltip="Descargar enigma">
+                  <i class="material-icons blue md-36">get_app</i>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsPublica"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsPublica;">
+            </tr>
+          </table>
+        </form>
+
+        <div class="contenedor">
+            <ng-template  #Aviso_no_enigmas_publicas><div class="texto">No hay enigmas publicos</div></ng-template>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

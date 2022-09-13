@@ -1,3 +1,69 @@
-<p>
-  crear-skins works!
-</p>
+
+<div class="titulo"><h2>Crear Skin</h2></div>
+<mat-divider style="width: 100%; margin-left : 15%"></mat-divider>
+<div class="contenedor">
+  <mat-tab-group>
+          <mat-tab label="Crear skin">
+
+              <!-- STEPPER -->
+
+                <mat-card class="panel" style= "width: 100%">
+
+                  <mat-card-content>
+
+                  <mat-horizontal-stepper #linearHorizontalStepper="matHorizontalStepper" [linear]="true" #stepper>
+
+
+                    <!-- PRIMER PASO -->
+                    <mat-step [stepControl]="myForm">
+
+                    <form [formGroup]="myForm">
+                      <ng-template matStepLabel>Nombre</ng-template>
+                      <mat-form-field>
+                        <mat-label>Nombre</mat-label>
+                        <input matInput formControlName="nombreSkin" required>
+                        <mat-error>Este campo es obligatorio</mat-error>
+                      </mat-form-field>
+                      <div class="btnCambiarStep">
+                        <button class="btn Next" matStepperNext (click)= DatosSkin() >Siguiente</button>
+                      </div>
+                    </form>
+                    </mat-step>
+
+                    <!-- PASO AÑADIR ESCENAS -->
+                    <mat-step>
+                      <ng-template matStepLabel>Spritesheet de la Skin</ng-template>
+
+                      <mat-card class="panel" >
+                        <mat-card-header>
+                          <mat-card-title>Carga el spritesheet de la Skin</mat-card-title>
+                      </mat-card-header>
+
+                      <div class="enFila" style="width: 100%">
+                        <div>
+                          <input #file id = "inputSkinImagen" type="file" accept= 'image/*' (change)="ExaminarImagenSkin($event)" style="display:none">
+                          <img class="imagenSkin" *ngIf="imagenCargadaSkin" mat-card-image [src]="imagenSkin">
+                          <button (click) = "ActivarInputImagenSkin()" type="button" class="btn Agregar">
+                          Imagen<i class="material-icons">add_photo_alternate</i>
+                          </button>
+                        </div>
+                      </div>
+
+                      <mat-card-actions align="end">
+                        <button  matStepperBack (click) = "LimpiarCampos()" type="button" class="btn Back">Limpiar Campos</button>
+                        <button  (click) = "CrearSkin()"  class="btn Aceptar">Agregar Skin y Finalizar</button>
+                      </mat-card-actions>
+
+                        </mat-card>
+                    </mat-step>
+
+                  </mat-horizontal-stepper>
+                </mat-card-content>
+              </mat-card>
+
+
+          </mat-tab>
+  </mat-tab-group>
+</div>
+
+

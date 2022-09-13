@@ -9,6 +9,7 @@ import { SesionService, PeticionesAPIService } from 'src/app/servicios';
 import Swal from 'sweetalert2';
 import { EditarObjetoDialogComponent } from '../mis-objetos-escaperoom/editar-objeto-dialog/editar-objeto-dialog.component';
 import { MostrarObjetosPublicosComponent } from '../mis-objetos-escaperoom/mostrar-objetos-publicos/mostrar-objetos-publicos.component';
+import 'rxjs';
 
 @Component({
   selector: 'app-mis-skins-escaperoom',
@@ -157,7 +158,7 @@ BorrarSkinEscaperoom(skinEscaperoom: Skin) {
 
   // Si queremos borrar un equipo, antes nos saldrá un aviso para confirmar la acción como medida de seguridad. Esto se
   // hará mediante un diálogo al cual pasaremos el mensaje y el nombre del equipo
-  AbrirDialogoConfirmacionBorrarEscenario(skinEscaperoom: Skin): void {
+  AbrirDialogoConfirmacionBorrarSkin(skinEscaperoom: Skin): void {
     Swal.fire({
       title: 'Eliminar',
       text: "Estas segura/o de que quieres eliminar la skin?: " + skinEscaperoom.Nombre,
