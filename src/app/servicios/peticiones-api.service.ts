@@ -5,9 +5,12 @@ import { ObjetoEscaperoom } from './../clases/clasesParaJuegoDeEscapeRoom/Objeto
 import { EscenaEscaperoom } from './../clases/clasesParaJuegoDeEscapeRoom/EscenaEscaperoom';
 import { Injectable } from '@angular/core';
 import {Observable, Subject , of } from 'rxjs';
-import { HttpClient, HttpHeaders} from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
 import { ResponseContentType, Http} from '@angular/http';
-
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/empty';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/retry';
 
 
 import { Profesor, Grupo, Alumno, Matricula, Juego, Punto, Nivel, AlumnoJuegoDePuntos,
@@ -44,6 +47,8 @@ import { AlumnoJuegoDeMemorama } from '../clases/AlumnoJuegoDeMemorama';
 import { EquipoJuegoDeMemorama } from '../clases/EquipoJuegoDeMemorama';
 import { JuegoMEMORAMA } from '../clases/JuegoMemorama';
 import{Carta} from 'src/app/clases/Carta';
+import { noUndefined } from '@angular/compiler/src/util';
+import { data } from 'jquery';
 
 @Injectable({
   providedIn: 'root'
@@ -2670,12 +2675,12 @@ public ModificaInscripcionAlumnoJuegoDeVotacionAOpciones(inscripcion: AlumnoJueg
     return this.http.get<EscenaEscaperoom[]>(this.APIURLEscenasEscaperoom + '?filter[where][escenarioEscapeRoomId]='+EscenarioEscaperoomId);
   }
 
-  public DameJuegosEscaperoomdeEscenarioId(EscenarioEscaperoomId: number): Observable<JuegoDeEscapeRoom[]>{
-    return this.http.get<JuegoDeEscapeRoom[]>(this.APIURLJuegoDeEscaperoom + '?filter[where][escenarioEscaperoomId]='+EscenarioEscaperoomId);
+  public DameJuegosEscaperoomdeEscenarioId(EscenarioEscaperoomId: number):Observable<JuegoDeEscapeRoom[]>{
+      return this.http.get<JuegoDeEscapeRoom[]>(this.APIURLJuegoDeEscaperoom + '?filter[where][escenarioEscaperoomId]='+EscenarioEscaperoomId);
   }
 
   public ModificaEscenarioEscaperoom(EscenarioEscaperoom: EscenarioEscaperoom, profesorId: number, escenarioEscaperoomId: number):Observable<EscenarioEscaperoom>{
-    return this.http.put<EscenarioEscaperoom>(this.APIUrlProfesores+ '/Profesores/'+profesorId +'escenarioEscapeRooms/'+escenarioEscaperoomId,EscenarioEscaperoom);
+    return this.http.put<EscenarioEscaperoom>(this.APIUrlProfesores+ '/'+profesorId +'/escenarioEscapeRooms/'+escenarioEscaperoomId,EscenarioEscaperoom);
   }
 
   public PonEscenaEscenario(escena: EscenaEscaperoom, escenarioEscaperoomID: number): Observable<EscenaEscaperoom> {

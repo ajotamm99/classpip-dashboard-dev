@@ -24,7 +24,10 @@
           Agregar Escena <i class="material-icons">library_add</i>
       </button>
     </div>
-    <mat-grid-list cols="3" rowHeight="100px" style="width: 100%;" >
+    <br>
+    <br>
+    <div *ngIf="EscenasdeEscenario.length>0; else Aviso_no_escenas">
+      <mat-grid-list cols="3" rowHeight="100px" style="width: 100%;" >
       <mat-grid-tile
           *ngFor="let escena of EscenasdeEscenario; let i = index"
           [colspan]="1"
@@ -58,8 +61,12 @@
             </div>
           </mat-card>
       </mat-grid-tile>
-    </mat-grid-list>
+      </mat-grid-list>
+    </div>
 
+    <ng-template  #Aviso_no_escenas><div class="texto">No hay escenas</div></ng-template>
+    <br>
+    <br>
     <button type="button" class="btn Back" (click)="goBack()">Volver </button>
 
 

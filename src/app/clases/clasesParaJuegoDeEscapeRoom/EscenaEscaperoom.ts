@@ -4,12 +4,12 @@ export class EscenaEscaperoom {
     id: number;
     Tilesheet: string;
     Nombre: string;
-    escenarioEscaperoomId: number    
+    escenarioEscapeRoomId: number    
     Publica: boolean;
 
-    constructor(escenarioEscaperoomId?: number, Archivo?: string, Tilesheet?: string, Nombre?: string) {
+    constructor( Archivo?: string, Tilesheet?: string, Nombre?: string, escenarioEscapeRoomId?: number,) {
       this.Archivo = Archivo;      
-      this.escenarioEscaperoomId= escenarioEscaperoomId;
+      this.escenarioEscapeRoomId= escenarioEscapeRoomId;
       this.Tilesheet=Tilesheet;
       this.Nombre= Nombre;
       this.Publica=false;

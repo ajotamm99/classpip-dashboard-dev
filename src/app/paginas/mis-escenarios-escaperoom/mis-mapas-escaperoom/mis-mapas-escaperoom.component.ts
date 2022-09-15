@@ -1,8 +1,9 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { EscenaEscaperoom } from './../../../clases/clasesParaJuegoDeEscapeRoom/EscenaEscaperoom';
 import { Escenario } from 'src/app/clases/Escenario';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Type } from '@angular/core';
 import { Http } from '@angular/http';
-import { MatDialog, MatTableDataSource } from '@angular/material';
+import { ErrorStateMatcher, MatDialog, MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
 import { EscenarioEscaperoom, JuegoDeEscapeRoom } from 'src/app/clases';
 import { SesionService, PeticionesAPIService } from 'src/app/servicios';
@@ -21,9 +22,8 @@ export class MisMapasEscaperoomComponent implements OnInit {
   EscenariosPublicos: EscenarioEscaperoom[] = [];
   EscenasdeEscenario: EscenaEscaperoom[] = [];
 
-  JuegoEscaperoom: JuegoDeEscapeRoom[] =[];
+  JuegoEscaperoom: JuegoDeEscapeRoom | JuegoDeEscapeRoom[];
   numeroDeEscenarios: number;
-
   dataSource;
   dataSourcePublicas;
 
@@ -79,7 +79,6 @@ export class MisMapasEscaperoomComponent implements OnInit {
 
           this.EscenariosPublicos= res;
           this.dataSourcePublicas = new MatTableDataSource(this.EscenariosPublicos);
-        
       }
     });
   }
@@ -93,6 +92,12 @@ export class MisMapasEscaperoomComponent implements OnInit {
 
 }
 
+Crear(){
+  this.router.navigate(['/inicio/' + this.profesorId + '/recursos/misRecursosEscaperoom/crearMapa']);
+
+}
+
+
 
 VerEscenas(EscenarioEscaperoom: EscenarioEscaperoom) {
 
@@ -100,6 +105,13 @@ VerEscenas(EscenarioEscaperoom: EscenarioEscaperoom) {
   this.peticionesAPI.DameEscenasdeEscenariosEscaperoom(EscenarioEscaperoom.id).subscribe(res =>{
       this.EscenasdeEscenario=res;
       this.sesion.TomaEscenasdeEscenario(this.EscenasdeEscenario);
+  }, (error) =>{
+    console.log("no hay ninguna escena en el escenario", error);
+    let errors: HttpErrorResponse = error;
+    if (errors.status>=500){
+      //Swal.fire('Escenas', 'No hay ninguna escena en el escenario: '+EscenarioEscaperoom.Nombre, 'warning');
+    }    
+    this.sesion.TomaEscenasdeEscenario(this.EscenasdeEscenario);
   });
   this.router.navigate(['/inicio/' + this.profesorId + '/recursos/misRecursosEscaperoom/misMapas/editarMapa']);
 
@@ -112,6 +124,13 @@ VerEscenasPublicas(EscenarioEscaperoom: EscenarioEscaperoom) {
   this.peticionesAPI.DameEscenasdeEscenariosEscaperoom(EscenarioEscaperoom.id).subscribe(res =>{
       this.EscenasdeEscenario=res;
       this.sesion.TomaEscenasdeEscenario(this.EscenasdeEscenario);
+  }, (error) =>{
+    console.log("no hay ninguna escena en el escenario", error);
+    let errors: HttpErrorResponse = error;
+    if (errors.status>=500){
+      //Swal.fire('Escenas', 'No hay ninguna escena en el escenario: '+EscenarioEscaperoom.Nombre, 'warning');
+    }    
+    this.sesion.TomaEscenasdeEscenario(this.EscenasdeEscenario);
   });
   this.router.navigate(['/inicio/' + this.profesorId + '/recursos/misRecursosEscaperoom/misMapas/escenasPublicas']);
 
@@ -122,21 +141,29 @@ BorrarEscenarioEscaperoom(EscenarioEscaperoom: EscenarioEscaperoom) {
 
     console.log ('Vamos a eliminar el escenario');
     this.peticionesAPI.DameEscenasdeEscenariosEscaperoom(EscenarioEscaperoom.id).subscribe(res =>{
-      if(res!== undefined){
-        this.EscenasdeEscenario=res;
-        for(let i = 0; i < (this.EscenasdeEscenario.length); i++) {
-          this.peticionesAPI.BorrarEscenaEscaperoom(this.EscenasdeEscenario[i].id).subscribe();
-          this.peticionesAPI.BorrarImagenEscena(this.EscenasdeEscenario[i].Tilesheet);
-          this.peticionesAPI.BorrarArchivoEscena(this.EscenasdeEscenario[i].Archivo);
-        }
-        this.peticionesAPI.BorrarEscenarioEscaperoom(EscenarioEscaperoom.id).subscribe();
+      console.log(res);
+      this.EscenasdeEscenario=res;
+      for(let i = 0; i < (this.EscenasdeEscenario.length); i++) {
+        this.peticionesAPI.BorrarEscenaEscaperoom(this.EscenasdeEscenario[i].id).subscribe();
+        this.peticionesAPI.BorrarImagenEscena(this.EscenasdeEscenario[i].Tilesheet);
+        this.peticionesAPI.BorrarArchivoEscena(this.EscenasdeEscenario[i].Archivo);
       }
+      this.peticionesAPI.BorrarEscenarioEscaperoom(EscenarioEscaperoom.id).subscribe();
 
+
+    }, (error) =>{
+      console.log("no hay ninguna escena en el escenario", error);
+      let errors: HttpErrorResponse = error;
+      if (errors.status>=500){
+        this.peticionesAPI.BorrarEscenarioEscaperoom(EscenarioEscaperoom.id).subscribe();
+        Swal.fire('Eliminado', EscenarioEscaperoom.Nombre + 'No hay ninguna escena en el escenario, eliminado correctamente', 'success');
+    }
     });
 
     console.log ('La saco de la lista');
     this.EscenariosProfesor = this.EscenariosProfesor.filter(escenario => escenario.id !== EscenarioEscaperoom.id);
     this.dataSource = new MatTableDataSource(this.EscenariosProfesor);
+    //this.ngOnInit();
 }
 
 
@@ -155,12 +182,12 @@ BorrarEscenarioEscaperoom(EscenarioEscaperoom: EscenarioEscaperoom) {
 
     }).then((result) => {
       if (result.value) {
-
-        //Antes de eliminar el juego tenemos que ver si hay algun juego activo
-        this.peticionesAPI.DameJuegosEscaperoomdeEscenarioId(EscenarioEscaperoom.id).subscribe(res =>{
-
-            this.JuegoEscaperoom=res;
-            if(this.JuegoEscaperoom !== undefined){
+        
+        //Antes de eliminar el escenario tenemos que ver si hay algun juego activo
+        this.peticionesAPI.DameJuegosEscaperoomdeEscenarioId(EscenarioEscaperoom.id).subscribe((res)=>{
+            console.log("Hemos llegado", res);
+            
+              this.JuegoEscaperoom=res;
               var cont =0;
               for (let i =0; i<this.JuegoEscaperoom.length; i++){
                 if(this.JuegoEscaperoom[i].Terminado=true){
@@ -174,13 +201,18 @@ BorrarEscenarioEscaperoom(EscenarioEscaperoom: EscenarioEscaperoom) {
                   Swal.fire('Error', EscenarioEscaperoom.Nombre + 'Todavía hay juegos activos usando este escenario', 'error');
               }
 
-            }else{
+          }, (error) =>{
+            console.log("no hay ningun juego activo", error);
+            let errors: HttpErrorResponse = error;
+            if (errors.status>=500){
               this.BorrarEscenarioEscaperoom(EscenarioEscaperoom);
-              Swal.fire('Eliminado', EscenarioEscaperoom.Nombre + ' eliminado correctamente', 'success');
-            }
-        });
-      }
-    });
+              Swal.fire('Eliminado', EscenarioEscaperoom.Nombre + 'No hay ningún juego activo con este escenario, eliminado correctamente', 'success');
+          }
+          });
+      
+    }
+  });
+  
   }
 
   applyFilterProfesor(filterValue: string) {

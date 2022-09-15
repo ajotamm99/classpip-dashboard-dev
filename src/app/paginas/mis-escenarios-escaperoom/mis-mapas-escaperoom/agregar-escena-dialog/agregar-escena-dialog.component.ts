@@ -64,7 +64,7 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
     console.log(this.nombreArchivoEscena );
   
     this.peticionesAPI.PonEscenaEscenario(
-      new EscenaEscaperoom(this.EscenarioRecibido.id, this.nombreArchivoEscena, this.nombreImagenEscena, this.nombreEscena),this.EscenarioRecibido.id)
+      new EscenaEscaperoom(this.nombreArchivoEscena, this.nombreImagenEscena, this.nombreEscena),this.EscenarioRecibido.id)
       .subscribe((res) => {
         if (res != null) {
           console.log('asignado correctamente');

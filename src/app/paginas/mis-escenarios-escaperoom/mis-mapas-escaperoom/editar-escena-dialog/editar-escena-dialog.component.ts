@@ -81,7 +81,7 @@ export class EditarEscenaDialogComponent implements OnInit {
   EditarEscena() {
     console.log('Entro a editar');
     // tslint:disable-next-line:max-line-length
-    this.peticionesAPI.ModificaEscenaEscenario(new EscenaEscaperoom(this.EscenarioEscaperoom.id,  this.nombreArchivoEscenaNuevo, this.nombreImagenEscenaNueva, this.nombreEscena), this.EscenaEscaperoom.escenarioEscaperoomId, this.EscenaEscaperoom.id)
+    this.peticionesAPI.ModificaEscenaEscenario(new EscenaEscaperoom(  this.nombreArchivoEscenaNuevo, this.nombreImagenEscenaNueva, this.nombreEscena), this.EscenaEscaperoom.escenarioEscapeRoomId, this.EscenaEscaperoom.id)
     .subscribe((res) => {
       if (res != null) {
         this.EscenaEscaperoom = res;

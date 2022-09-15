@@ -1,12 +1,15 @@
 <div class="titulo">Agregar escena</div>
+<br>
 <mat-divider class="lineaDivisoria"></mat-divider>
-
-
-<mat-card class="panel">
+<br>
+<div class="enColumna">
+<mat-card class="panel" align = center>
+  <!--
     <mat-card-header>
       <mat-card-title>Añadir escena</mat-card-title>
       <mat-card-subtitle>Introduce los parámetros</mat-card-subtitle>
    </mat-card-header>
+  -->
    <mat-card-content>
 
       <div class="form-group" style="margin: 15px;">
@@ -38,11 +41,11 @@
 
   <mat-card-actions align="end">
     <button  (click) = "LimpiarCampos()" type="button" class="btn Back">Limpiar Campos</button>
-    <button  (click) = "AgregarEscenaEscenario()"  class="btn Aceptar">Agregar Escenario</button>
+    <button  (click) = "AgregarEscenaEscenario()"  class="btn Aceptar">Agregar Escena</button>
   </mat-card-actions>
 
   </mat-card>
-
+</div>
   <div>
     <form *ngIf="EscenasAgregadas[0]">
 
@@ -88,7 +91,7 @@
 
 
 
-<mat-dialog-actions align= "end">
+<mat-dialog-actions align= "center">
  <!-- <button mat-button [mat-dialog-close] class="btn Cerrar">Cerrar</button> -->
   <button mat-button (click)= "Cerrar();" class="btn Cerrar">Cerrar</button>
 </mat-dialog-actions>

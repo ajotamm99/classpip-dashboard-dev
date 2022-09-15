@@ -131,7 +131,7 @@ AgregarEscenaEscenario() {
   console.log(this.nombreArchivoEscena );
 
   this.peticionesAPI.PonEscenaEscenario(
-    new EscenaEscaperoom(this.EscenarioCreado.id, this.nombreArchivoEscena, this.nombreImagenEscena, this.nombreEscena),this.EscenarioCreado.id)
+    new EscenaEscaperoom(this.nombreArchivoEscena, this.nombreImagenEscena, this.nombreEscena),this.EscenarioCreado.id)
     .subscribe((res) => {
       if (res != null) {
         console.log('asignado correctamente');
