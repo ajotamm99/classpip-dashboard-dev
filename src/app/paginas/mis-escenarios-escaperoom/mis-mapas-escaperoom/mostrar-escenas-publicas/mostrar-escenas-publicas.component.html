@@ -17,28 +17,26 @@
     <br>
     <br>
     <mat-divider class="lineaDivisoria"></mat-divider>
-    <mat-grid-list cols="3" rowHeight="100px" style="width: 100%;" >
+    <mat-grid-list cols="3" rowHeight="100px" style="width: 100%;" gutterSize="10px">
       <mat-grid-tile
           *ngFor="let escena of EscenasdeEscenario; let i = index"
           [colspan]="1"
           [rowspan]="4"
-          [style.background]="white">
-          <mat-card class="escenaEscaperoom">
+          [style.background]="white" class="EscenasCardStyle">
             <div class= "enColumna">
-            <mat-card-header style = "margin-top: 20%;">
-              <!-- <div style="display: flex; justify-content:space-between; width: 250px "> -->
-                <mat-card-title align = "center">{{escena.Nombre}}</mat-card-title>
-
-            </mat-card-header>
-            <!-- <mat-card-content style="display: flex; align-items: center;justify-content: center;"> -->
-            <mat-card-content>
-                <div class="posicionImagen">
-                  <img class ="imagenEscenaEscaperoom" *ngIf="imagenesEscenas[i]"  mat-card-image [src]="imagenesEscenas[i]" >
-                </div>
-
-            </mat-card-content>
+              <div align="center">
+                <br>
+                <p style="color:black; margin-top: 10%;margin-bottom: 5%; font-weight: bold">{{escena.Nombre}}</p>
+            
+              </div>
+          <!-- <mat-card-content style="display: flex; align-items: center;justify-content: center;"> -->
+            <br>
+            <!--class="posicionImagen"-->
+            <div style="margin-top: 15px; max-width: 60%; max-height: 50%;" >
+              <img class ="imagenEscenaEscaperoom" *ngIf="imagenesEscenas[i]"  mat-card-image [src]="imagenesEscenas[i]" >
             </div>
-          </mat-card>
+           
+            </div>
       </mat-grid-tile>
     </mat-grid-list>
 

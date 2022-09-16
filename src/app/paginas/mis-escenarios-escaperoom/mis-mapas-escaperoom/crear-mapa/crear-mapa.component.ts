@@ -129,6 +129,7 @@ AgregarEscenaEscenario() {
   console.log('Entro a asignar el cromo a la coleccionID' + this.EscenarioCreado.id);
   console.log(this.nombreImagenEscena );
   console.log(this.nombreArchivoEscena );
+  //this.nombreArchivoEscena="pep.json";
 
   this.peticionesAPI.PonEscenaEscenario(
     new EscenaEscaperoom(this.nombreArchivoEscena, this.nombreImagenEscena, this.nombreEscena),this.EscenarioCreado.id)
@@ -283,7 +284,8 @@ Finalizar() {
 
     this.finalizar = true;
     Swal.fire('Escenario creado con éxito', '', 'success');
-    this.router.navigate(['/inicio/' + this.profesorId]);
+    this.router.navigate(['/inicio/' + this.profesorId + '/recursos/misRecursosEscaperoom/misMapas']);
+
 }
 
 }

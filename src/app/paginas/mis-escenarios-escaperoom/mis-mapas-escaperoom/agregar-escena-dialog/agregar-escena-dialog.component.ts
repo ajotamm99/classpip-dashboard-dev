@@ -62,7 +62,7 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
     console.log('Entro a asignar la escena al escenario' + this.EscenarioRecibido.id);
     console.log(this.nombreImagenEscena );
     console.log(this.nombreArchivoEscena );
-  
+    //this.nombreArchivoEscena="pep.json";
     this.peticionesAPI.PonEscenaEscenario(
       new EscenaEscaperoom(this.nombreArchivoEscena, this.nombreImagenEscena, this.nombreEscena),this.EscenarioRecibido.id)
       .subscribe((res) => {

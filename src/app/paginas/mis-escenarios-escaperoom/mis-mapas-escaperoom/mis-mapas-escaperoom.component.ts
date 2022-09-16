@@ -105,6 +105,8 @@ VerEscenas(EscenarioEscaperoom: EscenarioEscaperoom) {
   this.peticionesAPI.DameEscenasdeEscenariosEscaperoom(EscenarioEscaperoom.id).subscribe(res =>{
       this.EscenasdeEscenario=res;
       this.sesion.TomaEscenasdeEscenario(this.EscenasdeEscenario);
+      this.router.navigate(['/inicio/' + this.profesorId + '/recursos/misRecursosEscaperoom/misMapas/editarMapa']);
+
   }, (error) =>{
     console.log("no hay ninguna escena en el escenario", error);
     let errors: HttpErrorResponse = error;
@@ -112,9 +114,10 @@ VerEscenas(EscenarioEscaperoom: EscenarioEscaperoom) {
       //Swal.fire('Escenas', 'No hay ninguna escena en el escenario: '+EscenarioEscaperoom.Nombre, 'warning');
     }    
     this.sesion.TomaEscenasdeEscenario(this.EscenasdeEscenario);
-  });
-  this.router.navigate(['/inicio/' + this.profesorId + '/recursos/misRecursosEscaperoom/misMapas/editarMapa']);
+    this.router.navigate(['/inicio/' + this.profesorId + '/recursos/misRecursosEscaperoom/misMapas/editarMapa']);
 
+  });
+  
 }
 
 

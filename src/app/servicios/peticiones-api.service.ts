@@ -2688,7 +2688,7 @@ public ModificaInscripcionAlumnoJuegoDeVotacionAOpciones(inscripcion: AlumnoJueg
   }
 
   public ModificaEscenaEscenario(escena: EscenaEscaperoom, escenarioEscaperoomID: number, escenaEscaperoomID: number): Observable<EscenaEscaperoom> {
-    return this.http.put<EscenaEscaperoom>(this.APIURLEscenariosEscaperoom + '/' + escenaEscaperoomID + '/escenaEscapeRooms/' + escenaEscaperoomID, escena);
+    return this.http.put<EscenaEscaperoom>(this.APIURLEscenariosEscaperoom + '/' + escenarioEscaperoomID + '/escenaEscapeRooms/' + escenaEscaperoomID, escena);
   }
 
   public PonImagenEscena(formData: FormData): Observable<any> {

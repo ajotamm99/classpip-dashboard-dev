@@ -81,7 +81,7 @@ export class EditarEscenaDialogComponent implements OnInit {
   EditarEscena() {
     console.log('Entro a editar');
     // tslint:disable-next-line:max-line-length
-    this.peticionesAPI.ModificaEscenaEscenario(new EscenaEscaperoom(  this.nombreArchivoEscenaNuevo, this.nombreImagenEscenaNueva, this.nombreEscena), this.EscenaEscaperoom.escenarioEscapeRoomId, this.EscenaEscaperoom.id)
+    this.peticionesAPI.ModificaEscenaEscenario(new EscenaEscaperoom( this.nombreArchivoEscenaNuevo, this.nombreImagenEscenaNueva, this.nombreEscena), this.EscenaEscaperoom.escenarioEscapeRoomId, this.EscenaEscaperoom.id)
     .subscribe((res) => {
       if (res != null) {
         this.EscenaEscaperoom = res;
@@ -140,6 +140,7 @@ ExaminarImagenEscena($event) {
     this.imagenEscenaCargada= true;
     // this.imagenCargadoCromo = true;
     this.imagenEscena = reader.result.toString();
+    this.cambios=true;
   };
 }
   
@@ -158,6 +159,7 @@ ExaminarArchivoEscena($event) {
           this.infoArchivoEscena = JSON.parse(reader.result.toString());
           this.archivoEscenaCargado =true;
           this.nombreArchivoEscenaNuevo = this.fileArchivoEscena.name;
+          this.cambios=true;
     }catch{
       Swal.fire('Archivo JSON no válido','Prueba a subir otro archivo o corregir el existente', 'error')
       this.fileArchivoEscena = undefined;
@@ -177,11 +179,11 @@ Cerrar(): void {
 
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
-        this.dialogRef.close(this.EscenaEscaperoomCambiada);
+        this.dialogRef.close(null);
       }
     });
   } else {
-    this.dialogRef.close(this.EscenaEscaperoomCambiada);
+    this.dialogRef.close(this.EscenaEscaperoom);
   }
 }
 

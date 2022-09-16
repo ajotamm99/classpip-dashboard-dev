@@ -32,9 +32,6 @@ export class EditarMapaComponent implements OnInit {
 
   nombreEscenario: string;
   descripcionEscenario: string;
-  // imagen coleccion
-  imagenColeccion: string;
-  nombreImagenColeccion: string;
   file: File;
 
   // tslint:disable-next-line:ban-types
@@ -71,6 +68,7 @@ export class EditarMapaComponent implements OnInit {
     this.descripcionEscenario = this.EscenarioEscaperoom.Descripcion;
     console.log ('escenas');
     console.log (this.EscenasdeEscenario);
+    this.TraeArchivosEscenas();
     // Me traigo la imagen de la colección y las imagenes de cada cromo
     // this.TraeImagenColeccion(this.coleccion);
     // Cargo el imagen de la coleccion
@@ -131,15 +129,17 @@ export class EditarMapaComponent implements OnInit {
 
       this.EscenaEscaperoom = this.EscenasdeEscenario[i];
       this.imagenesEscenas[i] = URL.ImagenesEscenas + this.EscenaEscaperoom.Tilesheet;
+      
       this.archivosEscenas[i] = URL.ArchivosEscenas + this.EscenaEscaperoom.Archivo;
 
     }
+    console.log(this.imagenesEscenas);
     //por si quiero ordenar:
     //this.EscenasdeEscenario.sort((a, b) => a.Nombre.localeCompare(b.Nombre));
   }
 
   // TAMBIEN EDITAREMOS EL CROMO EN UN DIALOGO
-  AbrirDialogoEditarCromo(escena: EscenaEscaperoom): void {
+  AbrirDialogoEditarEscena(escena: EscenaEscaperoom): void {
 
     const dialogRef = this.dialog.open ( EditarEscenaDialogComponent , {
       width: '900px',
@@ -154,12 +154,16 @@ export class EditarMapaComponent implements OnInit {
     dialogRef.afterClosed().subscribe( escena => {
       // console.log ('volvemos de editar cromos ' + cromosEditados.length);
       // tslint:disable-next-line:prefer-for-of
-      this.EscenasdeEscenario = this.EscenasdeEscenario.filter(escen => escen.id !== escena.id);
-      this.EscenasdeEscenario.push (escena);
-      // this.cromosColeccion = this.sesion.DameCromos();
-      // this.coleccion = this.sesion.DameColeccion();
-      //this.TraeImagenColeccion(this.coleccion);
-      this.TraeArchivosEscenas();
+      if(escena!== null){
+        console.log(escena.Nombre);
+        this.EscenasdeEscenario = this.EscenasdeEscenario.filter(escen => escen.id !== escena.id);
+        this.EscenasdeEscenario.push (escena);
+        // this.cromosColeccion = this.sesion.DameCromos();
+        // this.coleccion = this.sesion.DameColeccion();
+        //this.TraeImagenColeccion(this.coleccion);
+        this.TraeArchivosEscenas();
+      }
+
 
     });
   }
@@ -172,7 +176,7 @@ export class EditarMapaComponent implements OnInit {
 
   // Si queremos borrar un cromo, antes nos saldrá un aviso para confirmar la acción como medida de seguridad. Esto se
   // hará mediante un diálogo al cual pasaremos el mensaje y el nombre del equipo
-  AbrirDialogoConfirmacionBorrarCromo(escena: EscenaEscaperoom): void {
+  AbrirDialogoConfirmacionBorrarEscena(escena: EscenaEscaperoom): void {
     Swal.fire({
       title: 'Eliminar',
       text: "Estas segura/o de que quieres eliminar la escena llamada: " +escena.Nombre,

@@ -16,8 +16,6 @@
                   check </i></button>
         </div>
     </div>
-    <br>
-    <br>
     <mat-divider class="lineaDivisoria"></mat-divider>
     <div  class = 'enColumna' >
       <button style = 'width: 30%' type="button" class="btn Agregar" (click) = AbrirDialogoAgregarEscenaEscenario()>
@@ -26,40 +24,38 @@
     </div>
     <br>
     <br>
-    <div *ngIf="EscenasdeEscenario.length>0; else Aviso_no_escenas">
-      <mat-grid-list cols="3" rowHeight="100px" style="width: 100%;" >
-      <mat-grid-tile
-          *ngFor="let escena of EscenasdeEscenario; let i = index"
-          [colspan]="1"
-          [rowspan]="4"
-          [style.background]="white">
-          <mat-card class="escenaEscaperoom">
+    <div class="escenascontenedor" *ngIf="EscenasdeEscenario.length>0; else Aviso_no_escenas">
+      <mat-grid-list cols="3" rowHeight="80px" style="width: 100%;" gutterSize="10px">
+      <mat-grid-tile *ngFor="let escena of EscenasdeEscenario; let i = index" [colspan]="1" [rowspan]="4" [style.background]="white" class="EscenasCardStyle">
+        <!--class="escenaEscaperoom"-->  
+        
             <div class= "enColumna">
-            <mat-card-header style = "margin-top: 20%;">
               <!-- <div style="display: flex; justify-content:space-between; width: 250px "> -->
-                <mat-card-title align = "center">{{escena.Nombre}}</mat-card-title>
-
-            </mat-card-header>
-            <!-- <mat-card-content style="display: flex; align-items: center;justify-content: center;"> -->
-            <mat-card-content>
-
-              <div class = "enFila" style = "width: 30%">
-
-                <button type="button" style="width: 50px !important;" class="btn Editar" (click) = "AbrirDialogoEditarEscena(escena)">
-                  <i  class="material-icons">edit </i>
-                </button>
-
-                <button type="button" style="width: 50px !important;" class="btn Eliminar" (click) = "AbrirDialogoConfirmacionBorrarEscena(escena)">
-                  <i  class="material-icons">delete </i>
-                </button>
-              </div>
-                <div class="posicionImagen">
-                  <img class ="imagenEscenaEscaperoom" *ngIf="imagenesEscenas[i]"  mat-card-image [src]="imagenesEscenas[i]" >
+                <div align="center">
+                  <br>
+                  <p style="color:black; margin-top: 10%;margin-bottom: 5%; font-weight: bold">{{escena.Nombre}}</p>
+              
                 </div>
+            <!-- <mat-card-content style="display: flex; align-items: center;justify-content: center;"> -->
+              <br>
+              <!--class="posicionImagen"-->
+              <div style="margin-top: 15px; max-width: 60%; max-height: 50%;" >
+                <img class ="imagenEscenaEscaperoom" *ngIf="imagenesEscenas[i]"  mat-card-image [src]="imagenesEscenas[i]" >
+              </div>
+              <div class="enColumna">
+                <div class = "enFila" style = "width: 100%" >
 
-            </mat-card-content>
+                  <button type="button" style="width: 50px !important;" class="btn Editar" (click) = "AbrirDialogoEditarEscena(escena)">
+                    <i  class="material-icons">edit </i>
+                  </button>
+
+                  
+                  <button type="button" style="width: 50px !important;" class="btn Eliminar" (click) = "AbrirDialogoConfirmacionBorrarEscena(escena)">
+                    <i  class="material-icons">delete </i>
+                  </button>
+                </div>
+              </div>
             </div>
-          </mat-card>
       </mat-grid-tile>
       </mat-grid-list>
     </div>

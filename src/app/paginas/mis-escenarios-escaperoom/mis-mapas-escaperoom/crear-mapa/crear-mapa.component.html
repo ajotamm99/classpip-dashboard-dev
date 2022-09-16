@@ -57,7 +57,7 @@
                     <mat-step [stepControl]="myForm2">
                       <ng-template matStepLabel>Escenas</ng-template>
 
-                      <mat-card class="panel" >
+                      <mat-card style="background-color: #998fa3; width: 100% ;" >
                         <mat-card-header>
                           <mat-card-title>Crear nueva escena</mat-card-title>
                           <mat-card-subtitle>Introduce los parámetros</mat-card-subtitle>
@@ -71,12 +71,14 @@
                       </mat-card-content>
 
                       <div class="enFila" style="width: 100%">
-                        <div>
+                        <div class="enColumnaLeft">
                           <input #file id = "inputEscenaImagen" type="file" accept= 'image/*' (change)="ExaminarImagenEscena($event)" style="display:none">
-                          <img class="imagenEscena" *ngIf="imagenCargadaEscena" mat-card-image [src]="imagenEscena">
                           <button (click) = "ActivarInputImagenEscena()" type="button" class="btn Agregar">
                           Imagen de delante <i class="material-icons">add_photo_alternate</i>
                           </button>
+                          <br>
+                          <img style="margin-left: 15px;" class="imagenEscena" *ngIf="imagenCargadaEscena" mat-card-image [src]="imagenEscena">
+                          
                         </div>
                         <div>
                           <input #file id = "inputEscenaArchivo" type="file" accept= 'application/JSON' (change)="ExaminarArchivoEscena($event)" style="display:none">
