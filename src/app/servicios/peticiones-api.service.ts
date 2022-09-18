@@ -2675,6 +2675,10 @@ public ModificaInscripcionAlumnoJuegoDeVotacionAOpciones(inscripcion: AlumnoJueg
     return this.http.get<EscenaEscaperoom[]>(this.APIURLEscenasEscaperoom + '?filter[where][escenarioEscapeRoomId]='+EscenarioEscaperoomId);
   }
 
+  public DameEscenasEscaperoom(): Observable<EscenaEscaperoom[]>{
+    return this.http.get<EscenaEscaperoom[]>(this.APIURLEscenasEscaperoom);
+  }
+
   public DameJuegosEscaperoomdeEscenarioId(EscenarioEscaperoomId: number):Observable<JuegoDeEscapeRoom[]>{
       return this.http.get<JuegoDeEscapeRoom[]>(this.APIURLJuegoDeEscaperoom + '?filter[where][escenarioEscaperoomId]='+EscenarioEscaperoomId);
   }

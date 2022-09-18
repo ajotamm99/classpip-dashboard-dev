@@ -133,6 +133,7 @@ VerObjetoDialog(ObjetoEscaperoom: ObjetoEscaperoom) {
       var objetoBuscar = this.ObjetosEscaperoom.filter(obj => obj.id == nuevoObjeto.id)[0];
       var index = this.ObjetosEscaperoom.indexOf(objetoBuscar);
       this.ObjetosEscaperoom.splice(index, 1 ,nuevoObjeto);
+      this.sesion.TomaObjetosEscaperoomProfesor;
       this.dataSource = new MatTableDataSource(this.ObjetosEscaperoom);
       //this.TraeImagenColeccion(this.coleccion);
       this.TraeImagenesObjetos();
@@ -170,12 +171,12 @@ BorrarObjetoEscaperoom(objetoEscaperoom: ObjetoEscaperoom) {
     var cont=0;
     var object = this.ObjetosEscaperoom.find(obj => obj.id == objetoEscaperoom.id);
     var index = this.ObjetosEscaperoom.indexOf(object);
-    for(let i=0; i<this.ObjetosEscaperoom.length; i++ ){
+    for(let i=0; i<this.ObjetosEscaperoom.length && cont<2; i++ ){
       if(this.ObjetosEscaperoom[i].Imagen ==objetoEscaperoom.Imagen){
         cont++;
       }
     }
-    if(cont==1){
+    if(cont<2){
       this.peticionesAPI.BorrarImagenObjeto(objetoEscaperoom.Imagen).subscribe();
     }          
 

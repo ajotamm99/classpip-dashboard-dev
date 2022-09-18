@@ -144,14 +144,26 @@ BorrarEscenarioEscaperoom(EscenarioEscaperoom: EscenarioEscaperoom) {
 
     console.log ('Vamos a eliminar el escenario');
     this.peticionesAPI.DameEscenasdeEscenariosEscaperoom(EscenarioEscaperoom.id).subscribe(res =>{
-      console.log(res);
+      console.log(res);      
       this.EscenasdeEscenario=res;
-      for(let i = 0; i < (this.EscenasdeEscenario.length); i++) {
-        this.peticionesAPI.BorrarEscenaEscaperoom(this.EscenasdeEscenario[i].id).subscribe();
-        this.peticionesAPI.BorrarImagenEscena(this.EscenasdeEscenario[i].Tilesheet);
-        this.peticionesAPI.BorrarArchivoEscena(this.EscenasdeEscenario[i].Archivo);
-      }
-      this.peticionesAPI.BorrarEscenarioEscaperoom(EscenarioEscaperoom.id).subscribe();
+      this.peticionesAPI.DameEscenasEscaperoom().subscribe(escenas =>{
+        var escenas = escenas;
+        for(let i = 0; i < (this.EscenasdeEscenario.length); i++) {
+          this.peticionesAPI.BorrarEscenaEscaperoom(this.EscenasdeEscenario[i].id).subscribe();
+          var cont =0;
+          for (let b=0; b<escenas.length && cont<2; b++ ){
+            if(this.EscenasdeEscenario[i].Tilesheet == escenas[b].Tilesheet){
+              cont++;
+            }
+          }
+          if(cont<2){            
+            this.peticionesAPI.BorrarImagenEscena(this.EscenasdeEscenario[i].Tilesheet);
+          }
+          this.peticionesAPI.BorrarArchivoEscena(this.EscenasdeEscenario[i].Archivo);
+        }
+        this.peticionesAPI.BorrarEscenarioEscaperoom(EscenarioEscaperoom.id).subscribe();
+      });
+
 
 
     }, (error) =>{
