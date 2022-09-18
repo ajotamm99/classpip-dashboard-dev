@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 import { EditarObjetoDialogComponent } from '../mis-objetos-escaperoom/editar-objeto-dialog/editar-objeto-dialog.component';
 import { MostrarObjetosPublicosComponent } from '../mis-objetos-escaperoom/mostrar-objetos-publicos/mostrar-objetos-publicos.component';
 import 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-mis-skins-escaperoom',
@@ -62,6 +63,7 @@ export class MisSkinsEscaperoomComponent implements OnInit {
         console.log('Voy a dar la lista');
         this.SkinsEscaperoom = skins;
         console.log(this.SkinsEscaperoom);
+        this.sesion.TomaSkisnEscaperoom(this.SkinsEscaperoom);
         this.dataSource = new MatTableDataSource(this.SkinsEscaperoom);
         // this.profesorService.EnviarProfesorIdAlServicio(this.profesorId);
       } else {
@@ -114,13 +116,19 @@ VerSkinDialog(SkinEscaperoom: Skin) {
 
    // RECUPERAREMOS LA NUEVA LISTA DE LOS CROMO Y VOLVEREMOS A BUSCAR LOS CROMOS QUE TIENE LA COLECCION
   dialogRef.afterClosed().subscribe(nuevaSkin => {
+    
     console.log ('skin editado ' + nuevaSkin);
-    // tslint:disable-next-line:prefer-for-of
-    this.SkinsEscaperoom = this.SkinsEscaperoom.filter(sk => sk.id !== nuevaSkin.id);
-    this.SkinsEscaperoom.push (nuevaSkin);
-    //this.TraeImagenColeccion(this.coleccion);
-    this.TraeImagenesSkins();
-
+    if(nuevaSkin!=null){
+      // tslint:disable-next-line:prefer-for-of
+      var skinBuscar= this.SkinsEscaperoom.find(sk=> sk.id== nuevaSkin.id)[0];
+      var index= this.SkinsEscaperoom.indexOf(skinBuscar);
+      this.SkinsEscaperoom.splice(index,1,nuevaSkin);
+      this.sesion.TomaSkisnEscaperoom(this.SkinsEscaperoom);
+      //this.SkinsEscaperoom = this.SkinsEscaperoom.filter(sk => sk.id !== nuevaSkin.id);
+      //this.SkinsEscaperoom.push (nuevaSkin);     
+      this.dataSource = new MatTableDataSource(this.SkinsEscaperoom);
+      this.TraeImagenesSkins();
+    }
    });
   //abrir dialog
   //this.router.navigate(['/inicio/' + this.profesorId + '/recursos/misRecursosEscaperoom/misObjetos']);
@@ -150,8 +158,20 @@ BorrarSkinEscaperoom(skinEscaperoom: Skin) {
     console.log ('Vamos a eliminar la skin');
     this.peticionesAPI.BorrarSkinEscaperoom(skinEscaperoom.id).subscribe();
 
+    var cont=0;
+    for(let i=0; i<this.SkinsEscaperoom.length && cont<2; i++ ){
+      if(this.SkinsEscaperoom[i].Spritesheet ==skinEscaperoom.Spritesheet){
+        cont++;
+      }
+    }
+    if(cont<2){
+      this.peticionesAPI.BorrarImagenSkin(skinEscaperoom.Spritesheet).subscribe();
+    }          
+
+
     console.log ('La saco de la lista');
     this.SkinsEscaperoom = this.SkinsEscaperoom.filter(sk => sk.id !== skinEscaperoom.id);
+    this.sesion.TomaSkisnEscaperoom(this.SkinsEscaperoom);
     this.dataSource = new MatTableDataSource(this.SkinsEscaperoom);
 }
 
@@ -181,6 +201,15 @@ BorrarSkinEscaperoom(skinEscaperoom: Skin) {
               this.BorrarSkinEscaperoom(skinEscaperoom);
               Swal.fire('Eliminado', skinEscaperoom.Nombre + ' eliminado correctamente', 'success');
             }
+        },(error)=>{
+          let errors: HttpErrorResponse = error;
+          if (errors.status>=500){
+            this.BorrarSkinEscaperoom(skinEscaperoom);
+            Swal.fire('Eliminado', skinEscaperoom.Nombre + ' eliminado correctamente', 'success');
+          }else{
+            Swal.fire('Error', skinEscaperoom.Nombre + 'No se ha podido eliminar la skin', 'error');
+          }          
+          Swal.fire('Eliminado', skinEscaperoom.Nombre + ' eliminada correctamente', 'success');
         });
       }
     });
@@ -203,5 +232,7 @@ BorrarSkinEscaperoom(skinEscaperoom: Skin) {
     this.dataSourcePublicas.filter = filterValue.trim().toLowerCase();
   }
 
-
+  Crear(){
+    this.router.navigate(['/inicio/' + this.profesorId + '/recursos/misRecursosEscaperoom/misSkins/crearSkin']);
+  }
 }

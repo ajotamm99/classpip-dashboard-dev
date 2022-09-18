@@ -169,8 +169,6 @@ BorrarObjetoEscaperoom(objetoEscaperoom: ObjetoEscaperoom) {
     this.peticionesAPI.BorrarObjetoEscaperoom(objetoEscaperoom.id).subscribe();
 
     var cont=0;
-    var object = this.ObjetosEscaperoom.find(obj => obj.id == objetoEscaperoom.id);
-    var index = this.ObjetosEscaperoom.indexOf(object);
     for(let i=0; i<this.ObjetosEscaperoom.length && cont<2; i++ ){
       if(this.ObjetosEscaperoom[i].Imagen ==objetoEscaperoom.Imagen){
         cont++;

@@ -6,6 +6,7 @@ import { ObjetoEscaperoom, Skin } from 'src/app/clases';
 import { SesionService, PeticionesAPIService, CalculosService } from 'src/app/servicios';
 import Swal from 'sweetalert2';
 import 'rxjs';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-crear-skins',
@@ -58,20 +59,18 @@ export class CrearSkinsComponent implements OnInit {
   
     // Constructor myForm
     this.myForm = this.formBuilder.group({
-     nombreSkin: ['', Validators.required]
+     nombreSkins: ['', Validators.required]
     });
   }
   
-  DatosObjeto(){
-    this.nombreSkin=this.myForm.value.nombreObjeto;
-    this.SkinCreada.Nombre=this.nombreSkin;
-  
+  DatoSkin(){
+    this.nombreSkin=this.myForm.value.nombreSkins;  
   }
   
   // Creamos un escenario dandole un nombre y una descripcion
   CrearSkin() {
   
-    this.peticionesAPI.PonSkinEscaperoom (new Skin(this.nombreSkin,this.nombreImagenSkin), this.profesorId)
+    this.peticionesAPI.PonSkinEscaperoom (new Skin(this.nombreImagenSkin,this.nombreSkin), this.profesorId)
     .subscribe((res) => {
       if (res != null) {
         console.log ('SKIN CREADa: ' + res.id );
@@ -84,14 +83,20 @@ export class CrearSkinsComponent implements OnInit {
           this.peticionesAPI.PonImagenSkin(formData)
           .subscribe(() => console.log('Imagen cargada'));
         }
-  
+        
+        this.LimpiarCampos();
+        this.stepper.reset();
+        this.myForm.reset();
+        Swal.fire('Creado',"Skin creada con éxito",'success');
+        
       } else {
         console.log('Fallo en la creación');
+        Swal.fire('Error',"Fallo creando la skin",'error');
       }
-    });
+    },(error=>{
+      Swal.fire('Error',"Fallo creando la skin",'error');
+    }));
     
-    this.LimpiarCampos();
-    this.stepper.previous();
   }
   
   
@@ -105,20 +110,24 @@ export class CrearSkinsComponent implements OnInit {
   // Buscaremos la imagen en nuestro ordenador y después se mostrará en el form con la variable "imagen" y guarda el
   // nombre de la foto en la variable nombreImagen
   
-  ExaminarImagenObjeto($event) {
+  ExaminarImagenSkin($event) {
+    console.log("entro");
     this.fileImagenSkin = $event.target.files[0];
   
     console.log('fichero ' + this.fileImagenSkin.name);
-    this.nombreImagenSkin = this.fileImagenSkin.name;
   
     const reader = new FileReader();
     reader.readAsDataURL(this.fileImagenSkin);
     reader.onload = () => {
+      
+    this.nombreImagenSkin = this.fileImagenSkin.name;
       console.log('ya Escena');
       this.imagenCargadaSkin= true;
       // this.imagenCargadoCromo = true;
       this.imagenSkin = reader.result.toString();
     };
+    
+    $event.target.value="";
   }
 
   
@@ -127,9 +136,11 @@ export class CrearSkinsComponent implements OnInit {
       this.nombreSkin = undefined;
       this.imagenSkin=undefined;
       this.nombreImagenSkin = undefined;
-      this.fileImagenSkin=undefined;
-  
+      this.fileImagenSkin=undefined;  
       this.imagenCargadaSkin = false;
+
+      this.myForm.reset();
+      this.stepper.reset();
   
   }
   
@@ -145,6 +156,10 @@ export class CrearSkinsComponent implements OnInit {
       this.LimpiarCampos()
       Swal.fire('skin creado con éxito', '', 'success');
       this.router.navigate(['/inicio/' + this.profesorId]);
+  }
+
+  Volver(){
+    this.router.navigate(['/inicio/' + this.profesorId +'/recursos/misRecursosEscaperoom/misSkins']);
   }
   
 }

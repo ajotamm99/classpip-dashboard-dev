@@ -5,8 +5,8 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ObjetoEscaperoom, Skin } from 'src/app/clases';
 import { SesionService, PeticionesAPIService } from 'src/app/servicios';
 import { DialogoConfirmacionComponent } from '../../COMPARTIDO/dialogo-confirmacion/dialogo-confirmacion.component';
-import { EditarEscenaDialogComponent } from '../../mis-escenarios-escaperoom/mis-mapas-escaperoom/editar-escena-dialog/editar-escena-dialog.component';
 import 'rxjs';
+import * as URL from '../../../URLs/urls';
 
 @Component({
   selector: 'app-editar-skin-dialog',
@@ -14,7 +14,10 @@ import 'rxjs';
   styleUrls: ['./editar-skin-dialog.component.scss']
 })
 export class EditarSkinDialogComponent implements OnInit {
+
+  
   skinEscaperoom: Skin;
+  skinsEscaperoom: Skin[]=[];
 
   nombreSkin: string;
   imagenSkin: string;
@@ -31,6 +34,7 @@ export class EditarSkinDialogComponent implements OnInit {
 
   // tslint:disable-next-line:ban-types
   cambios: Boolean = false;
+  changed: Boolean =false;
   profesorId: number;
 
 
@@ -41,7 +45,7 @@ export class EditarSkinDialogComponent implements OnInit {
               private sesion: SesionService,
               private peticionesAPI: PeticionesAPIService,
               private formBuilder: FormBuilder,
-              public dialogRef: MatDialogRef<EditarEscenaDialogComponent>,
+              public dialogRef: MatDialogRef<EditarSkinDialogComponent>,
               private http: Http,
               @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
@@ -49,15 +53,17 @@ export class EditarSkinDialogComponent implements OnInit {
   ngOnInit() {
 
     this.profesorId =this.sesion.DameProfesor().id;
+    this.skinsEscaperoom = this.sesion.DameSkinsEscaperoom();
     this.skinEscaperoom = this.data.skin;
     this.nombreSkin = this.data.skin.Nombre;
     this.nombreImageSkinNueva= this.data.skin.Spritesheet;
+    this.imagenSkinAntigua= URL.ImagenesSkins+this.nombreImageSkinNueva;
     console.log(this.skinEscaperoom);
     // Cargo el imagen del cromo
     //this.TraeArchivosEscenas();
   }
 
-  EditarEscena() {
+  EditarSkin() {
     console.log('Entro a editar');
     // tslint:disable-next-line:max-line-length
     this.peticionesAPI.ModificaSkin(new Skin(this.nombreImageSkinNueva,  this.nombreSkin), this.skinEscaperoom.id,this.profesorId)
@@ -68,14 +74,27 @@ export class EditarSkinDialogComponent implements OnInit {
         // console.log('nombre del cromo + nivel' + this.cromosEditados[0].Nombre + this.cromosEditados[0].Nivel);
         if (this.imagenSkinCargada === true) {
           // HACEMOS EL POST DE LA NUEVA IMAGEN EN LA BASE DE DATOS
-          console.log ('Nueva imagen');          
-          this.peticionesAPI.BorrarImagenSkin(this.nombreImagenSkinAntigua).subscribe();
+          console.log ('Nueva imagen');
+          var cont=0;
+          var search = this.skinsEscaperoom.find(sk=> sk.id== this.skinEscaperoom.id)[0];
+          var index = this.skinsEscaperoom.indexOf(search);
+          for(let i=0; i<this.skinsEscaperoom.length; i++ ){
+            if(this.skinsEscaperoom[i].Spritesheet ==this.nombreImagenSkinAntigua){
+              cont++;
+            }
+          }
+          if(cont<2){
+            this.peticionesAPI.BorrarImagenSkin(this.nombreImagenSkinAntigua).subscribe();
+          }
+          this.skinsEscaperoom.splice(index,1,this.skinEscaperoom);
           const formData: FormData = new FormData();
           formData.append(this.nombreImageSkinNueva, this.fileImagenSkin);
           this.peticionesAPI.PonImagenSkin(formData)
           .subscribe(() => console.log('Imagen cargado'));
+          this.imagenSkinAntigua=this.imagenSkin;
+          this.imagenSkinCargada=false;
         }
-        
+        this.changed=true;
         this.cambios = false;
       } else {
         console.log('fallo editando');
@@ -85,27 +104,30 @@ export class EditarSkinDialogComponent implements OnInit {
  }
 
    // Activa la función ExaminarImagenCromo
-ActivarInputImagenObjeto() {
+ActivarInputImagenSkin() {
     document.getElementById('inputSkinImagen').click();
 }
 
   // Buscaremos la imagen en nuestro ordenador y después se mostrará en el form con la variable "imagen" y guarda el
   // nombre de la foto en la variable nombreImagen
-ExaminarImagenEscena($event) {
+ExaminarImagenSkin($event) {
   this.fileImagenSkin = $event.target.files[0];
 
   console.log('fichero ' + this.fileImagenSkin.name);
-  this.nombreImagenSkinAntigua=this.nombreImageSkinNueva;
-  this.nombreImageSkinNueva = this.fileImagenSkin.name;
+
 
   const reader = new FileReader();
   reader.readAsDataURL(this.fileImagenSkin);
   reader.onload = () => {
     console.log('ya Escena');
+    this.nombreImagenSkinAntigua=this.nombreImageSkinNueva;
+    this.nombreImageSkinNueva = this.fileImagenSkin.name;
     this.imagenSkinCargada= true;
+    this.cambios=true;
     // this.imagenCargadoCromo = true;
     this.imagenSkin = reader.result.toString();
   };
+  $event.target.value="";
 }
 
 Cerrar(): void {
@@ -119,11 +141,16 @@ Cerrar(): void {
 
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
-        this.dialogRef.close(this.skinEscaperoom);
+        this.dialogRef.close(null);
       }
     });
   } else {
-    this.dialogRef.close(this.skinEscaperoom);
+    if(this.changed){
+      this.dialogRef.close(this.skinEscaperoom);
+    }else{
+      this.dialogRef.close(null);
+    }
+    
   }
 }
 

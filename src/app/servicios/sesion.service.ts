@@ -104,6 +104,7 @@ export class SesionService {
   skinEscaperoom: Skin;
   enigmaEscaperoom: Enigma;
   objetosEscaperoom: ObjetoEscaperoom[];
+  skinsEscaperoom: Skin[];
 
   constructor() { }
   public TomaProfesor(profesor: Profesor) {
@@ -732,6 +733,14 @@ public TomaSkinEscaperoom(Skin: Skin){
 
 public DameSkinEscaperoom(){
   return this.skinEscaperoom;
+}
+
+public TomaSkisnEscaperoom(skinsEscaperoom: Skin[]){
+  this.skinsEscaperoom= skinsEscaperoom;
+}
+
+public DameSkinsEscaperoom(){
+  return this.skinsEscaperoom;
 }
 
 public TomaEnigmaEscaperoom(Enigma: Enigma){

@@ -21,11 +21,11 @@
                       <ng-template matStepLabel>Nombre</ng-template>
                       <mat-form-field>
                         <mat-label>Nombre</mat-label>
-                        <input matInput formControlName="nombreSkin" required>
+                        <input matInput formControlName="nombreSkins" required>
                         <mat-error>Este campo es obligatorio</mat-error>
                       </mat-form-field>
                       <div class="btnCambiarStep">
-                        <button class="btn Next" matStepperNext (click)= DatosSkin() >Siguiente</button>
+                        <button class="btn Next" matStepperNext (click)="DatoSkin()" >Siguiente</button>
                       </div>
                     </form>
                     </mat-step>
@@ -34,18 +34,20 @@
                     <mat-step>
                       <ng-template matStepLabel>Spritesheet de la Skin</ng-template>
 
-                      <mat-card class="panel" >
+                      <mat-card class="panel" style="width: 100%;">
                         <mat-card-header>
                           <mat-card-title>Carga el spritesheet de la Skin</mat-card-title>
                       </mat-card-header>
 
-                      <div class="enFila" style="width: 100%">
-                        <div>
+                      <div class="enColumna" style="width: 100%">
+                        <div align="center">   
                           <input #file id = "inputSkinImagen" type="file" accept= 'image/*' (change)="ExaminarImagenSkin($event)" style="display:none">
-                          <img class="imagenSkin" *ngIf="imagenCargadaSkin" mat-card-image [src]="imagenSkin">
                           <button (click) = "ActivarInputImagenSkin()" type="button" class="btn Agregar">
-                          Imagen<i class="material-icons">add_photo_alternate</i>
-                          </button>
+                            Imagen<i class="material-icons">add_photo_alternate</i>
+                            </button>
+                          <br>
+                          <img style="margin-top: 15px; max-width: 30%; max-height: 30%;" class="imagenEscenaEscaperoom" *ngIf="imagenCargadaSkin" mat-card-image [src]="imagenSkin">
+
                         </div>
                       </div>
 
@@ -65,5 +67,9 @@
           </mat-tab>
   </mat-tab-group>
 </div>
+<div class="enColumna">
+  <button type="button" class="btn Aceptar" (click)="Volver()">Mis Skins</button>
+</div>
+<br>
 
 

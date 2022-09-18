@@ -114,15 +114,20 @@ export class CrearEnigmasComponent implements OnInit {
       if (res != null) {
         console.log ('ENIGMA CREADO: ' + res.id );
         console.log(res);
+        this.LimpiarCampos();
+        this.myForm.reset();
+        this.stepper.reset();
+        Swal.fire('Creado',"Objeto creado con éxito",'success')
   
       } else {
         console.log('Fallo en la creación');
+        Swal.fire('Creado',"Error creando el enigma",'error')
       }
+    },(error)=>{
+      Swal.fire('Error',"Error creando el enigma",'error')
     });
     
-    this.LimpiarCampos();
-    this.myForm.reset();
-    this.stepper.reset();
+
     //this.stepper.previous();
   }
   

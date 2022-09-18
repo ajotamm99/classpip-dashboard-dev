@@ -106,7 +106,7 @@ export class EditarObjetoDialogComponent implements OnInit {
           if(cont==1){
             this.peticionesAPI.BorrarImagenObjeto(this.nombreImagenObjetoAntigua).subscribe();
           }          
-          
+
           this.ObjetosEscaperoom.splice(index, 1, this.ObjetoEscaperoom);
           const formData: FormData = new FormData();
           formData.append(this.nombreImagenObjetoNueva, this.fileImagenObjeto);
@@ -142,18 +142,20 @@ ExaminarImagenObjeto($event) {
   this.fileImagenObjeto = $event.target.files[0];
 
   console.log('fichero ' + this.fileImagenObjeto.name);
-  this.nombreImagenObjetoAntigua=this.nombreImagenObjetoNueva;
-  this.nombreImagenObjetoNueva = this.fileImagenObjeto.name;
 
   const reader = new FileReader();
   reader.readAsDataURL(this.fileImagenObjeto);
   reader.onload = () => {
+    this.nombreImagenObjetoAntigua=this.nombreImagenObjetoNueva;
+    this.nombreImagenObjetoNueva = this.fileImagenObjeto.name;
+  
     console.log('ya objeto');
     this.imagenObjetoCargada= true;
     this.cambios=true;
     // this.imagenCargadoCromo = true;
     this.imagenObjeto = reader.result.toString();
   };
+  $event.target.value="";
 }
 
 Cerrar(): void {

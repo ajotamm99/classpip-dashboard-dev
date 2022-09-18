@@ -15,18 +15,31 @@
                   </mat-form-field>
             </div>
 
-            <div class="enFila" style="width: 100%">
-              <div>
+            <div class="enColumna" style="width: 100%">
+              <div align="center" style="width: 100%">
                 <input #file id = "inputSkinImagen" type="file" accept= 'image/*' (change)="ExaminarImagenSkin($event)" style="display:none">
-                <img class="imagenSkin" *ngIf="imagenSkin" mat-card-image [src]="imagenSkin">
                 <button (click) = "ActivarInputImagenSkin()" type="button" class="btn Agregar">
                 Imagen<i class="material-icons">add_photo_alternate</i>
                 </button>
+                <br>
+                <br>
+                  <div style="float: left; width:50%;">
+                  <h5 style="background-color: rgb(92, 92, 92); border-top-left-radius: 5%;border-bottom-left-radius: 5% ;">Imagen Antigua</h5>
+                  <img style="margin-top: 15px; max-width: 30%; max-height: 30%;" class="imagenEscenaEscaperoom" mat-card-image [src]="imagenSkinAntigua">
+                  </div>
+                  <div></div>
+                  <div *ngIf="imagenSkinCargada" style="float: left; width:50%">
+                  <h5 style="background-color: rgb(92, 92, 92); border-top-right-radius: 5%;border-bottom-right-radius: 5% ;">Imagen Nueva</h5>
+                  <img style="margin-top: 15px; max-width: 30%; max-height: 30%;" class="imagenEscenaEscaperoom" *ngIf="imagenSkinCargada" mat-card-image [src]="imagenSkin">
+                  </div>
+
               </div>
             </div>
+            <div class="enColumna">
             <button *ngIf="cambios" type="button" class="btn Aceptar"  (click)= "EditarSkin()">Aceptar Cambios 
               <i class="material-icons">check </i>
             </button>
+          </div>
     </mat-card-content>
   </mat-card>
 

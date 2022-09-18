@@ -139,16 +139,17 @@ export class CrearObjetosComponent implements OnInit {
     this.fileImagenObjeto = $event.target.files[0];
   
     console.log('fichero ' + this.fileImagenObjeto.name);
-    this.nombreImagenObjeto = this.fileImagenObjeto.name;
   
     const reader = new FileReader();
     reader.readAsDataURL(this.fileImagenObjeto);
     reader.onload = () => {
+      this.nombreImagenObjeto = this.fileImagenObjeto.name;
       console.log('ya Escena');
       this.imagenCargadaObjeto= true;
       // this.imagenCargadoCromo = true;
       this.imagenObjeto = reader.result.toString();
     };
+    $event.target.value="";
   }
 
   

@@ -132,32 +132,35 @@ ExaminarImagenEscena($event) {
   this.fileImagenEscena = $event.target.files[0];
 
   console.log('fichero ' + this.fileImagenEscena.name);
-  this.nombreImagenEscenaAntigua=this.nombreImagenEscenaNueva;
-  this.nombreImagenEscenaNueva = this.fileImagenEscena.name;
+
 
   const reader = new FileReader();
   reader.readAsDataURL(this.fileImagenEscena);
   reader.onload = () => {
+    this.nombreImagenEscenaAntigua=this.nombreImagenEscenaNueva;
+    this.nombreImagenEscenaNueva = this.fileImagenEscena.name;
     console.log('ya Escena');
     this.imagenEscenaCargada= true;
     // this.imagenCargadoCromo = true;
     this.imagenEscena = reader.result.toString();
     this.cambios=true;
   };
+  $event.target.value="";
 }
   
 ExaminarArchivoEscena($event) {
     this.fileArchivoEscena = $event.target.files[0];
   
   console.log('fichero ' + this.fileArchivoEscena.name);
-  this.nombreArchivoEscenaAntiguo = this.nombreArchivoEscenaNuevo;
-  this.nombreArchivoEscenaNuevo = this.fileArchivoEscena.name;
+
 
   const fileInfo = $event.target.files[0];
   const reader = new FileReader();
   reader.readAsText(fileInfo, 'ISO-8859-1');
   reader.onload = () => {
     try {
+      this.nombreArchivoEscenaAntiguo = this.nombreArchivoEscenaNuevo;
+      this.nombreArchivoEscenaNuevo = this.fileArchivoEscena.name;
           this.infoArchivoEscena = JSON.parse(reader.result.toString());
           this.archivoEscenaCargado =true;
           this.nombreArchivoEscenaNuevo = this.fileArchivoEscena.name;
@@ -168,6 +171,7 @@ ExaminarArchivoEscena($event) {
       //this.nombreArchivoEscenaNuevo = this.nombreArchivoEscenaAntiguo;
     }
   }
+  $event.target.value="";
 }
 
 Cerrar(): void {

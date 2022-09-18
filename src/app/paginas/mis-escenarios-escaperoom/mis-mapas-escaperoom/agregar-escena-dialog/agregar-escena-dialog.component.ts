@@ -134,11 +134,12 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
     this.fileImagenEscena = $event.target.files[0];
   
     console.log('fichero ' + this.fileImagenEscena.name);
-    this.nombreImagenEscena = this.fileImagenEscena.name;
   
     const reader = new FileReader();
     reader.readAsDataURL(this.fileImagenEscena);
     reader.onload = () => {
+      
+    this.nombreImagenEscena = this.fileImagenEscena.name;
       console.log('ya Escena');
       this.imagenCargadaEscena= true;
       // this.imagenCargadoCromo = true;

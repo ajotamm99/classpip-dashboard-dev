@@ -7,7 +7,7 @@
     <mat-tab label="Mis Skins">
       <br>
       <div class ='enColumna'>
-        <form style = "width: 100%"  *ngIf="SkinsProfesor;else Aviso_no_skins">
+        <form style = "width: 100%"  *ngIf="SkinsEscaperoom.length>0;else Aviso_no_skins">
 
           <div class = "filter">
             <mat-form-field>
@@ -31,7 +31,7 @@
                     <button  (click) = "VerSkinDialog(skin)" mat-icon-button matTooltip="Ver la skin">
                       <i class="material-icons green md-36">edit</i>
                     </button>
-                    <button (click) = "AbrirDialogoConfirmacionBorrarSkin(Skin)" mat-icon-button matTooltip="Eliminar la Skin">
+                    <button (click) = "AbrirDialogoConfirmacionBorrarSkin(skin)" mat-icon-button matTooltip="Eliminar la Skin">
                       <i class="material-icons red md-36">delete</i>
                     </button>
                     <button (click) = "Descargar(skin)" mat-icon-button matTooltip="Descargar skin">
@@ -63,7 +63,7 @@
     <mat-tab label= "Skins públicas">
       <br>
       <div class ='enColumna'>
-        <form style = "width: 100%" *ngIf="SkinsPublicas;else Aviso_no_skins_publicas">
+        <form style = "width: 100%" *ngIf="SkinsEscaperoomPublicas.length>0;else Aviso_no_skins_publicas">
 
           <div class = "filter">
             <mat-form-field>
@@ -108,3 +108,8 @@
     </mat-tab>
   </mat-tab-group>
 </div>
+<div class="enColumna">
+  <button type="button" class="btn Aceptar" (click)="Crear()">Crear Skin</button>
+  </div>
+<br>
+

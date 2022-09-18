@@ -206,29 +206,30 @@ ExaminarImagenEscena($event) {
   this.fileImagenEscena = $event.target.files[0];
 
   console.log('fichero ' + this.fileImagenEscena.name);
-  this.nombreImagenEscena = this.fileImagenEscena.name;
+
 
   const reader = new FileReader();
   reader.readAsDataURL(this.fileImagenEscena);
   reader.onload = () => {
+    this.nombreImagenEscena = this.fileImagenEscena.name;
     console.log('ya Escena');
     this.imagenCargadaEscena= true;
     // this.imagenCargadoCromo = true;
     this.imagenEscena = reader.result.toString();
   };
+  $event.target.value="";
 }
 
 ExaminarArchivoEscena($event) {
   this.fileArchivoEscena = $event.target.files[0];
 
   console.log('fichero ' + this.fileArchivoEscena.name);
-  this.nombreArchivoEscena = this.fileArchivoEscena.name;
-
   const fileInfo = $event.target.files[0];
   const reader = new FileReader();
   reader.readAsText(fileInfo, 'ISO-8859-1');
   reader.onload = () => {
     try {
+      this.nombreArchivoEscena = this.fileArchivoEscena.name;
           this.infoArchivoEscena = JSON.parse(reader.result.toString());
           this.archivoCargadoEscena =true;
     }catch{
@@ -237,6 +238,7 @@ ExaminarArchivoEscena($event) {
       this.nombreArchivoEscena = undefined;
     }
   }
+  $event.target.value="";
 }
 
 // Limpiamos los campos del cromo
