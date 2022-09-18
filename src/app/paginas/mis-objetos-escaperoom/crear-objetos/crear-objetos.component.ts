@@ -73,7 +73,7 @@ export class CrearObjetosComponent implements OnInit {
     // REALMENTE LA APP FUNCIONARÁ COGIENDO AL PROFESOR DEL SERVICIO, NO OBSTANTE AHORA LO RECOGEMOS DE LA URL
     // this.profesorId = this.profesorService.RecibirProfesorIdDelServicio();
     this.profesorId = this.sesion.DameProfesor().id;
-  
+    this.selectedType= this.types[0].id;
   
     // Constructor myForm
     this.myForm = this.formBuilder.group({
@@ -84,7 +84,7 @@ export class CrearObjetosComponent implements OnInit {
   DatosObjeto(){
     this.nombreObjeto=this.myForm.value.nombreObjeto;
   
-    this.tipoObjeto=this.selectedType;
+    this.tipoObjeto=this.selectedType.toLowerCase();
     console.log(this.selectedType);
   
   }

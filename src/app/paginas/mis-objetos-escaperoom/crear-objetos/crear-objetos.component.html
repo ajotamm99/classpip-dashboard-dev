@@ -28,7 +28,7 @@
                       <br>
                       <mat-form-field appearance="fill">
                         <mat-label>Tipo</mat-label>
-                        <mat-select name="Type" placeholder="Selecciona el tipo" (selectionChange)="AsignarTipo()" [(ngModel)]="selectedType" [ngModelOptions]="{standalone: true}" required #select>
+                        <mat-select matInput name="Type" placeholder="Selecciona el tipo" (selectionChange)="AsignarTipo()" [(ngModel)]="selectedType" [ngModelOptions]="{standalone: true}" required #select>
                           <mat-option *ngFor="let type of types" [value]="type.id">
                             {{type.nombre}}
                           </mat-option>

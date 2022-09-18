@@ -2738,7 +2738,7 @@ public ModificaInscripcionAlumnoJuegoDeVotacionAOpciones(inscripcion: AlumnoJueg
   }
 
   public DameObjetoActivoId(objetoEscaperoomId: number): Observable<ObjetoActivo[]>{
-    return this.http.get<ObjetoActivo[]>(this.APIUrlObjetosActivos + '/' + objetoEscaperoomId)
+    return this.http.get<ObjetoActivo[]>(this.APIUrlObjetosActivos + '?filter[where][objetoEscaperoomId]=' + objetoEscaperoomId)
   }
 
   public ModificaObjeto(objetoEscaperom: ObjetoEscaperoom, objetoEscaperoomId: number, profesorId: number): Observable<ObjetoEscaperoom>{
@@ -2758,7 +2758,7 @@ public ModificaInscripcionAlumnoJuegoDeVotacionAOpciones(inscripcion: AlumnoJueg
   }
 
   public DameEnigmaActivoId(enigmaEscaperoomId: number): Observable<EnigmaActivo[]>{
-    return this.http.get<EnigmaActivo[]>(this.APIURLEnigmasActivos + '/' + enigmaEscaperoomId)
+    return this.http.get<EnigmaActivo[]>(this.APIURLEnigmasActivos + '?filter[where][enigmaId]=' + enigmaEscaperoomId)
   }
 
   public BorrarEnigmaEscaperoom(enigmaEscaperoomId: number): Observable<any>{
@@ -2771,7 +2771,7 @@ public ModificaInscripcionAlumnoJuegoDeVotacionAOpciones(inscripcion: AlumnoJueg
 
   public DameEnigmasEscaperoomPublicos(): Observable<Enigma[]> {
 
-    return this.http.get<Enigma[]>(this.APIURLEnigmasEscaperoom + + '?filter[where][Publica]=true');
+    return this.http.get<Enigma[]>(this.APIURLEnigmasEscaperoom +  '?filter[where][Publica]=true');
   
   }
 
@@ -2786,7 +2786,7 @@ public ModificaInscripcionAlumnoJuegoDeVotacionAOpciones(inscripcion: AlumnoJueg
   }
 
   public DameSkinActivaId(skinEscaperoomId: number): Observable<SkinActiva[]>{
-    return this.http.get<SkinActiva[]>(this.APIURLSkinsActivas + '/' + skinEscaperoomId)
+    return this.http.get<SkinActiva[]>(this.APIURLSkinsActivas + '?filter[where][skinId]=' + skinEscaperoomId)
   }
 
   public BorrarSkinEscaperoom(skinEscaperoomId: number): Observable<any>{
@@ -2799,7 +2799,7 @@ public ModificaInscripcionAlumnoJuegoDeVotacionAOpciones(inscripcion: AlumnoJueg
 
   public DameSkinsEscaperoomPublicas(): Observable<Skin[]> {
 
-    return this.http.get<Skin[]>(this.APIURLSkinsEscaperoom + + '?filter[where][Publica]=true');
+    return this.http.get<Skin[]>(this.APIURLSkinsEscaperoom + '?filter[where][Publica]=true');
   
   }
 

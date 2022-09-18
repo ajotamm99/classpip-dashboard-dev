@@ -9,6 +9,7 @@ import { SesionService, PeticionesAPIService } from 'src/app/servicios';
 import Swal from 'sweetalert2';
 import { EditarSkinDialogComponent } from '../mis-skins-escaperoom/editar-skin-dialog/editar-skin-dialog.component';
 import { MostrarSkinsPublicasComponent } from '../mis-skins-escaperoom/mostrar-skins-publicas/mostrar-skins-publicas.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-mis-enigmas-escaperoom',
@@ -109,11 +110,16 @@ VerEnigmaDialog(enigmaEscaperoom: Enigma) {
 
    // RECUPERAREMOS LA NUEVA LISTA DE LOS CROMO Y VOLVEREMOS A BUSCAR LOS CROMOS QUE TIENE LA COLECCION
   dialogRef.afterClosed().subscribe(nuevoEnigma => {
-    console.log ('enigma editado ' + nuevoEnigma);
-    // tslint:disable-next-line:prefer-for-of
-    this.EnigmasEscaperoom = this.EnigmasEscaperoom.filter(en => en.id !== nuevoEnigma.id);
-    this.EnigmasEscaperoom.push (nuevoEnigma);
-    //this.TraeImagenColeccion(this.coleccion);
+    if(nuevoEnigma!=null){
+      console.log ('enigma editado ' + nuevoEnigma);
+      // tslint:disable-next-line:prefer-for-of
+      var searchEnigma= this.EnigmasEscaperoom.find(en=> en.id == nuevoEnigma.id)[0];
+      var index = this.EnigmasEscaperoom.indexOf(searchEnigma);
+      this.EnigmasEscaperoom.splice(index,1,nuevoEnigma);
+      //this.EnigmasEscaperoom.push (nuevoEnigma);
+      this.dataSource=new MatTableDataSource(this.EnigmasEscaperoom);
+    }
+
 
    });
   //abrir dialog
@@ -175,9 +181,18 @@ BorrarEnigmaEscaperoom(enigmaEscaperoom: Enigma) {
               this.BorrarEnigmaEscaperoom(enigmaEscaperoom);
               Swal.fire('Eliminado', enigmaEscaperoom.Nombre + ' eliminado correctamente', 'success');
             }
+        }, (error)=>{
+          let errors: HttpErrorResponse = error;
+          if (errors.status>=500){
+            this.BorrarEnigmaEscaperoom(enigmaEscaperoom);
+            Swal.fire('Eliminado', enigmaEscaperoom.Nombre + ' eliminado correctamente', 'success');
+          }else{
+            Swal.fire('Error', enigmaEscaperoom.Nombre + 'No se ha podido eliminar el enigma', 'error');
+          }
+    
         });
       }
-    });
+    })
   }
 
 
@@ -189,5 +204,8 @@ BorrarEnigmaEscaperoom(enigmaEscaperoom: Enigma) {
     this.dataSourcePublicas.filter = filterValue.trim().toLowerCase();
   }
 
+  Crear(){
+    this.router.navigate(['/inicio/' + this.profesorId + '/recursos/misRecursosEscaperoom/misEnigmas/crearEnigma']);
+  }
 
 }

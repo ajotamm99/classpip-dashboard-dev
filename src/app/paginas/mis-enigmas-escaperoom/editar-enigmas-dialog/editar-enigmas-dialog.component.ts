@@ -30,19 +30,25 @@ export class EditarEnigmasDialogComponent implements OnInit {
   nombreEnigma: string;
   tipoEnigma: string;
   dificultadEnigma: string;
-  //imagenObjetoAntigua: string;
 
+  selectedDificultad: string;
+  selectedType: string;
 
-  // imagen y archivo escena
- // nombreImagenObjetoAntigua: string;
-  //nombreImagenObjetoNueva: string;
-  //fileImagenObjeto: File;
-
-  // tslint:disable-next-line:ban-types
-  //imagenObjetoCargada: Boolean = false;
+  types: Types[]=[
+    {nombre:'Llave', id:'llave'},
+    {nombre:'Mapa', id: 'mapa'},
+    {nombre:'Puzzle', id: 'puzzle'}
+  ]
+  
+    dificultades: Dificultades[]=[
+    {nombre:'Baja', id:'baja'},
+    {nombre:'Media', id: 'media'},
+    {nombre:'Alta', id: 'Alta'}
+  ]
 
   // tslint:disable-next-line:ban-types
   cambios: Boolean = false;
+  changed: Boolean = false;
   profesorId: number;
 
 
@@ -53,7 +59,7 @@ export class EditarEnigmasDialogComponent implements OnInit {
               private sesion: SesionService,
               private peticionesAPI: PeticionesAPIService,
               private formBuilder: FormBuilder,
-              public dialogRef: MatDialogRef<EditarEscenaDialogComponent>,
+              public dialogRef: MatDialogRef<EditarEnigmasDialogComponent>,
               private http: Http,
               @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
@@ -63,11 +69,10 @@ export class EditarEnigmasDialogComponent implements OnInit {
     this.profesorId =this.sesion.DameProfesor().id;
     this.enigmaEscaperoom = this.data.enigma;
     this.nombreEnigma = this.data.enigma.Nombre;
-    this.tipoEnigma= this.data.enigma.Tip;
+    this.tipoEnigma= this.data.enigma.Tipo;
     this.dificultadEnigma = this.data.enigma.Dificultad;
-    console.log(this.enigmaEscaperoom);
-    // Cargo el imagen del cromo
-    //this.TraeArchivosEscenas();
+    this.selectedDificultad= this.dificultadEnigma;
+    this.selectedType= this.tipoEnigma;
   }
 
   EditarEnigma() {
@@ -81,11 +86,22 @@ export class EditarEnigmasDialogComponent implements OnInit {
         // console.log('nombre del cromo + nivel' + this.cromosEditados[0].Nombre + this.cromosEditados[0].Nivel);
         
         this.cambios = false;
+        this.changed=true;
       } else {
         console.log('fallo editando');
       }
     });
     // this.dialogRef.close(this.cromosEditados);
+ }
+
+ AsignarTipo(){
+  this.tipoEnigma= this.selectedType;
+  this.cambios=true;
+ }
+
+ AsignarDificultad(){
+  this.dificultadEnigma= this.selectedDificultad;
+  this.cambios=true;
  }
 
 Cerrar(): void {
@@ -99,11 +115,15 @@ Cerrar(): void {
 
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
-        this.dialogRef.close(this.enigmaEscaperoom);
+        this.dialogRef.close(null);
       }
     });
   } else {
+    if (this.changed){
     this.dialogRef.close(this.enigmaEscaperoom);
+    }else{
+      this.dialogRef.close(null);
+    }
   }
 }
 

@@ -7,7 +7,7 @@
     <mat-tab label="Mis Enigmas">
       <br>
       <div class ='enColumna'>
-        <form style = "width: 100%"  *ngIf="EnigmasProfesor;else Aviso_no_enigmas">
+        <form style = "width: 100%"  *ngIf="EnigmasEscaperoom.length>0;else Aviso_no_enigmas">
 
           <div class = "filter">
             <mat-form-field>
@@ -63,7 +63,7 @@
     <mat-tab label= "Enigmas públicos">
       <br>
       <div class ='enColumna'>
-        <form style = "width: 100%" *ngIf="EnigmasPublicos;else Aviso_no_enigmas_publicas">
+        <form style = "width: 100%" *ngIf="EnigmasEscaperoomPublicas.length>0;else Aviso_no_enigmas_publicas">
 
           <div class = "filter">
             <mat-form-field>
@@ -108,3 +108,7 @@
     </mat-tab>
   </mat-tab-group>
 </div>
+<div class="enColumna">
+  <button type="button" class="btn Aceptar" (click)="Crear()">Crear Enigma</button>
+  </div>
+<br>

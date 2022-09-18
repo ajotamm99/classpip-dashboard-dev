@@ -28,7 +28,7 @@
                       <br>
                       <mat-form-field appearance="fill">
                         <mat-label>Tipo</mat-label>
-                        <mat-select name="Types" placeholder="Selecciona el tipo" (change)="AsignarTipo()" [(ngModel)]="selectedType" required>
+                        <mat-select name="Types" placeholder="Selecciona el tipo" (selectionChange)="AsignarTipo()" [(ngModel)]="selectedType" [ngModelOptions]="{standalone: true}" required>
                           <mat-option *ngFor="let type of types" [value]="type.id">
                             {{type.nombre}}
                           </mat-option>
@@ -38,13 +38,12 @@
                       <br>
                       <mat-form-field appearance="fill">
                         <mat-label>Tipo</mat-label>
-                        <mat-select name="Dificultades" placeholder="Selecciona la dificultad" (change)="AsignarDificultad()" [(ngModel)]="selectedDificultad" required>
+                        <mat-select name="Dificultades" placeholder="Selecciona la dificultad" (selectionChange)="AsignarDificultad()" [(ngModel)]="selectedDificultad" [ngModelOptions]="{standalone: true}" required>
                           <mat-option *ngFor="let dificultad of dificultades" [value]="dificultad.id">
                             {{dificultad.nombre}}
                           </mat-option>
                         </mat-select>
                       </mat-form-field>
-
 
                       <div class="btnCambiarStep">
                         <button class="btn Next" matStepperNext (click)= DatosEnigma() >Siguiente</button>
@@ -56,7 +55,7 @@
                     <mat-step>
                       <ng-template matStepLabel>Finalizar</ng-template>
 
-                      <mat-card class="panel" >
+                      <mat-card class="panel" style="width:100%" >
                         <mat-card-header>
                           <mat-card-title>Finalizar</mat-card-title>
                       </mat-card-header>
@@ -65,7 +64,6 @@
                         <button  matStepperBack (click) = "LimpiarCampos()" type="button" class="btn Back">Limpiar Campos</button>
                         <button  (click) = "CrearEnigma()"  class="btn Aceptar">Agregar Enigma y Finalizar</button>
                       </mat-card-actions>
-
                         </mat-card>
                     </mat-step>
 
@@ -77,5 +75,9 @@
           </mat-tab>
   </mat-tab-group>
 </div>
+<div class="enColumna">
+  <button type="button" class="btn Aceptar" (click)="Volver()">Mis Objetos</button>
+</div>
+<br>
 
 

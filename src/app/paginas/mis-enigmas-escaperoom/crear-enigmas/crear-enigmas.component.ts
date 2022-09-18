@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { Enigma, ObjetoEscaperoom } from 'src/app/clases';
 import { SesionService, PeticionesAPIService, CalculosService } from 'src/app/servicios';
 import Swal from 'sweetalert2';
+import { Location } from '@angular/common';
 import 'rxjs';
 
 
@@ -80,15 +81,17 @@ export class CrearEnigmasComponent implements OnInit {
     // REALMENTE LA APP FUNCIONARÁ COGIENDO AL PROFESOR DEL SERVICIO, NO OBSTANTE AHORA LO RECOGEMOS DE LA URL
     // this.profesorId = this.profesorService.RecibirProfesorIdDelServicio();
     this.profesorId = this.sesion.DameProfesor().id;
-  
-  
+    this.selectedDificultad = this.dificultades[0].id;
+    this.dificultadEnigma = this.selectedDificultad;
+    this.selectedType = this.types[0].id;
+    this.tipoEnigma=this.selectedType;  
     // Constructor myForm
     this.myForm = this.formBuilder.group({
      nombreEnigma: ['', Validators.required]
     });
   }
   
-  DatosObjeto(){
+  DatosEnigma(){
     this.nombreEnigma=this.myForm.value.nombreEnigma;
     this.EnigmaCreado.Nombre=this.nombreEnigma;
     this.EnigmaCreado.Tipo=this.tipoEnigma;
@@ -118,15 +121,11 @@ export class CrearEnigmasComponent implements OnInit {
     });
     
     this.LimpiarCampos();
-    this.stepper.previous();
+    this.myForm.reset();
+    this.stepper.reset();
+    //this.stepper.previous();
   }
   
-  
-  // Activa la función ExaminarImagenCromoDelante
-
-  
-  // Buscaremos la imagen en nuestro ordenador y después se mostrará en el form con la variable "imagen" y guarda el
-  // nombre de la foto en la variable nombreImagen
 
   // Limpiamos los campos del cromo
   LimpiarCampos() {
@@ -136,8 +135,7 @@ export class CrearEnigmasComponent implements OnInit {
   
   }
   
-  // Esta función se utiliza para controlar si el botón de siguiente del stepper esta desativado.
-  // Si en alguno de los inputs no hay nada, esta disabled. Sino, podremos clicar.
+
     // Función que se activará al clicar en finalizar el último paso del stepper
   Finalizar() {
       // Al darle al botón de finalizar limpiamos el formulario y reseteamos el stepper
@@ -148,6 +146,10 @@ export class CrearEnigmasComponent implements OnInit {
       this.LimpiarCampos()
       Swal.fire('ENIGMA creado con éxito', '', 'success');
       this.router.navigate(['/inicio/' + this.profesorId]);
+  }
+
+  Volver(){
+    this.router.navigate(['/inicio/' + this.profesorId +'/recursos/misRecursosEscaperoom/misEnigmas']);
   }
   
 }
