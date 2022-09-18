@@ -2711,7 +2711,7 @@ public ModificaInscripcionAlumnoJuegoDeVotacionAOpciones(inscripcion: AlumnoJueg
   }
 
   public PonObjetoEscaperoom(objetoEscaperoom:ObjetoEscaperoom, profesorId: number): Observable<ObjetoEscaperoom>{
-    return this.http.post<ObjetoEscaperoom>(this.APIUrlProfesores + '/'+ profesorId + '/objetoEscaperoom'+ '', objetoEscaperoom);
+    return this.http.post<ObjetoEscaperoom>(this.APIUrlProfesores + '/'+ profesorId + '/objetoEscaperooms'+ '', objetoEscaperoom);
   }
 
   public PonImagenObjeto(formData: FormData): Observable<any> {
@@ -2723,9 +2723,9 @@ public ModificaInscripcionAlumnoJuegoDeVotacionAOpciones(inscripcion: AlumnoJueg
     return this.http.delete<any>(this.APIUrlImagenesObjetos + '/files/' + imagenObjeto);
   }
 
-  public DameObjetosEscaperoomDelProfesor(profesorId: number): Observable<ObjetoEscaperoom[]> {
+  public DameObjetosEscaperoomDelProfesor(profesorId: number): Observable<any[]> {
 
-    return this.http.get<ObjetoEscaperoom[]>(this.APIUrlProfesores + '/' + profesorId + '/objetoEscaperooms');
+    return this.http.get<any[]>(this.APIUrlProfesores + '/' + profesorId + '/objetoEscaperooms');
   
   }
 
@@ -2733,8 +2733,8 @@ public ModificaInscripcionAlumnoJuegoDeVotacionAOpciones(inscripcion: AlumnoJueg
     return this.http.delete<any>(this.APIURLObjetosEscaperoom + '/'+objetoEscaperoomId)
   }
 
-  public DameObjetoActivoId(objetoEscaperoomId: number): Observable<ObjetoActivo>{
-    return this.http.get<ObjetoActivo>(this.APIUrlObjetosActivos + '/' + objetoEscaperoomId)
+  public DameObjetoActivoId(objetoEscaperoomId: number): Observable<ObjetoActivo[]>{
+    return this.http.get<ObjetoActivo[]>(this.APIUrlObjetosActivos + '/' + objetoEscaperoomId)
   }
 
   public ModificaObjeto(objetoEscaperom: ObjetoEscaperoom, objetoEscaperoomId: number, profesorId: number): Observable<ObjetoEscaperoom>{
@@ -2743,7 +2743,7 @@ public ModificaInscripcionAlumnoJuegoDeVotacionAOpciones(inscripcion: AlumnoJueg
 
   public DameObjetosEscaperoomPublicos(): Observable<ObjetoEscaperoom[]> {
 
-    return this.http.get<ObjetoEscaperoom[]>(this.APIURLObjetosEscaperoom + + '?filter[where][Publica]=true');
+    return this.http.get<ObjetoEscaperoom[]>(this.APIURLObjetosEscaperoom + '?filter[where][Publica]=true');
   
   }
 
@@ -2753,8 +2753,8 @@ public ModificaInscripcionAlumnoJuegoDeVotacionAOpciones(inscripcion: AlumnoJueg
   
   }
 
-  public DameEnigmaActivoId(enigmaEscaperoomId: number): Observable<EnigmaActivo>{
-    return this.http.get<EnigmaActivo>(this.APIURLEnigmasActivos + '/' + enigmaEscaperoomId)
+  public DameEnigmaActivoId(enigmaEscaperoomId: number): Observable<EnigmaActivo[]>{
+    return this.http.get<EnigmaActivo[]>(this.APIURLEnigmasActivos + '/' + enigmaEscaperoomId)
   }
 
   public BorrarEnigmaEscaperoom(enigmaEscaperoomId: number): Observable<any>{
@@ -2781,8 +2781,8 @@ public ModificaInscripcionAlumnoJuegoDeVotacionAOpciones(inscripcion: AlumnoJueg
   
   }
 
-  public DameSkinActivaId(skinEscaperoomId: number): Observable<SkinActiva>{
-    return this.http.get<SkinActiva>(this.APIURLSkinsActivas + '/' + skinEscaperoomId)
+  public DameSkinActivaId(skinEscaperoomId: number): Observable<SkinActiva[]>{
+    return this.http.get<SkinActiva[]>(this.APIURLSkinsActivas + '/' + skinEscaperoomId)
   }
 
   public BorrarSkinEscaperoom(skinEscaperoomId: number): Observable<any>{

@@ -424,6 +424,20 @@ input[type=text] {
   justify-content: space-between;
   width: 100%;
 }
+
+.enFilas{
+
+  border: 10px solid transparent;
+
+  display: flex;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  justify-content: center;
+  flex-direction: row;
+  width: 100%;
+
+}
+
 .enColumna{
   display: flex;
   display: -webkit-flex;

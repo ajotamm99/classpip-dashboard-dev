@@ -1,3 +1,4 @@
+import { CrearObjetosComponent } from './paginas/mis-objetos-escaperoom/crear-objetos/crear-objetos.component';
 import { MisMapasEscaperoomComponent } from './paginas/mis-escenarios-escaperoom/mis-mapas-escaperoom/mis-mapas-escaperoom.component';
 import { MisEscenariosEscaperoomComponent } from './paginas/mis-escenarios-escaperoom/mis-escenarios-escaperoom.component';
 import { NgModule } from '@angular/core';
@@ -389,6 +390,8 @@ const routes: Routes = [
   {path: 'inicio/:id/recursos/misRecursosEscaperoom', component: MisEscenariosEscaperoomComponent},
   {path: 'inicio/:id/recursos/misRecursosEscaperoom/misMapas', component: MisMapasEscaperoomComponent},
   {path: 'inicio/:id/recursos/misRecursosEscaperoom/misObjetos', component: MisObjetosEscaperoomComponent},
+  {path: 'inicio/:id/recursos/misRecursosEscaperoom/misObjetos/crearObjeto', component: CrearObjetosComponent},
+  
   {path: 'inicio/:id/recursos/misRecursosEscaperoom/misEnigmas', component: MisEnigmasEscaperoomComponent},
   {path: 'inicio/:id/recursos/misRecursosEscaperoom/misSkins', component: MisSkinsEscaperoomComponent},
   {path: 'inicio/:id/recursos/misRecursosEscaperoom/misMapas/guardarMapa', component: GuardarMapaComponent},

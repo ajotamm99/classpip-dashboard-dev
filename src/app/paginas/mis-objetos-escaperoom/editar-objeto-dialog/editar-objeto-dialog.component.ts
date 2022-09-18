@@ -1,6 +1,6 @@
 import { Imagen } from './../../../clases/clasesParaLibros/recursosCargaImagen';
 import { ObjetoEscaperoom } from './../../../clases/clasesParaJuegoDeEscapeRoom/ObjetoEscaperoom';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Http } from '@angular/http';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
@@ -11,21 +11,37 @@ import 'rxjs';
 import { DialogoConfirmacionComponent } from '../../COMPARTIDO/dialogo-confirmacion/dialogo-confirmacion.component';
 import { EditarEscenaDialogComponent } from '../../mis-escenarios-escaperoom/mis-mapas-escaperoom/editar-escena-dialog/editar-escena-dialog.component';
 
+import * as URL from '../../../URLs/urls';
+
+interface Type{
+  nombre: string;
+  id: string;
+}
+
 @Component({
   selector: 'app-editar-objeto-dialog',
   templateUrl: './editar-objeto-dialog.component.html',
   styleUrls: ['./editar-objeto-dialog.component.scss']
 })
 export class EditarObjetoDialogComponent implements OnInit {
+  @ViewChild('select') select;
+
   ObjetoEscaperoom: ObjetoEscaperoom;
+  ObjetosEscaperoom:ObjetoEscaperoom[] =[];
   ObjetoEscaperoomCambiado: ObjetoEscaperoom;
 
   nombreObjeto: string;
   tipoObjeto: string;
   imagenObjeto: string;
   imagenObjetoAntigua: string;
+  selectedType: string;
 
-
+  types: Type[]=[
+    {nombre:'Enigma', id:'enigma'},
+    {nombre:'Pista', id: 'pista'},
+    {nombre:'Otros', id: 'otros'}
+  ]
+  
   // imagen y archivo escena
   nombreImagenObjetoAntigua: string;
   nombreImagenObjetoNueva: string;
@@ -36,6 +52,7 @@ export class EditarObjetoDialogComponent implements OnInit {
 
   // tslint:disable-next-line:ban-types
   cambios: Boolean = false;
+  changed: Boolean = true;
   profesorId: number;
 
 
@@ -46,28 +63,27 @@ export class EditarObjetoDialogComponent implements OnInit {
               private sesion: SesionService,
               private peticionesAPI: PeticionesAPIService,
               private formBuilder: FormBuilder,
-              public dialogRef: MatDialogRef<EditarEscenaDialogComponent>,
+              public dialogRef: MatDialogRef<EditarObjetoDialogComponent>,
               private http: Http,
               @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
   ngOnInit() {
-
     this.profesorId =this.sesion.DameProfesor().id;
+    this.ObjetosEscaperoom = this.sesion.DameObjetosEscaperoomProfesor();
     this.ObjetoEscaperoom = this.data.objeto;
     this.nombreObjeto = this.data.objeto.Nombre;
     this.nombreImagenObjetoNueva= this.data.objeto.Imagen;
     this.tipoObjeto = this.data.objeto.Tipo;
-    //this.imagenEscenaAntigua = this.EscenaEscaperoom.Tilesheet;
-    //this.archivoEscenaAntigua = this.EscenaEscaperoom.Archivo;
-
+    this.selectedType=this.tipoObjeto;
+    this.imagenObjetoAntigua = URL.ImagenesObjetos + this.nombreImagenObjetoNueva;
     // this.opcionSeleccionadaProbabilidad = this.cromo.Probabilidad;
     console.log(this.ObjetoEscaperoom);
-    // Cargo el imagen del cromo
-    //this.TraeArchivosEscenas();
+    //this.select.value=(this.types.find(tp=>tp.id==this.tipoObjeto).id);
+    //document.getElementById('select').value=(this.types.find(tp=> tp.id==this.tipoObjeto).id);   
   }
 
-  EditarEscena() {
+  EditarObjeto() {
     console.log('Entro a editar');
     // tslint:disable-next-line:max-line-length
     this.peticionesAPI.ModificaObjeto(new ObjetoEscaperoom(this.nombreObjeto,  this.nombreImagenObjetoNueva, this.tipoObjeto), this.ObjetoEscaperoom.id,this.profesorId)
@@ -78,15 +94,30 @@ export class EditarObjetoDialogComponent implements OnInit {
         // console.log('nombre del cromo + nivel' + this.cromosEditados[0].Nombre + this.cromosEditados[0].Nivel);
         if (this.imagenObjetoCargada === true) {
           // HACEMOS EL POST DE LA NUEVA IMAGEN EN LA BASE DE DATOS
-          console.log ('Nueva imagen');          
-          this.peticionesAPI.BorrarImagenObjeto(this.nombreImagenObjetoAntigua).subscribe();
+          console.log ('Nueva imagen'); 
+          var cont=0;
+          var object = this.ObjetosEscaperoom.find(obj => obj.id == this.ObjetoEscaperoom.id);
+          var index = this.ObjetosEscaperoom.indexOf(object);
+          for(let i=0; i<this.ObjetosEscaperoom.length; i++ ){
+            if(this.ObjetosEscaperoom[i].Imagen ==this.nombreImagenObjetoAntigua){
+              cont++;
+            }
+          }
+          if(cont==1){
+            this.peticionesAPI.BorrarImagenObjeto(this.nombreImagenObjetoAntigua).subscribe();
+          }          
+          
+          this.ObjetosEscaperoom.splice(index, 1, this.ObjetoEscaperoom);
           const formData: FormData = new FormData();
           formData.append(this.nombreImagenObjetoNueva, this.fileImagenObjeto);
           this.peticionesAPI.PonImagenObjeto(formData)
           .subscribe(() => console.log('Imagen cargado'));
+          this.imagenObjetoAntigua=this.imagenObjeto;
+          this.imagenObjetoCargada=false;
         }
         
         this.cambios = false;
+        this.changed=true;
       } else {
         console.log('fallo editando');
       }
@@ -99,9 +130,15 @@ ActivarInputImagenObjeto() {
     document.getElementById('inputObjetoImagen').click();
 }
 
+AsignarTipo(){
+  console.log(this.selectedType);
+  this.tipoObjeto= this.selectedType;
+  this.cambios=true;
+}
+
   // Buscaremos la imagen en nuestro ordenador y después se mostrará en el form con la variable "imagen" y guarda el
   // nombre de la foto en la variable nombreImagen
-ExaminarImagenEscena($event) {
+ExaminarImagenObjeto($event) {
   this.fileImagenObjeto = $event.target.files[0];
 
   console.log('fichero ' + this.fileImagenObjeto.name);
@@ -111,8 +148,9 @@ ExaminarImagenEscena($event) {
   const reader = new FileReader();
   reader.readAsDataURL(this.fileImagenObjeto);
   reader.onload = () => {
-    console.log('ya Escena');
+    console.log('ya objeto');
     this.imagenObjetoCargada= true;
+    this.cambios=true;
     // this.imagenCargadoCromo = true;
     this.imagenObjeto = reader.result.toString();
   };
@@ -129,11 +167,16 @@ Cerrar(): void {
 
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
-        this.dialogRef.close(this.ObjetoEscaperoom);
+        this.dialogRef.close(null);
       }
     });
   } else {
+    if(this.changed){      
     this.dialogRef.close(this.ObjetoEscaperoom);
+    }else{
+      
+    this.dialogRef.close(null);
+    }
   }
 }
 

@@ -103,6 +103,7 @@ export class SesionService {
   objetoEscaperoom: ObjetoEscaperoom;
   skinEscaperoom: Skin;
   enigmaEscaperoom: Enigma;
+  objetosEscaperoom: ObjetoEscaperoom[];
 
   constructor() { }
   public TomaProfesor(profesor: Profesor) {
@@ -715,6 +716,14 @@ public TomaObjetoEscaperoom(Objeto: ObjetoEscaperoom){
 
 public DameObjetoEscaperoom(){
   return this.objetoEscaperoom;
+}
+
+public TomaObjetosEscaperoomProfesor(Objetos: ObjetoEscaperoom[]){
+  this.objetosEscaperoom =Objetos;
+}
+
+public DameObjetosEscaperoomProfesor(){
+  return this.objetosEscaperoom;
 }
 
 public TomaSkinEscaperoom(Skin: Skin){

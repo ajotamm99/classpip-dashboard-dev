@@ -47,6 +47,7 @@ export class EditarEscenaDialogComponent implements OnInit {
 
   // tslint:disable-next-line:ban-types
   cambios: Boolean = false;
+  changed: Boolean=false;
 
 
 
@@ -108,6 +109,7 @@ export class EditarEscenaDialogComponent implements OnInit {
         }
         
         this.cambios = false;
+        this.changed =true;
       } else {
         console.log('fallo editando');
       }
@@ -183,7 +185,11 @@ Cerrar(): void {
       }
     });
   } else {
-    this.dialogRef.close(this.EscenaEscaperoom);
+    if(this.changed){
+      this.dialogRef.close(this.EscenaEscaperoom);
+    }else{
+      this.dialogRef.close(null);
+    }
   }
 }
 

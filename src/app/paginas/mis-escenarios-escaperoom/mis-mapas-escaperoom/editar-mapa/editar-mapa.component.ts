@@ -152,15 +152,14 @@ export class EditarMapaComponent implements OnInit {
 
     // tslint:disable-next-line:no-shadowed-variable
     dialogRef.afterClosed().subscribe( escena => {
-      // console.log ('volvemos de editar cromos ' + cromosEditados.length);
       // tslint:disable-next-line:prefer-for-of
       if(escena!== null){
         console.log(escena.Nombre);
-        this.EscenasdeEscenario = this.EscenasdeEscenario.filter(escen => escen.id !== escena.id);
-        this.EscenasdeEscenario.push (escena);
-        // this.cromosColeccion = this.sesion.DameCromos();
-        // this.coleccion = this.sesion.DameColeccion();
-        //this.TraeImagenColeccion(this.coleccion);
+        var EscenaBuscar= this.EscenasdeEscenario.filter(escen=> escen.id==escena.id)[0];
+        var posicion = this.EscenasdeEscenario.indexOf(EscenaBuscar);
+        this.EscenasdeEscenario.splice(posicion,1, escena);
+        //this.EscenasdeEscenario = this.EscenasdeEscenario.filter(escen => escen.id !== escena.id);
+        //this.EscenasdeEscenario.push (escena);
         this.TraeArchivosEscenas();
       }
 

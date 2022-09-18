@@ -1,6 +1,7 @@
+import { Location } from '@angular/common';
 import { MatStepper } from '@angular/material/stepper';
 import { ObjetoEscaperoom } from './../../../clases/clasesParaJuegoDeEscapeRoom/ObjetoEscaperoom';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatTabGroup, MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
@@ -22,6 +23,7 @@ interface Type{
 })
 export class CrearObjetosComponent implements OnInit {
   @ViewChild('stepper') stepper;
+  @ViewChild('select') select;
   @ViewChild('tabs') tabGroup: MatTabGroup;
   myForm: FormGroup;
 
@@ -38,6 +40,7 @@ export class CrearObjetosComponent implements OnInit {
   nombreObjeto: string;
   tipoObjeto: string;
   ObjetoCreado: ObjetoEscaperoom;
+  prueba: EscenaEscaperoom;
   
   // CREAR ESCENA
   imagenObjeto: string;
@@ -80,12 +83,14 @@ export class CrearObjetosComponent implements OnInit {
   
   DatosObjeto(){
     this.nombreObjeto=this.myForm.value.nombreObjeto;
-    this.ObjetoCreado.Nombre=this.nombreObjeto;
-    this.ObjetoCreado.Tipo=this.tipoObjeto;
+  
+    this.tipoObjeto=this.selectedType;
+    console.log(this.selectedType);
   
   }
 
   AsignarTipo(){
+    console.log(this.selectedType);
     this.tipoObjeto= this.selectedType;
   }
   
@@ -104,22 +109,26 @@ export class CrearObjetosComponent implements OnInit {
           formData.append(this.nombreImagenObjeto, this.fileImagenObjeto);
           this.peticionesAPI.PonImagenObjeto(formData)
           .subscribe(() => console.log('Imagen cargada'));
-        }
-  
+        }        
+        this.LimpiarCampos();
+        this.stepper.previous();
+        Swal.fire('Creado',"Objeto creado con éxito",'success')
       } else {
         console.log('Fallo en la creación');
+        Swal.fire('Error',"Fallo creando el objeto",'error')
       }
+    },(error)=>{      
+      Swal.fire('Error',"Fallo creando el objeto",'error')
     });
     
-    this.LimpiarCampos();
-    this.stepper.previous();
+
   }
   
   
   // Activa la función ExaminarImagenCromoDelante
   ActivarInputImagenObjeto() {
     console.log('Activar input');
-    document.getElementById('inputEscenaObjeto').click();
+    document.getElementById('inputObjetoImagen').click();
   }
   
   
@@ -151,6 +160,9 @@ export class CrearObjetosComponent implements OnInit {
       this.fileImagenObjeto=undefined;
   
       this.imagenCargadaObjeto = false;
+      this.stepper.reset();
+      this.select.value='';
+      this.myForm.reset();
   
   }
   
@@ -160,12 +172,16 @@ export class CrearObjetosComponent implements OnInit {
   Finalizar() {
       // Al darle al botón de finalizar limpiamos el formulario y reseteamos el stepper
       this.myForm.reset();
+      this.select.value='';
       this.stepper.reset();
-  
       // Tambien limpiamos las variables utilizadas para crear el nueva coleccion, por si queremos crear otra.
       this.LimpiarCampos()
       Swal.fire('objeto creado con éxito', '', 'success');
       this.router.navigate(['/inicio/' + this.profesorId]);
+  }
+
+  Volver(){
+    this.router.navigate(['/inicio/' + this.profesorId + '/recursos/misRecursosEscaperoom/misObjetos'])
   }
   
 }

@@ -8,7 +8,10 @@ import { MatDialog, MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
 import { EscenarioEscaperoom, EscenaEscaperoom, JuegoDeEscapeRoom } from 'src/app/clases';
 import { SesionService, PeticionesAPIService } from 'src/app/servicios';
+import { Location } from '@angular/common';
 import Swal from 'sweetalert2';
+import 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-mis-objetos-escaperoom',
@@ -69,13 +72,16 @@ export class MisObjetosEscaperoomComponent implements OnInit {
         this.ObjetosEscaperoom = objetos;
         console.log(this.ObjetosEscaperoom);
         this.dataSource = new MatTableDataSource(this.ObjetosEscaperoom);
+        this.sesion.TomaObjetosEscaperoomProfesor(this.ObjetosEscaperoom);
+        this.TraeImagenesObjetos();
         // this.profesorService.EnviarProfesorIdAlServicio(this.profesorId);
       } else {
         this.ObjetosEscaperoom = undefined;
       }
+    },(error)=>{
+
     });
 
-    this.TraeImagenesObjetos();
   }
 
 
@@ -87,12 +93,13 @@ export class MisObjetosEscaperoomComponent implements OnInit {
       if (res[0] !== undefined) {
           this.ObjetosEscaperoomPublicos= res;
           this.dataSourcePublicas = new MatTableDataSource(this.ObjetosEscaperoomPublicos);
+          for(let i=0; i<this.ObjetosEscaperoomPublicos.length; i++){
+            this.imagenesObjetosEscaperoomPublicos[i]=this.ObjetosEscaperoomPublicos[i].Imagen;
+          }
       }
     });
 
-    for(let i=0; i<this.ObjetosEscaperoomPublicos.length; i++){
-      this.imagenesObjetosEscaperoomPublicos[i]=this.ObjetosEscaperoomPublicos[i].Imagen;
-    }
+
   }
 
 
@@ -122,10 +129,14 @@ VerObjetoDialog(ObjetoEscaperoom: ObjetoEscaperoom) {
   dialogRef.afterClosed().subscribe(nuevoObjeto => {
     console.log ('objeto editado ' + nuevoObjeto);
     // tslint:disable-next-line:prefer-for-of
-    this.ObjetosEscaperoom = this.ObjetosEscaperoom.filter(obj => obj.id !== nuevoObjeto.id);
-    this.ObjetosEscaperoom.push (nuevoObjeto);
-    //this.TraeImagenColeccion(this.coleccion);
-    this.TraeImagenesObjetos();
+    if(nuevoObjeto!=null || nuevoObjeto!=undefined){
+      var objetoBuscar = this.ObjetosEscaperoom.filter(obj => obj.id == nuevoObjeto.id)[0];
+      var index = this.ObjetosEscaperoom.indexOf(objetoBuscar);
+      this.ObjetosEscaperoom.splice(index, 1 ,nuevoObjeto);
+      this.dataSource = new MatTableDataSource(this.ObjetosEscaperoom);
+      //this.TraeImagenColeccion(this.coleccion);
+      this.TraeImagenesObjetos();
+    }
 
    });
   //abrir dialog
@@ -156,8 +167,22 @@ BorrarObjetoEscaperoom(objetoEscaperoom: ObjetoEscaperoom) {
     console.log ('Vamos a eliminar el objeto');
     this.peticionesAPI.BorrarObjetoEscaperoom(objetoEscaperoom.id).subscribe();
 
+    var cont=0;
+    var object = this.ObjetosEscaperoom.find(obj => obj.id == objetoEscaperoom.id);
+    var index = this.ObjetosEscaperoom.indexOf(object);
+    for(let i=0; i<this.ObjetosEscaperoom.length; i++ ){
+      if(this.ObjetosEscaperoom[i].Imagen ==objetoEscaperoom.Imagen){
+        cont++;
+      }
+    }
+    if(cont==1){
+      this.peticionesAPI.BorrarImagenObjeto(objetoEscaperoom.Imagen).subscribe();
+    }          
+
+
     console.log ('La saco de la lista');
     this.ObjetosEscaperoom = this.ObjetosEscaperoom.filter(obj => obj.id !== objetoEscaperoom.id);
+    this.sesion.TomaObjetosEscaperoomProfesor(this.ObjetosEscaperoom);
     this.dataSource = new MatTableDataSource(this.ObjetosEscaperoom);
 }
 
@@ -181,24 +206,29 @@ BorrarObjetoEscaperoom(objetoEscaperoom: ObjetoEscaperoom) {
         //Antes de eliminar el juego tenemos que ver si hay algun juego activo
         this.peticionesAPI.DameObjetoActivoId(objetoEscaperoom.id).subscribe(res =>{
 
-            if(res !== undefined){
+            if(res[0] !== undefined){
                   Swal.fire('Error', objetoEscaperoom.Nombre + 'Todavía hay alumnos usando el objeto en algun juego activo', 'error');
             }else{
               this.BorrarObjetoEscaperoom(objetoEscaperoom);
               Swal.fire('Eliminado', objetoEscaperoom.Nombre + ' eliminado correctamente', 'success');
             }
-        });
+          },(error)=>{
+          let errors: HttpErrorResponse = error;
+          if (errors.status>=500){
+            this.BorrarObjetoEscaperoom(objetoEscaperoom);
+            Swal.fire('Eliminado', objetoEscaperoom.Nombre + ' eliminado correctamente', 'success');
+          }else{
+            Swal.fire('Error', objetoEscaperoom.Nombre + 'No se ha podido eliminar el objeto', 'error');
+          }
+        })
       }
-    });
+  });
   }
 
   TraeImagenesObjetos(){
     for(let i=0; i<this.ObjetosEscaperoom.length; i++){
-      
       this.imagenesObjetosEscaperoom[i]=this.ObjetosEscaperoom[i].Imagen;
-
     }
-
   }
 
   applyFilterProfesor(filterValue: string) {
@@ -209,5 +239,8 @@ BorrarObjetoEscaperoom(objetoEscaperoom: ObjetoEscaperoom) {
     this.dataSourcePublicas.filter = filterValue.trim().toLowerCase();
   }
 
+  Crear(){
+    this.router.navigate(['/inicio/' + this.profesorId + '/recursos/misRecursosEscaperoom/misObjetos/crearObjeto']);
+  }
 
 }
