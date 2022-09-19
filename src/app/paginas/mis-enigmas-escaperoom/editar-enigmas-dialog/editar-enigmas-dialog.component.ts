@@ -5,6 +5,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import 'rxjs';
 import { Enigma, ObjetoEscaperoom } from 'src/app/clases';
 import { SesionService, PeticionesAPIService } from 'src/app/servicios';
+import Swal from 'sweetalert2';
 import { DialogoConfirmacionComponent } from '../../COMPARTIDO/dialogo-confirmacion/dialogo-confirmacion.component';
 import { EditarEscenaDialogComponent } from '../../mis-escenarios-escaperoom/mis-mapas-escaperoom/editar-escena-dialog/editar-escena-dialog.component';
 
@@ -87,7 +88,9 @@ export class EditarEnigmasDialogComponent implements OnInit {
         
         this.cambios = false;
         this.changed=true;
+        Swal.fire("Editado","Enigma editado con éxito",'success');
       } else {
+        Swal.fire("Error","No se ha podido editar el enigma",'error');
         console.log('fallo editando');
       }
     });

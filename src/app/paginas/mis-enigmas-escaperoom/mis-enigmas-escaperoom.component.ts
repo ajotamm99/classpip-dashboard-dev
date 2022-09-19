@@ -113,9 +113,9 @@ VerEnigmaDialog(enigmaEscaperoom: Enigma) {
     if(nuevoEnigma!=null){
       console.log ('enigma editado ' + nuevoEnigma);
       // tslint:disable-next-line:prefer-for-of
-      var searchEnigma= this.EnigmasEscaperoom.find(en=> en.id == nuevoEnigma.id)[0];
-      var index = this.EnigmasEscaperoom.indexOf(searchEnigma);
-      this.EnigmasEscaperoom.splice(index,1,nuevoEnigma);
+      //var searchEnigma= this.EnigmasEscaperoom.find(en=> en.id == nuevoEnigma.id)[0];
+      //var index = this.EnigmasEscaperoom.indexOf(searchEnigma);
+      this.EnigmasEscaperoom.splice(this.EnigmasEscaperoom.findIndex(en=> en.id == nuevoEnigma.id),1,nuevoEnigma);
       //this.EnigmasEscaperoom.push (nuevoEnigma);
       this.dataSource=new MatTableDataSource(this.EnigmasEscaperoom);
     }

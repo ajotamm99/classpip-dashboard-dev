@@ -119,15 +119,19 @@ VerSkinDialog(SkinEscaperoom: Skin) {
     
     console.log ('skin editado ' + nuevaSkin);
     if(nuevaSkin!=null){
-      // tslint:disable-next-line:prefer-for-of
-      var skinBuscar= this.SkinsEscaperoom.find(sk=> sk.id== nuevaSkin.id)[0];
-      var index= this.SkinsEscaperoom.indexOf(skinBuscar);
-      this.SkinsEscaperoom.splice(index,1,nuevaSkin);
-      this.sesion.TomaSkisnEscaperoom(this.SkinsEscaperoom);
+      //tslint:disable-next-line:prefer-for-of
+
+      //const skinBuscar= this.SkinsEscaperoom.findIndex(sk=> sk.id== nuevaSkin.id);
+      //const index= this.SkinsEscaperoom.indexOf(skinBuscar);
+      this.SkinsEscaperoom.splice(this.SkinsEscaperoom.findIndex(sk=> sk.id== nuevaSkin.id),1,nuevaSkin);
+      
+      
       //this.SkinsEscaperoom = this.SkinsEscaperoom.filter(sk => sk.id !== nuevaSkin.id);
       //this.SkinsEscaperoom.push (nuevaSkin);     
+
       this.dataSource = new MatTableDataSource(this.SkinsEscaperoom);
       this.TraeImagenesSkins();
+      this.sesion.TomaSkisnEscaperoom(this.SkinsEscaperoom);
     }
    });
   //abrir dialog

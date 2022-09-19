@@ -160,9 +160,10 @@ AgregarEscenaEscenario() {
           this.peticionesAPI.PonArchivoEscena(formData)
           .subscribe(() => console.log('Archivo cargado'));
         }
-
+        //Swal.fire("Agregada","Escena agregada con éxito",'success');
         this.LimpiarCampos();
       } else {
+        Swal.fire("Error","La escena no se ha podido agregar",'error');
         console.log('fallo en la asignación');
       }
     });

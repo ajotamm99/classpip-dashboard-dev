@@ -92,9 +92,10 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
             this.peticionesAPI.PonArchivoEscena(formData)
             .subscribe(() => console.log('Archivo cargado'));
           }
-  
+          Swal.fire("Agregada","La escena ha sido agregada con éxito",'success');
           this.LimpiarCampos();
-        } else {
+        } else {          
+          Swal.fire("Error","La escena no se ha podido agregar",'error');
           console.log('fallo en la asignación');
         }
       });

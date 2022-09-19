@@ -107,10 +107,11 @@ export class EditarEscenaDialogComponent implements OnInit {
           this.peticionesAPI.PonImagenEscena(formData)
           .subscribe(() => console.log('Imagen cargado'));
         }
-        
+        Swal.fire("Editada","Escena editada con éxito",'success');
         this.cambios = false;
         this.changed =true;
       } else {
+        Swal.fire("Error","No se ha podido editar la escena",'error');
         console.log('fallo editando');
       }
     });

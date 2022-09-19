@@ -69,7 +69,6 @@ export class CrearSkinsComponent implements OnInit {
   
   // Creamos un escenario dandole un nombre y una descripcion
   CrearSkin() {
-  
     this.peticionesAPI.PonSkinEscaperoom (new Skin(this.nombreImagenSkin,this.nombreSkin), this.profesorId)
     .subscribe((res) => {
       if (res != null) {

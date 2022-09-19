@@ -96,8 +96,8 @@ export class EditarObjetoDialogComponent implements OnInit {
           // HACEMOS EL POST DE LA NUEVA IMAGEN EN LA BASE DE DATOS
           console.log ('Nueva imagen'); 
           var cont=0;
-          var object = this.ObjetosEscaperoom.find(obj => obj.id == this.ObjetoEscaperoom.id);
-          var index = this.ObjetosEscaperoom.indexOf(object);
+          //var object = this.ObjetosEscaperoom.find(obj => obj.id == this.ObjetoEscaperoom.id);
+          //var index = this.ObjetosEscaperoom.indexOf(object);
           for(let i=0; i<this.ObjetosEscaperoom.length; i++ ){
             if(this.ObjetosEscaperoom[i].Imagen ==this.nombreImagenObjetoAntigua){
               cont++;
@@ -107,7 +107,7 @@ export class EditarObjetoDialogComponent implements OnInit {
             this.peticionesAPI.BorrarImagenObjeto(this.nombreImagenObjetoAntigua).subscribe();
           }          
 
-          this.ObjetosEscaperoom.splice(index, 1, this.ObjetoEscaperoom);
+          this.ObjetosEscaperoom.splice(this.ObjetosEscaperoom.findIndex(obj => obj.id == this.ObjetoEscaperoom.id), 1, this.ObjetoEscaperoom);
           const formData: FormData = new FormData();
           formData.append(this.nombreImagenObjetoNueva, this.fileImagenObjeto);
           this.peticionesAPI.PonImagenObjeto(formData)
@@ -116,9 +116,12 @@ export class EditarObjetoDialogComponent implements OnInit {
           this.imagenObjetoCargada=false;
         }
         
+        Swal.fire("Editado","Objeto editado con éxito",'success')
         this.cambios = false;
         this.changed=true;
       } else {
+        
+        Swal.fire("Error","No se ha podido editar el objeto",'error')
         console.log('fallo editando');
       }
     });

@@ -155,9 +155,9 @@ export class EditarMapaComponent implements OnInit {
       // tslint:disable-next-line:prefer-for-of
       if(escena!== null){
         console.log(escena.Nombre);
-        var EscenaBuscar= this.EscenasdeEscenario.filter(escen=> escen.id==escena.id)[0];
-        var posicion = this.EscenasdeEscenario.indexOf(EscenaBuscar);
-        this.EscenasdeEscenario.splice(posicion,1, escena);
+        //var EscenaBuscar= this.EscenasdeEscenario.filter(escen=> escen.id==escena.id)[0];
+        //var posicion = this.EscenasdeEscenario.indexOf(EscenaBuscar);
+        this.EscenasdeEscenario.splice(this.EscenasdeEscenario.findIndex(escen=> escen.id==escena.id),1, escena);
         //this.EscenasdeEscenario = this.EscenasdeEscenario.filter(escen => escen.id !== escena.id);
         //this.EscenasdeEscenario.push (escena);
         this.TraeArchivosEscenas();

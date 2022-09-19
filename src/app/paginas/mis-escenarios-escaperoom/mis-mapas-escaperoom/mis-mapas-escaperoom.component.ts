@@ -149,9 +149,9 @@ BorrarEscenarioEscaperoom(EscenarioEscaperoom: EscenarioEscaperoom) {
       this.peticionesAPI.DameEscenasEscaperoom().subscribe(escenas =>{
         var escenas = escenas;
         for(let i = 0; i < (this.EscenasdeEscenario.length); i++) {
-          this.peticionesAPI.BorrarEscenaEscaperoom(this.EscenasdeEscenario[i].id).subscribe();
-          var cont =0;
-          for (let b=0; b<escenas.length && cont<2; b++ ){
+          this.peticionesAPI.BorrarEscenaEscaperoom(this.EscenasdeEscenario[i].id).subscribe(_=>{
+            var cont =0;
+            for (let b=0; b<escenas.length && cont<2; b++ ){
             if(this.EscenasdeEscenario[i].Tilesheet == escenas[b].Tilesheet){
               cont++;
             }
@@ -160,6 +160,8 @@ BorrarEscenarioEscaperoom(EscenarioEscaperoom: EscenarioEscaperoom) {
             this.peticionesAPI.BorrarImagenEscena(this.EscenasdeEscenario[i].Tilesheet);
           }
           this.peticionesAPI.BorrarArchivoEscena(this.EscenasdeEscenario[i].Archivo);
+        });
+        
         }
         this.peticionesAPI.BorrarEscenarioEscaperoom(EscenarioEscaperoom.id).subscribe();
       });

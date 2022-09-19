@@ -7,6 +7,7 @@ import { SesionService, PeticionesAPIService } from 'src/app/servicios';
 import { DialogoConfirmacionComponent } from '../../COMPARTIDO/dialogo-confirmacion/dialogo-confirmacion.component';
 import 'rxjs';
 import * as URL from '../../../URLs/urls';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-editar-skin-dialog',
@@ -76,8 +77,8 @@ export class EditarSkinDialogComponent implements OnInit {
           // HACEMOS EL POST DE LA NUEVA IMAGEN EN LA BASE DE DATOS
           console.log ('Nueva imagen');
           var cont=0;
-          var search = this.skinsEscaperoom.find(sk=> sk.id== this.skinEscaperoom.id)[0];
-          var index = this.skinsEscaperoom.indexOf(search);
+          //var search = this.skinsEscaperoom.find(sk=> sk.id== this.skinEscaperoom.id)[0];
+          //var index = this.skinsEscaperoom.indexOf(search);
           for(let i=0; i<this.skinsEscaperoom.length; i++ ){
             if(this.skinsEscaperoom[i].Spritesheet ==this.nombreImagenSkinAntigua){
               cont++;
@@ -86,7 +87,7 @@ export class EditarSkinDialogComponent implements OnInit {
           if(cont<2){
             this.peticionesAPI.BorrarImagenSkin(this.nombreImagenSkinAntigua).subscribe();
           }
-          this.skinsEscaperoom.splice(index,1,this.skinEscaperoom);
+          this.skinsEscaperoom.splice(this.skinsEscaperoom.findIndex(sk=> sk.id== this.skinEscaperoom.id),1,this.skinEscaperoom);
           const formData: FormData = new FormData();
           formData.append(this.nombreImageSkinNueva, this.fileImagenSkin);
           this.peticionesAPI.PonImagenSkin(formData)
@@ -94,9 +95,12 @@ export class EditarSkinDialogComponent implements OnInit {
           this.imagenSkinAntigua=this.imagenSkin;
           this.imagenSkinCargada=false;
         }
+        Swal.fire("Editada","Skin editada con éxito",'success')
         this.changed=true;
         this.cambios = false;
       } else {
+        
+        Swal.fire("Error","No se ha podido editar la skin",'error')
         console.log('fallo editando');
       }
     });

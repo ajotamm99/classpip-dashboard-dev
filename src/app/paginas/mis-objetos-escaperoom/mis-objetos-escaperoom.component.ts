@@ -130,9 +130,9 @@ VerObjetoDialog(ObjetoEscaperoom: ObjetoEscaperoom) {
     console.log ('objeto editado ' + nuevoObjeto);
     // tslint:disable-next-line:prefer-for-of
     if(nuevoObjeto!=null || nuevoObjeto!=undefined){
-      var objetoBuscar = this.ObjetosEscaperoom.filter(obj => obj.id == nuevoObjeto.id)[0];
-      var index = this.ObjetosEscaperoom.indexOf(objetoBuscar);
-      this.ObjetosEscaperoom.splice(index, 1 ,nuevoObjeto);
+      //var objetoBuscar = this.ObjetosEscaperoom.filter(obj => obj.id == nuevoObjeto.id)[0];
+      //var index = this.ObjetosEscaperoom.indexOf(objetoBuscar);
+      this.ObjetosEscaperoom.splice(this.ObjetosEscaperoom.findIndex(obj => obj.id == nuevoObjeto.id), 1 ,nuevoObjeto);
       this.sesion.TomaObjetosEscaperoomProfesor;
       this.dataSource = new MatTableDataSource(this.ObjetosEscaperoom);
       //this.TraeImagenColeccion(this.coleccion);
