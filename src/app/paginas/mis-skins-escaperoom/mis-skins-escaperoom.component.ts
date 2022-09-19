@@ -120,9 +120,10 @@ VerSkinDialog(SkinEscaperoom: Skin) {
     console.log ('skin editado ' + nuevaSkin);
     if(nuevaSkin!=null){
       //tslint:disable-next-line:prefer-for-of
-
-      //const skinBuscar= this.SkinsEscaperoom.findIndex(sk=> sk.id== nuevaSkin.id);
-      //const index= this.SkinsEscaperoom.indexOf(skinBuscar);
+      
+      /*const skinBuscar= this.SkinsEscaperoom.findIndex(sk=> sk.id== nuevaSkin.id)[0];
+      const index= this.SkinsEscaperoom.indexOf(skinBuscar);
+      this.SkinsEscaperoom.splice(index,1,nuevaSkin);*/
       this.SkinsEscaperoom.splice(this.SkinsEscaperoom.findIndex(sk=> sk.id== nuevaSkin.id),1,nuevaSkin);
       
       

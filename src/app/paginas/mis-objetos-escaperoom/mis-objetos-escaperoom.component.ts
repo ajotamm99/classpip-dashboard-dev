@@ -129,7 +129,7 @@ VerObjetoDialog(ObjetoEscaperoom: ObjetoEscaperoom) {
   dialogRef.afterClosed().subscribe(nuevoObjeto => {
     console.log ('objeto editado ' + nuevoObjeto);
     // tslint:disable-next-line:prefer-for-of
-    if(nuevoObjeto!=null || nuevoObjeto!=undefined){
+    if(nuevoObjeto!=null && nuevoObjeto!=undefined){
       //var objetoBuscar = this.ObjetosEscaperoom.filter(obj => obj.id == nuevoObjeto.id)[0];
       //var index = this.ObjetosEscaperoom.indexOf(objetoBuscar);
       this.ObjetosEscaperoom.splice(this.ObjetosEscaperoom.findIndex(obj => obj.id == nuevoObjeto.id), 1 ,nuevoObjeto);
