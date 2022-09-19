@@ -34,6 +34,7 @@ myForm2: FormGroup;
 // CREAR ESCENARIO
 nombreEscenario: string;
 EscenarioCreado: EscenarioEscaperoom;
+escenasEscaperoom: EscenaEscaperoom[]=[];
 descripcionEscenario: string;
 
 // CREAR ESCENA
@@ -83,7 +84,11 @@ ngOnInit() {
   // REALMENTE LA APP FUNCIONARÁ COGIENDO AL PROFESOR DEL SERVICIO, NO OBSTANTE AHORA LO RECOGEMOS DE LA URL
   // this.profesorId = this.profesorService.RecibirProfesorIdDelServicio();
   this.profesorId = this.sesion.DameProfesor().id;
-
+  this.peticionesAPI.DameEscenasEscaperoom().subscribe(res=>{
+    this.escenasEscaperoom=res;
+  },(error)=>{
+    this.escenasEscaperoom=null;
+  });
 
   // Constructor myForm
   this.myForm = this.formBuilder.group({
@@ -131,41 +136,64 @@ AgregarEscenaEscenario() {
   console.log(this.nombreArchivoEscena );
   //this.nombreArchivoEscena="pep.json";
 
-  this.peticionesAPI.PonEscenaEscenario(
-    new EscenaEscaperoom(this.nombreArchivoEscena, this.nombreImagenEscena, this.nombreEscena),this.EscenarioCreado.id)
-    .subscribe((res) => {
-      if (res != null) {
-        console.log('asignado correctamente');
-        // Añadimos el cromo a la lista
-        this.EscenasAgregadas.push(res);
-        //this.EscenasAgregadas = this.EscenasAgregadas.filter(result => result.Nombre !== '');
-        // this.CromosAgregados(res);
-
-        // Hago el POST de la imagen de delante SOLO si hay algo cargado.
-        if (this.imagenEscena !== undefined) {
-
-          // Hacemos el POST de la nueva imagen en la base de datos recogida de la función ExaminarImagenCromo
-          const formData: FormData = new FormData();
-          formData.append(this.nombreImagenEscena, this.fileImagenEscena);
-          this.peticionesAPI.PonImagenEscena(formData)
-          .subscribe(() => console.log('Imagen cargada'));
-        }
-
-        // Hago el POST de la imagen de detras SOLO si hay algo cargado.
-        if (this.ArchivoEscena !== undefined) {
-
-          // Hacemos el POST de la nueva imagen en la base de datos recogida de la función ExaminarImagenCromo
-          const formData: FormData = new FormData();
-          formData.append(this.nombreArchivoEscena, this.fileArchivoEscena);
-          this.peticionesAPI.PonArchivoEscena(formData)
-          .subscribe(() => console.log('Archivo cargado'));
-        }
-
-        this.LimpiarCampos();
-      } else {
-        console.log('fallo en la asignación');
+  var contImagen=0;
+  var contArchivo=0;
+  if (this.escenasEscaperoom!=null){
+    for (let i=0; i<this.escenasEscaperoom.length && (contImagen<1 || contArchivo<1);i++){
+      if(this.escenasEscaperoom[i].Tilesheet==this.nombreImagenEscena){
+        contImagen++;
       }
-    });
+      if(this.escenasEscaperoom[i].Archivo==this.nombreArchivoEscena){
+        contArchivo++;
+      }
+    }
+  }
+
+  if(contArchivo<1 && contImagen<1){
+    this.peticionesAPI.PonEscenaEscenario(
+      new EscenaEscaperoom(this.nombreArchivoEscena, this.nombreImagenEscena, this.nombreEscena),this.EscenarioCreado.id)
+      .subscribe((res) => {
+        if (res != null) {
+          console.log('asignado correctamente');
+          // Añadimos el cromo a la lista
+          this.EscenasAgregadas.push(res);
+          //this.EscenasAgregadas = this.EscenasAgregadas.filter(result => result.Nombre !== '');
+          // this.CromosAgregados(res);
+  
+          // Hago el POST de la imagen de delante SOLO si hay algo cargado.
+          if (this.imagenEscena !== undefined) {
+  
+            // Hacemos el POST de la nueva imagen en la base de datos recogida de la función ExaminarImagenCromo
+            const formData: FormData = new FormData();
+            formData.append(this.nombreImagenEscena, this.fileImagenEscena);
+            this.peticionesAPI.PonImagenEscena(formData)
+            .subscribe(() => console.log('Imagen cargada'));
+          }
+  
+          // Hago el POST de la imagen de detras SOLO si hay algo cargado.
+          if (this.ArchivoEscena !== undefined) {
+  
+            // Hacemos el POST de la nueva imagen en la base de datos recogida de la función ExaminarImagenCromo
+            const formData: FormData = new FormData();
+            formData.append(this.nombreArchivoEscena, this.fileArchivoEscena);
+            this.peticionesAPI.PonArchivoEscena(formData)
+            .subscribe(() => console.log('Archivo cargado'));
+          }
+  
+          this.LimpiarCampos();
+        } else {
+          console.log('fallo en la asignación');
+        }
+      });
+  }else if(contArchivo>0 && contImagen<1){
+        Swal.fire('Error',"Ya existen escenas con este archivo JSON, cambie el nombre",'error')
+  }else if(contArchivo<1 && contImagen>0){    
+    Swal.fire('Error',"Ya existen escenas con esta Imagen, cambie el nombre",'error')
+  }else{    
+    Swal.fire('Error',"Ya existen escenas con esta Imagen y archivo JSON, cambie el nombre",'error')
+  }
+
+  
 }
 
 // Utilizamos esta función para eliminar un cromo de la base de datos y de la lista de añadidos recientemente

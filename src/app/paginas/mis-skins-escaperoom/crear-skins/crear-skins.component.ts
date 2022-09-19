@@ -23,6 +23,7 @@ export class CrearSkinsComponent implements OnInit {
   // CREAR ESCENARIO
   nombreSkin: string;
   SkinCreada: Skin;
+  skinsEscaperoom: Skin[]=[];
   
   // CREAR ESCENA
   imagenSkin: string;
@@ -55,7 +56,12 @@ export class CrearSkinsComponent implements OnInit {
     // REALMENTE LA APP FUNCIONARÁ COGIENDO AL PROFESOR DEL SERVICIO, NO OBSTANTE AHORA LO RECOGEMOS DE LA URL
     // this.profesorId = this.profesorService.RecibirProfesorIdDelServicio();
     this.profesorId = this.sesion.DameProfesor().id;
-  
+    this.peticionesAPI.DameSkinsEscaperoomDelProfesor(this.profesorId).subscribe(res=>{
+      this.skinsEscaperoom= res;
+    },(error)=>{
+      this.skinsEscaperoom=null;
+    }
+    )
   
     // Constructor myForm
     this.myForm = this.formBuilder.group({
@@ -69,8 +75,18 @@ export class CrearSkinsComponent implements OnInit {
   
   // Creamos un escenario dandole un nombre y una descripcion
   CrearSkin() {
-  
-    this.peticionesAPI.PonSkinEscaperoom (new Skin(this.nombreImagenSkin,this.nombreSkin), this.profesorId)
+    //checkeamos al crear que no haya mas imagenes con el mismo nombre ya que se pueden sobreescribir y causar errores en cadena
+    var cont=0;
+    if (this.skinsEscaperoom!=null){
+      for (let i=0; i<this.skinsEscaperoom.length && cont<1;i++){
+        if(this.skinsEscaperoom[i].Spritesheet==this.nombreImagenSkin){
+          cont++;
+        }
+      }
+    }
+
+    if(cont<1){
+      this.peticionesAPI.PonSkinEscaperoom (new Skin(this.nombreImagenSkin,this.nombreSkin), this.profesorId)
     .subscribe((res) => {
       if (res != null) {
         console.log ('SKIN CREADa: ' + res.id );
@@ -96,6 +112,10 @@ export class CrearSkinsComponent implements OnInit {
     },(error=>{
       Swal.fire('Error',"Fallo creando la skin",'error');
     }));
+    
+    }else{      
+      Swal.fire('Error',"Ya existe una imagen con ese nombre, cambie el nombre",'error');
+    }
     
   }
   
