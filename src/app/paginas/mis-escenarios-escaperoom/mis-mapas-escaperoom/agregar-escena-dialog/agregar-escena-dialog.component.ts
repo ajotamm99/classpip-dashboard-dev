@@ -17,7 +17,6 @@ import 'rxjs';
 export class AgregarEscenaDialogComponent implements OnInit {
 
 EscenarioRecibido: EscenarioEscaperoom;
-escenasEscaperoom: EscenaEscaperoom[]=[];
 
 // CREAR ESCENA
 nombreEscena: string;
@@ -54,11 +53,6 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
   ngOnInit() {
     // Recogemos los datos que le pasamos del otro componente
     this.EscenarioRecibido = this.data.escenario;
-    this.peticionesAPI.DameEscenasEscaperoom().subscribe(res=>{
-      this.escenasEscaperoom=res;
-    },(error)=>{
-      this.escenasEscaperoom=null;
-    });
   }
 
   // Creamos una cromo y lo añadimos a la coleccion dandole un nombre, una probabilidad, un nivel y una imagen
@@ -69,63 +63,41 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
     console.log(this.nombreImagenEscena );
     console.log(this.nombreArchivoEscena );
     //this.nombreArchivoEscena="pep.json";
-    
-    var contImagen=0;
-    var contArchivo=0;
-    if (this.escenasEscaperoom!=null){
-      for (let i=0; i<this.escenasEscaperoom.length && (contImagen<1 || contArchivo<1);i++){
-        if(this.escenasEscaperoom[i].Tilesheet==this.nombreImagenEscena){
-          contImagen++;
-        }
-        if(this.escenasEscaperoom[i].Archivo==this.nombreArchivoEscena){
-          contArchivo++;
-        }
-      }
-    }
+    this.peticionesAPI.PonEscenaEscenario(
+      new EscenaEscaperoom(this.nombreArchivoEscena, this.nombreImagenEscena, this.nombreEscena),this.EscenarioRecibido.id)
+      .subscribe((res) => {
+        if (res != null) {
+          console.log('asignado correctamente');
+          // Añadimos el cromo a la lista
+          this.EscenasAgregadas.push(res);
+          //this.EscenasAgregadas = this.EscenasAgregadas.filter(result => result.Nombre !== '');
+          // this.CromosAgregados(res);
   
-    if(contArchivo<1 && contImagen<1){
-      this.peticionesAPI.PonEscenaEscenario(
-        new EscenaEscaperoom(this.nombreArchivoEscena, this.nombreImagenEscena, this.nombreEscena),this.EscenarioRecibido.id)
-        .subscribe((res) => {
-          if (res != null) {
-            console.log('asignado correctamente');
-            // Añadimos el cromo a la lista
-            this.EscenasAgregadas.push(res);
-            //this.EscenasAgregadas = this.EscenasAgregadas.filter(result => result.Nombre !== '');
-            // this.CromosAgregados(res);
-    
-            // Hago el POST de la imagen de delante SOLO si hay algo cargado.
-            if (this.imagenCargadaEscena === true) {
-    
-              // Hacemos el POST de la nueva imagen en la base de datos recogida de la función ExaminarImagenCromo
-              const formData: FormData = new FormData();
-              formData.append(this.nombreImagenEscena, this.fileImagenEscena);
-              this.peticionesAPI.PonImagenEscena(formData)
-              .subscribe(() => console.log('Imagen cargada'));
-            }
-    
-            // Hago el POST de la imagen de detras SOLO si hay algo cargado.
-            if (this.archivoCargadoEscena === true) {
-    
-              // Hacemos el POST de la nueva imagen en la base de datos recogida de la función ExaminarImagenCromo
-              const formData: FormData = new FormData();
-              formData.append(this.nombreArchivoEscena, this.fileArchivoEscena);
-              this.peticionesAPI.PonArchivoEscena(formData)
-              .subscribe(() => console.log('Archivo cargado'));
-            }
-    
-            this.LimpiarCampos();
-          } else {
-            console.log('fallo en la asignación');
+          // Hago el POST de la imagen de delante SOLO si hay algo cargado.
+          if (this.imagenCargadaEscena === true) {
+  
+            // Hacemos el POST de la nueva imagen en la base de datos recogida de la función ExaminarImagenCromo
+            const formData: FormData = new FormData();
+            formData.append(this.nombreImagenEscena, this.fileImagenEscena);
+            this.peticionesAPI.PonImagenEscena(formData)
+            .subscribe(() => console.log('Imagen cargada'));
           }
-        });
-    }else if(contArchivo>0 && contImagen<1){
-      Swal.fire('Error',"Ya existen escenas con este archivo JSON, cambie el nombre",'error')
-    }else if(contArchivo<1 && contImagen>0){    
-      Swal.fire('Error',"Ya existen escenas con esta Imagen, cambie el nombre",'error')
-    }else{    
-      Swal.fire('Error',"Ya existen escenas con esta Imagen y archivo JSON, cambie el nombre",'error')
-    }
+  
+          // Hago el POST de la imagen de detras SOLO si hay algo cargado.
+          if (this.archivoCargadoEscena === true) {
+  
+            // Hacemos el POST de la nueva imagen en la base de datos recogida de la función ExaminarImagenCromo
+            const formData: FormData = new FormData();
+            formData.append(this.nombreArchivoEscena, this.fileArchivoEscena);
+            this.peticionesAPI.PonArchivoEscena(formData)
+            .subscribe(() => console.log('Archivo cargado'));
+          }
+  
+          this.LimpiarCampos();
+        } else {
+          console.log('fallo en la asignación');
+        }
+      });
   }
 
   // Utilizamos esta función para eliminar un cromo de la base de datos y de la lista de añadidos recientemente

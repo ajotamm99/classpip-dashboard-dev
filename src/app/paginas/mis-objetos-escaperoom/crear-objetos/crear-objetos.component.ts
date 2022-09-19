@@ -40,7 +40,6 @@ export class CrearObjetosComponent implements OnInit {
   nombreObjeto: string;
   tipoObjeto: string;
   ObjetoCreado: ObjetoEscaperoom;
-  objetosEscaperoom: ObjetoEscaperoom[]=[];
   prueba: EscenaEscaperoom;
   
   // CREAR ESCENA
@@ -75,11 +74,7 @@ export class CrearObjetosComponent implements OnInit {
     // this.profesorId = this.profesorService.RecibirProfesorIdDelServicio();
     this.profesorId = this.sesion.DameProfesor().id;
     this.selectedType= this.types[0].id;
-    this.peticionesAPI.DameObjetosEscaperoomDelProfesor(this.profesorId).subscribe(res=>{
-      this.objetosEscaperoom=res;
-    },(error)=>{
-      this.objetosEscaperoom=null;
-    })
+  
     // Constructor myForm
     this.myForm = this.formBuilder.group({
      nombreObjeto: ['', Validators.required]
@@ -101,18 +96,8 @@ export class CrearObjetosComponent implements OnInit {
   
   // Creamos un escenario dandole un nombre y una descripcion
   CrearObjeto() {
-
-    var cont=0;
-    if (this.objetosEscaperoom!=null){
-      for (let i=0; i<this.objetosEscaperoom.length && cont<1;i++){
-        if(this.objetosEscaperoom[i].Imagen==this.nombreImagenObjeto){
-          cont++;
-        }
-      }
-    }
-    
-    if(cont<1){
-      this.peticionesAPI.PonObjetoEscaperoom (new ObjetoEscaperoom(this.nombreObjeto,this.nombreImagenObjeto, this.tipoObjeto), this.profesorId)
+  
+    this.peticionesAPI.PonObjetoEscaperoom (new ObjetoEscaperoom(this.nombreObjeto,this.nombreImagenObjeto, this.tipoObjeto), this.profesorId)
     .subscribe((res) => {
       if (res != null) {
         console.log ('OBJETO CREADO: ' + res.id );
@@ -135,10 +120,8 @@ export class CrearObjetosComponent implements OnInit {
     },(error)=>{      
       Swal.fire('Error',"Fallo creando el objeto",'error')
     });
-    }else{      
-      Swal.fire('Error',"Ya existen objetos con esta imagen, cambie el nombre",'error')
-    }
     
+
   }
   
   

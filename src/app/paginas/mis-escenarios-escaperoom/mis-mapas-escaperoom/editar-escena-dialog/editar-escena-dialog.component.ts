@@ -21,7 +21,6 @@ import Swal from 'sweetalert2';
 })
 export class EditarEscenaDialogComponent implements OnInit {
   EscenaEscaperoom: EscenaEscaperoom;
-  escenasEscaperoom: EscenaEscaperoom[]=[];
   EscenaEscaperoomCambiada: EscenaEscaperoom;
   EscenasdeEscenario: EscenaEscaperoom[] = [];
   EscenarioEscaperoom: EscenarioEscaperoom;
@@ -73,12 +72,6 @@ export class EditarEscenaDialogComponent implements OnInit {
     //this.imagenEscenaAntigua = this.EscenaEscaperoom.Tilesheet;
     //this.archivoEscenaAntigua = this.EscenaEscaperoom.Archivo;
     this.EscenasdeEscenario = this.sesion.DameEscenasdeEscenario();
-    this.peticionesAPI.DameEscenasEscaperoom().subscribe(res=>{
-      this.escenasEscaperoom=res;
-      this.escenasEscaperoom =this.escenasEscaperoom.filter(sc=> sc.id!=this.EscenaEscaperoom.id);
-    },(error)=>{
-      this.escenasEscaperoom=null;
-    });
 
     // this.opcionSeleccionadaProbabilidad = this.cromo.Probabilidad;
     console.log(this.EscenaEscaperoom);
@@ -89,22 +82,6 @@ export class EditarEscenaDialogComponent implements OnInit {
   EditarEscena() {
     console.log('Entro a editar');
     // tslint:disable-next-line:max-line-length
-    
-    var contImagen=0;
-    var contArchivo=0;
-    if (this.escenasEscaperoom!=null){
-      for (let i=0; i<this.escenasEscaperoom.length && (contImagen<1 || contArchivo<1);i++){
-        if(this.escenasEscaperoom[i].Tilesheet==this.nombreImagenEscenaNueva){
-          contImagen++;
-        }
-        if(this.escenasEscaperoom[i].Archivo==this.nombreArchivoEscenaNuevo){
-          contArchivo++;
-        }
-      }
-    }
-  
-    
-  if(contArchivo<1 && contImagen<1){
     this.peticionesAPI.ModificaEscenaEscenario(new EscenaEscaperoom( this.nombreArchivoEscenaNuevo, this.nombreImagenEscenaNueva, this.nombreEscena), this.EscenaEscaperoom.escenarioEscapeRoomId, this.EscenaEscaperoom.id)
     .subscribe((res) => {
       if (res != null) {
@@ -137,13 +114,6 @@ export class EditarEscenaDialogComponent implements OnInit {
         console.log('fallo editando');
       }
     });
-    }else if(contArchivo>0 && contImagen<1){
-      Swal.fire('Error',"Ya existen escenas con este archivo JSON, cambie el nombre",'error')
-    }else if(contArchivo<1 && contImagen>0){    
-    Swal.fire('Error',"Ya existen escenas con esta Imagen, cambie el nombre",'error')
-    }else{    
-    Swal.fire('Error',"Ya existen escenas con esta Imagen y archivo JSON, cambie el nombre",'error')
-    }
     // this.dialogRef.close(this.cromosEditados);
  }
 

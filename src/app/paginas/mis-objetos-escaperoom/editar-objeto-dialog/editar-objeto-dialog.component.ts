@@ -28,7 +28,6 @@ export class EditarObjetoDialogComponent implements OnInit {
 
   ObjetoEscaperoom: ObjetoEscaperoom;
   ObjetosEscaperoom:ObjetoEscaperoom[] =[];
-  ObjetosEscaperoomFiltered: ObjetoEscaperoom[]=[];
   ObjetoEscaperoomCambiado: ObjetoEscaperoom;
 
   nombreObjeto: string;
@@ -71,14 +70,8 @@ export class EditarObjetoDialogComponent implements OnInit {
 
   ngOnInit() {
     this.profesorId =this.sesion.DameProfesor().id;
-    this.ObjetosEscaperoom = this.sesion.DameObjetosEscaperoomProfesor();    
+    this.ObjetosEscaperoom = this.sesion.DameObjetosEscaperoomProfesor();
     this.ObjetoEscaperoom = this.data.objeto;
-
-    this.ObjetosEscaperoomFiltered = this.sesion.DameObjetosEscaperoomProfesor();
-    var object = this.ObjetosEscaperoomFiltered.find(obj => obj.id == this.ObjetoEscaperoom.id);
-    var index = this.ObjetosEscaperoomFiltered.indexOf(object);
-    this.ObjetosEscaperoomFiltered.splice(index,1);
-
     this.nombreObjeto = this.data.objeto.Nombre;
     this.nombreImagenObjetoNueva= this.data.objeto.Imagen;
     this.tipoObjeto = this.data.objeto.Tipo;
@@ -92,58 +85,44 @@ export class EditarObjetoDialogComponent implements OnInit {
 
   EditarObjeto() {
     console.log('Entro a editar');
-
-    var cont=0;
-    if (this.ObjetosEscaperoomFiltered!=null){
-      for (let i=0; i<this.ObjetosEscaperoomFiltered.length && cont<1;i++){
-        if(this.ObjetosEscaperoomFiltered[i].Imagen==this.nombreImagenObjetoNueva){
-          cont++;
-        }
-      }
-    }
-
-    if(cont<1){
-      this.peticionesAPI.ModificaObjeto(new ObjetoEscaperoom(this.nombreObjeto,  this.nombreImagenObjetoNueva, this.tipoObjeto), this.ObjetoEscaperoom.id,this.profesorId)
-      .subscribe((res) => {
-        if (res != null) {
-          this.ObjetoEscaperoom = res;
-          // this.cromosEditados.push (res);
-          // console.log('nombre del cromo + nivel' + this.cromosEditados[0].Nombre + this.cromosEditados[0].Nivel);
-          if (this.imagenObjetoCargada === true) {
-            // HACEMOS EL POST DE LA NUEVA IMAGEN EN LA BASE DE DATOS
-            console.log ('Nueva imagen'); 
-            var cont=0;
-            var object = this.ObjetosEscaperoom.find(obj => obj.id == this.ObjetoEscaperoom.id);
-            var index = this.ObjetosEscaperoom.indexOf(object);
-            for(let i=0; i<this.ObjetosEscaperoom.length; i++ ){
-              if(this.ObjetosEscaperoom[i].Imagen ==this.nombreImagenObjetoAntigua){
-                cont++;
-              }
+    // tslint:disable-next-line:max-line-length
+    this.peticionesAPI.ModificaObjeto(new ObjetoEscaperoom(this.nombreObjeto,  this.nombreImagenObjetoNueva, this.tipoObjeto), this.ObjetoEscaperoom.id,this.profesorId)
+    .subscribe((res) => {
+      if (res != null) {
+        this.ObjetoEscaperoom = res;
+        // this.cromosEditados.push (res);
+        // console.log('nombre del cromo + nivel' + this.cromosEditados[0].Nombre + this.cromosEditados[0].Nivel);
+        if (this.imagenObjetoCargada === true) {
+          // HACEMOS EL POST DE LA NUEVA IMAGEN EN LA BASE DE DATOS
+          console.log ('Nueva imagen'); 
+          var cont=0;
+          var object = this.ObjetosEscaperoom.find(obj => obj.id == this.ObjetoEscaperoom.id);
+          var index = this.ObjetosEscaperoom.indexOf(object);
+          for(let i=0; i<this.ObjetosEscaperoom.length; i++ ){
+            if(this.ObjetosEscaperoom[i].Imagen ==this.nombreImagenObjetoAntigua){
+              cont++;
             }
-            if(cont==1){
-              this.peticionesAPI.BorrarImagenObjeto(this.nombreImagenObjetoAntigua).subscribe();
-            }          
-  
-            this.ObjetosEscaperoom.splice(index, 1, this.ObjetoEscaperoom);
-            const formData: FormData = new FormData();
-            formData.append(this.nombreImagenObjetoNueva, this.fileImagenObjeto);
-            this.peticionesAPI.PonImagenObjeto(formData)
-            .subscribe(() => console.log('Imagen cargado'));
-            this.imagenObjetoAntigua=this.imagenObjeto;
-            this.imagenObjetoCargada=false;
           }
-          
-          Swal.fire('Editado',"Objeto editado con éxito",'success');
-          this.cambios = false;
-          this.changed=true;
-        } else {
-          console.log('fallo editando');
+          if(cont==1){
+            this.peticionesAPI.BorrarImagenObjeto(this.nombreImagenObjetoAntigua).subscribe();
+          }          
+
+          this.ObjetosEscaperoom.splice(index, 1, this.ObjetoEscaperoom);
+          const formData: FormData = new FormData();
+          formData.append(this.nombreImagenObjetoNueva, this.fileImagenObjeto);
+          this.peticionesAPI.PonImagenObjeto(formData)
+          .subscribe(() => console.log('Imagen cargado'));
+          this.imagenObjetoAntigua=this.imagenObjeto;
+          this.imagenObjetoCargada=false;
         }
-      });
-    }else{
-      
-      Swal.fire('Error',"Ya existe un objeto distinto con esta imagen",'error');
-    }
+        
+        this.cambios = false;
+        this.changed=true;
+      } else {
+        console.log('fallo editando');
+      }
+    });
+    // this.dialogRef.close(this.cromosEditados);
  }
 
    // Activa la función ExaminarImagenCromo

@@ -7,7 +7,6 @@ import { SesionService, PeticionesAPIService } from 'src/app/servicios';
 import { DialogoConfirmacionComponent } from '../../COMPARTIDO/dialogo-confirmacion/dialogo-confirmacion.component';
 import 'rxjs';
 import * as URL from '../../../URLs/urls';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-editar-skin-dialog',
@@ -19,7 +18,6 @@ export class EditarSkinDialogComponent implements OnInit {
   
   skinEscaperoom: Skin;
   skinsEscaperoom: Skin[]=[];
-  skinsEscaperoomFiltered: Skin[]=[];
 
   nombreSkin: string;
   imagenSkin: string;
@@ -55,14 +53,8 @@ export class EditarSkinDialogComponent implements OnInit {
   ngOnInit() {
 
     this.profesorId =this.sesion.DameProfesor().id;
-    this.skinsEscaperoom = this.sesion.DameSkinsEscaperoom();    
+    this.skinsEscaperoom = this.sesion.DameSkinsEscaperoom();
     this.skinEscaperoom = this.data.skin;
-
-    this.skinsEscaperoomFiltered=this.sesion.DameSkinsEscaperoom();
-    var search = this.skinsEscaperoomFiltered.find(sk=> sk.id== this.skinEscaperoom.id)[0];
-    var index = this.skinsEscaperoomFiltered.indexOf(search);
-    this.skinsEscaperoomFiltered.splice(index,1);
-
     this.nombreSkin = this.data.skin.Nombre;
     this.nombreImageSkinNueva= this.data.skin.Spritesheet;
     this.imagenSkinAntigua= URL.ImagenesSkins+this.nombreImageSkinNueva;
@@ -73,19 +65,8 @@ export class EditarSkinDialogComponent implements OnInit {
 
   EditarSkin() {
     console.log('Entro a editar');
-
-    var cont=0;
-    if (this.skinsEscaperoomFiltered!=null){
-      for (let i=0; i<this.skinsEscaperoomFiltered.length && cont<1;i++){
-        if(this.skinsEscaperoomFiltered[i].Spritesheet==this.nombreImageSkinNueva){
-          cont++;
-        }
-      }
-    }
-
     // tslint:disable-next-line:max-line-length
-    if(cont<1){
-      this.peticionesAPI.ModificaSkin(new Skin(this.nombreImageSkinNueva,  this.nombreSkin), this.skinEscaperoom.id,this.profesorId)
+    this.peticionesAPI.ModificaSkin(new Skin(this.nombreImageSkinNueva,  this.nombreSkin), this.skinEscaperoom.id,this.profesorId)
     .subscribe((res) => {
       if (res != null) {
         this.skinEscaperoom = res;
@@ -113,18 +94,12 @@ export class EditarSkinDialogComponent implements OnInit {
           this.imagenSkinAntigua=this.imagenSkin;
           this.imagenSkinCargada=false;
         }
-        
-        Swal.fire('Editado',"Skin editada con éxito",'success');
         this.changed=true;
         this.cambios = false;
       } else {
         console.log('fallo editando');
       }
     });
-    }else{
-      Swal.fire('Error',"Ya existe una skin distinta con esa Imagen",'error');
-    }
-    
     // this.dialogRef.close(this.cromosEditados);
  }
 
