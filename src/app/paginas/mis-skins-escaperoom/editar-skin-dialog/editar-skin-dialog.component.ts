@@ -64,46 +64,78 @@ export class EditarSkinDialogComponent implements OnInit {
     //this.TraeArchivosEscenas();
   }
 
-  EditarSkin() {
-    console.log('Entro a editar');
-    // tslint:disable-next-line:max-line-length
-    this.peticionesAPI.ModificaSkin(new Skin(this.nombreImageSkinNueva,  this.nombreSkin), this.skinEscaperoom.id,this.profesorId)
-    .subscribe((res) => {
-      if (res != null) {
-        this.skinEscaperoom = res;
-        // this.cromosEditados.push (res);
-        // console.log('nombre del cromo + nivel' + this.cromosEditados[0].Nombre + this.cromosEditados[0].Nivel);
-        if (this.imagenSkinCargada === true) {
-          // HACEMOS EL POST DE LA NUEVA IMAGEN EN LA BASE DE DATOS
-          console.log ('Nueva imagen');
+  ComprobarImagenesSkins(comprobar: String,skinId:number){
+    
+    return new Promise ((resolve, reject)=>{
+      this.peticionesAPI.DameSkinsEscaperoomDelProfesor(this.profesorId).subscribe(data=>{
           var cont=0;
-          //var search = this.skinsEscaperoom.find(sk=> sk.id== this.skinEscaperoom.id)[0];
-          //var index = this.skinsEscaperoom.indexOf(search);
-          for(let i=0; i<this.skinsEscaperoom.length; i++ ){
-            if(this.skinsEscaperoom[i].Spritesheet ==this.nombreImagenSkinAntigua){
-              cont++;
+          for(let i =0; i<data.length && cont<1;i++){
+            if(data[i].id!=skinId){
+              if(comprobar==data[i].Spritesheet){
+                cont++;
+              }
             }
           }
-          if(cont<2){
-            this.peticionesAPI.BorrarImagenSkin(this.nombreImagenSkinAntigua).subscribe();
+          resolve(cont);
+
+      },(error)=>{
+        reject(-1);
+      })
+
+    })
+  }
+
+  EditarSkin() {
+    console.log('Entro a editar');
+    this.ComprobarImagenesSkins(this.nombreImageSkinNueva,this.skinEscaperoom.id)
+    .then(cont=>{
+      if(cont==0){
+        this.peticionesAPI.ModificaSkin(new Skin(this.nombreImageSkinNueva,  this.nombreSkin), this.skinEscaperoom.id,this.profesorId)
+        .subscribe((res) => {
+          if (res != null) {
+            this.skinEscaperoom = res;
+            // this.cromosEditados.push (res);
+            // console.log('nombre del cromo + nivel' + this.cromosEditados[0].Nombre + this.cromosEditados[0].Nivel);
+            if (this.imagenSkinCargada === true) {
+              // HACEMOS EL POST DE LA NUEVA IMAGEN EN LA BASE DE DATOS
+              console.log ('Nueva imagen');
+              var cont=0;
+              //var search = this.skinsEscaperoom.find(sk=> sk.id== this.skinEscaperoom.id)[0];
+              //var index = this.skinsEscaperoom.indexOf(search);
+              for(let i=0; i<this.skinsEscaperoom.length; i++ ){
+                if(this.skinsEscaperoom[i].Spritesheet ==this.nombreImagenSkinAntigua){
+                  cont++;
+                }
+              }
+              if(cont<2){
+                this.peticionesAPI.BorrarImagenSkin(this.nombreImagenSkinAntigua).subscribe();
+              }
+              this.skinsEscaperoom.splice(this.skinsEscaperoom.findIndex(sk=> sk.id== this.skinEscaperoom.id),1,this.skinEscaperoom);
+              const formData: FormData = new FormData();
+              formData.append(this.nombreImageSkinNueva, this.fileImagenSkin, this.nombreImageSkinNueva);
+              this.peticionesAPI.PonImagenSkin(formData)
+              .subscribe(() => console.log('Imagen cargado'));
+              this.imagenSkinAntigua=this.imagenSkin;
+              this.imagenSkinCargada=false;
+            }
+            Swal.fire("Editada","Skin editada con éxito",'success');
+            this.changed=true;
+            this.cambios = false;
+          } else {
+            
+            Swal.fire("Error","No se ha podido editar la skin",'error');
+            console.log('fallo editando');
           }
-          this.skinsEscaperoom.splice(this.skinsEscaperoom.findIndex(sk=> sk.id== this.skinEscaperoom.id),1,this.skinEscaperoom);
-          const formData: FormData = new FormData();
-          formData.append(this.nombreImageSkinNueva, this.fileImagenSkin);
-          this.peticionesAPI.PonImagenSkin(formData)
-          .subscribe(() => console.log('Imagen cargado'));
-          this.imagenSkinAntigua=this.imagenSkin;
-          this.imagenSkinCargada=false;
-        }
-        Swal.fire("Editada","Skin editada con éxito",'success')
-        this.changed=true;
-        this.cambios = false;
-      } else {
-        
-        Swal.fire("Error","No se ha podido editar la skin",'error')
-        console.log('fallo editando');
-      }
-    });
+        });
+     }else if(cont>0){      
+      Swal.fire("Error","Ya existe una skin con esa imagen",'error');
+     }else{
+      Swal.fire("Error","Error en el servidor",'error')
+     }
+
+    })
+    // tslint:disable-next-line:max-line-length
+    
     // this.dialogRef.close(this.cromosEditados);
  }
 
@@ -125,7 +157,7 @@ ExaminarImagenSkin($event) {
   reader.onload = () => {
     console.log('ya Escena');
     this.nombreImagenSkinAntigua=this.nombreImageSkinNueva;
-    this.nombreImageSkinNueva = this.fileImagenSkin.name;
+    this.nombreImageSkinNueva = this.profesorId+this.fileImagenSkin.name;
     this.imagenSkinCargada= true;
     this.cambios=true;
     // this.imagenCargadoCromo = true;

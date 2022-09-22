@@ -1,3 +1,4 @@
+import { Imagen } from './../../../clases/clasesParaLibros/recursosCargaImagen';
 import { Location } from '@angular/common';
 import { MatStepper } from '@angular/material/stepper';
 import { ObjetoEscaperoom } from './../../../clases/clasesParaJuegoDeEscapeRoom/ObjetoEscaperoom';
@@ -93,35 +94,62 @@ export class CrearObjetosComponent implements OnInit {
     console.log(this.selectedType);
     this.tipoObjeto= this.selectedType;
   }
+
+  ComprobarImagenesObjetos(comprobar: String){
+    return new Promise ((resolve, reject)=>{
+      this.peticionesAPI.DameObjetosEscaperoomDelProfesor(this.profesorId).subscribe(data=>{
+        var lista= data;
+        var cont=0;
+        for(let i =0; i<lista.length&&cont<1;i++){
+          if(comprobar==lista[i].Imagen){
+            cont++;
+          }
+        }
+        resolve(cont);
+      },(error)=>{
+        reject(-1);
+      })
+
+    })
+  }
   
   // Creamos un escenario dandole un nombre y una descripcion
   CrearObjeto() {
-  
-    this.peticionesAPI.PonObjetoEscaperoom (new ObjetoEscaperoom(this.nombreObjeto,this.nombreImagenObjeto, this.tipoObjeto), this.profesorId)
-    .subscribe((res) => {
-      if (res != null) {
-        console.log ('OBJETO CREADO: ' + res.id );
-        console.log(res);
-        if (this.imagenObjeto !== undefined) {
-  
-          // Hacemos el POST de la nueva imagen en la base de datos recogida de la función ExaminarImagenCromo
-          const formData: FormData = new FormData();
-          formData.append(this.nombreImagenObjeto, this.fileImagenObjeto);
-          this.peticionesAPI.PonImagenObjeto(formData)
-          .subscribe(() => console.log('Imagen cargada'));
-        }        
-        this.LimpiarCampos();
-        this.stepper.previous();
-        Swal.fire('Creado',"Objeto creado con éxito",'success')
-      } else {
-        console.log('Fallo en la creación');
-        Swal.fire('Error',"Fallo creando el objeto",'error')
-      }
-    },(error)=>{      
-      Swal.fire('Error',"Fallo creando el objeto",'error')
-    });
-    
 
+    this.ComprobarImagenesObjetos(this.nombreImagenObjeto)
+    .then((cont)=>{
+      if (cont==0){
+        this.peticionesAPI.PonObjetoEscaperoom(new ObjetoEscaperoom(this.nombreObjeto,this.nombreImagenObjeto, this.tipoObjeto), this.profesorId)
+      .subscribe((res) => {
+        if (res != null) {
+          console.log ('OBJETO CREADO: ' + res.id );
+          console.log(res);
+          if (this.imagenObjeto !== undefined) {
+    
+            // Hacemos el POST de la nueva imagen en la base de datos recogida de la función ExaminarImagenCromo
+            const formData: FormData = new FormData();
+            formData.append(this.nombreImagenObjeto, this.fileImagenObjeto,this.nombreImagenObjeto);
+            this.peticionesAPI.PonImagenObjeto(formData)
+            .subscribe(() => console.log('Imagen cargada'));
+          }        
+          this.LimpiarCampos();
+          this.stepper.previous();
+          Swal.fire('Creado',"Objeto creado con éxito",'success');
+        } else {
+          console.log('Fallo en la creación');
+          Swal.fire('Error',"Fallo creando el objeto",'error');
+        }
+      },(error)=>{      
+        Swal.fire('Error',"Fallo creando el objeto",'error');
+      });
+      }else if(cont>0){        
+        Swal.fire('Error',"Ya existe un objeto con esa imagen",'error');
+      }else{
+        Swal.fire('Error',"Error en el servidor",'error');
+      }
+      
+    })
+    
   }
   
   
@@ -143,7 +171,7 @@ export class CrearObjetosComponent implements OnInit {
     const reader = new FileReader();
     reader.readAsDataURL(this.fileImagenObjeto);
     reader.onload = () => {
-      this.nombreImagenObjeto = this.fileImagenObjeto.name;
+      this.nombreImagenObjeto = this.profesorId+this.fileImagenObjeto.name;
       console.log('ya Escena');
       this.imagenCargadaObjeto= true;
       // this.imagenCargadoCromo = true;

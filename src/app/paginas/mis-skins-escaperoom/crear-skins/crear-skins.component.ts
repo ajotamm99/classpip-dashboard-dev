@@ -63,38 +63,68 @@ export class CrearSkinsComponent implements OnInit {
     });
   }
   
+  ComprobarImagenesSkins(comprobar: String){
+    return new Promise ((resolve, reject)=>{
+      this.peticionesAPI.DameSkinsEscaperoomDelProfesor(this.profesorId).subscribe(data=>{
+        var lista= data;
+        var cont=0;
+        for(let i =0; i<lista.length&&cont<1;i++){
+          if(comprobar==lista[i].Spritesheet){
+            cont++;
+          }
+        }
+        resolve(cont);
+      },(error)=>{
+        reject(-1);
+      })
+
+    })
+  }
+
   DatoSkin(){
     this.nombreSkin=this.myForm.value.nombreSkins;  
   }
   
   // Creamos un escenario dandole un nombre y una descripcion
   CrearSkin() {
-    this.peticionesAPI.PonSkinEscaperoom (new Skin(this.nombreImagenSkin,this.nombreSkin), this.profesorId)
-    .subscribe((res) => {
-      if (res != null) {
-        console.log ('SKIN CREADa: ' + res.id );
-        console.log(res);
-        if (this.imagenSkin !== undefined) {
-  
-          // Hacemos el POST de la nueva imagen en la base de datos recogida de la función ExaminarImagenCromo
-          const formData: FormData = new FormData();
-          formData.append(this.nombreImagenSkin, this.fileImagenSkin);
-          this.peticionesAPI.PonImagenSkin(formData)
-          .subscribe(() => console.log('Imagen cargada'));
-        }
+    this.ComprobarImagenesSkins(this.nombreImagenSkin)
+    .then((cont)=>{
+      if(cont==0){
+        this.peticionesAPI.PonSkinEscaperoom (new Skin(this.nombreImagenSkin,this.nombreSkin), this.profesorId)
+        .subscribe((res) => {
+          if (res != null) {
+            console.log ('SKIN CREADa: ' + res.id );
+            console.log(res);
+            if (this.imagenSkin !== undefined) {
+      
+              // Hacemos el POST de la nueva imagen en la base de datos recogida de la función ExaminarImagenCromo
+              const formData: FormData = new FormData();
+              formData.append(this.nombreImagenSkin, this.fileImagenSkin,this.nombreImagenSkin);
+              this.peticionesAPI.PonImagenSkin(formData)
+              .subscribe(() => console.log('Imagen cargada'));
+            }
+            
+            this.LimpiarCampos();
+            this.stepper.reset();
+            this.myForm.reset();
+            Swal.fire('Creado',"Skin creada con éxito",'success');
+            
+          } else {
+            console.log('Fallo en la creación');
+            Swal.fire('Error',"Fallo creando la skin",'error');
+          }
+        },(error=>{
+        }));
+      }else if(cont>0){
         
-        this.LimpiarCampos();
-        this.stepper.reset();
-        this.myForm.reset();
-        Swal.fire('Creado',"Skin creada con éxito",'success');
+        Swal.fire('Error',"Ya existe una skin con esa imagen",'error');
+      }else{
         
-      } else {
-        console.log('Fallo en la creación');
-        Swal.fire('Error',"Fallo creando la skin",'error');
+        Swal.fire('Error',"Error en la base de datos",'error');
       }
-    },(error=>{
-      Swal.fire('Error',"Fallo creando la skin",'error');
-    }));
+
+    
+    });
     
   }
   
@@ -119,7 +149,7 @@ export class CrearSkinsComponent implements OnInit {
     reader.readAsDataURL(this.fileImagenSkin);
     reader.onload = () => {
       
-    this.nombreImagenSkin = this.fileImagenSkin.name;
+    this.nombreImagenSkin = this.profesorId+this.fileImagenSkin.name;
       console.log('ya Escena');
       this.imagenCargadaSkin= true;
       // this.imagenCargadoCromo = true;

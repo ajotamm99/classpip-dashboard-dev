@@ -122,6 +122,33 @@ NavegarA(string: string){
   this.router.navigate(['/inicio/' + this.profesorId + '/recursos/misRecursosEscaperoom'+ string]);
 }
 
+ComprobarImagenesyArchivosEscena(comprobarImagen: String, comprobarArchivo: String){
+    
+  return new Promise ((resolve, reject)=>{
+    this.peticionesAPI.DameEscenariosEscaperoomDelProfesor(this.profesorId)
+    .subscribe(data=>{
+      var contImages=0;
+      var contArchivos=0;
+      var filter=data;
+      //var lista:EscenaEscaperoom[]=[];
+      filter.forEach(sc => {
+        this.peticionesAPI.DameEscenasdeEscenariosEscaperoom(sc.id)
+        .subscribe(data=>{
+          for(let i =0; i<data.length && (contArchivos<1 || contImages<1);i++){
+              if(comprobarArchivo==data[i].Archivo){
+                contArchivos++;
+              }
+              if(comprobarImagen==data[i].Tilesheet){
+                contImages++;
+              }                          
+          }
+        },error=>{});          
+      });        
+      resolve([contImages,contArchivos]);
+    });
+  });
+}
+
 // Creamos una cromo y lo añadimos a la coleccion dandole un nombre, una probabilidad, un nivel y una imagen
 AgregarEscenaEscenario() {
 
@@ -130,43 +157,56 @@ AgregarEscenaEscenario() {
   console.log(this.nombreImagenEscena );
   console.log(this.nombreArchivoEscena );
   //this.nombreArchivoEscena="pep.json";
-
-  this.peticionesAPI.PonEscenaEscenario(
-    new EscenaEscaperoom(this.nombreArchivoEscena, this.nombreImagenEscena, this.nombreEscena),this.EscenarioCreado.id)
-    .subscribe((res) => {
-      if (res != null) {
-        console.log('asignado correctamente');
-        // Añadimos el cromo a la lista
-        this.EscenasAgregadas.push(res);
-        //this.EscenasAgregadas = this.EscenasAgregadas.filter(result => result.Nombre !== '');
-        // this.CromosAgregados(res);
-
-        // Hago el POST de la imagen de delante SOLO si hay algo cargado.
-        if (this.imagenEscena !== undefined) {
-
-          // Hacemos el POST de la nueva imagen en la base de datos recogida de la función ExaminarImagenCromo
-          const formData: FormData = new FormData();
-          formData.append(this.nombreImagenEscena, this.fileImagenEscena);
-          this.peticionesAPI.PonImagenEscena(formData)
-          .subscribe(() => console.log('Imagen cargada'));
-        }
-
-        // Hago el POST de la imagen de detras SOLO si hay algo cargado.
-        if (this.ArchivoEscena !== undefined) {
-
-          // Hacemos el POST de la nueva imagen en la base de datos recogida de la función ExaminarImagenCromo
-          const formData: FormData = new FormData();
-          formData.append(this.nombreArchivoEscena, this.fileArchivoEscena);
-          this.peticionesAPI.PonArchivoEscena(formData)
-          .subscribe(() => console.log('Archivo cargado'));
-        }
-        //Swal.fire("Agregada","Escena agregada con éxito",'success');
-        this.LimpiarCampos();
-      } else {
-        Swal.fire("Error","La escena no se ha podido agregar",'error');
-        console.log('fallo en la asignación');
-      }
-    });
+  this.ComprobarImagenesyArchivosEscena(this.nombreImagenEscena,this.nombreArchivoEscena)
+  .then(data=>{
+    if(data[0]==0 && data[1]==0){
+      this.peticionesAPI.PonEscenaEscenario(
+        new EscenaEscaperoom(this.nombreArchivoEscena, this.nombreImagenEscena, this.nombreEscena),this.EscenarioCreado.id)
+        .subscribe((res) => {
+          if (res != null) {
+            console.log('asignado correctamente');
+            // Añadimos el cromo a la lista
+            this.EscenasAgregadas.push(res);
+            //this.EscenasAgregadas = this.EscenasAgregadas.filter(result => result.Nombre !== '');
+            // this.CromosAgregados(res);
+    
+            // Hago el POST de la imagen de delante SOLO si hay algo cargado.
+            if (this.imagenEscena !== undefined) {
+    
+              // Hacemos el POST de la nueva imagen en la base de datos recogida de la función ExaminarImagenCromo
+              const formData: FormData = new FormData();
+              formData.append(this.nombreImagenEscena, this.fileImagenEscena,this.nombreImagenEscena);
+              this.peticionesAPI.PonImagenEscena(formData)
+              .subscribe(() => console.log('Imagen cargada'));
+            }
+    
+            // Hago el POST de la imagen de detras SOLO si hay algo cargado.
+            if (this.ArchivoEscena !== undefined) {
+    
+              // Hacemos el POST de la nueva imagen en la base de datos recogida de la función ExaminarImagenCromo
+              const formData: FormData = new FormData();
+              formData.append(this.nombreArchivoEscena, this.fileArchivoEscena,this.nombreArchivoEscena);
+              this.peticionesAPI.PonArchivoEscena(formData)
+              .subscribe(() => console.log('Archivo cargado'));
+            }
+            //Swal.fire("Agregada","Escena agregada con éxito",'success');
+            this.LimpiarCampos();
+          } else {
+            Swal.fire("Error","La escena no se ha podido agregar",'error');
+            console.log('fallo en la asignación');
+          }
+        });
+    }else if(data[0]>0 && data[1]>0){        
+      Swal.fire("Error","Ya hay escenas con este nombre de archivo e imagen",'error');
+    }else if(data[0]>0 && data[1]==0){        
+      Swal.fire("Error","Ya hay escenas con este nombre de imagen",'error');
+    }else if(data[0]==0 && data[1]>0){        
+      Swal.fire("Error","Ya hay escenas con este nombre de archivo",'error');
+    }else{
+      Swal.fire("Error","Error en el servidor",'error');
+    }
+  });
+  
 }
 
 // Utilizamos esta función para eliminar un cromo de la base de datos y de la lista de añadidos recientemente
@@ -206,13 +246,13 @@ ActivarInputEscenaArchivo() {
 ExaminarImagenEscena($event) {
   this.fileImagenEscena = $event.target.files[0];
 
-  console.log('fichero ' + this.fileImagenEscena.name);
+  console.log('fichero ' + this.profesorId+this.fileImagenEscena.name);
 
 
   const reader = new FileReader();
   reader.readAsDataURL(this.fileImagenEscena);
   reader.onload = () => {
-    this.nombreImagenEscena = this.fileImagenEscena.name;
+    this.nombreImagenEscena = this.profesorId+this.fileImagenEscena.name;
     console.log('ya Escena');
     this.imagenCargadaEscena= true;
     // this.imagenCargadoCromo = true;
@@ -224,13 +264,13 @@ ExaminarImagenEscena($event) {
 ExaminarArchivoEscena($event) {
   this.fileArchivoEscena = $event.target.files[0];
 
-  console.log('fichero ' + this.fileArchivoEscena.name);
+  console.log('fichero ' + this.profesorId+this.fileArchivoEscena.name);
   const fileInfo = $event.target.files[0];
   const reader = new FileReader();
   reader.readAsText(fileInfo, 'ISO-8859-1');
   reader.onload = () => {
     try {
-      this.nombreArchivoEscena = this.fileArchivoEscena.name;
+      this.nombreArchivoEscena = this.profesorId+this.fileArchivoEscena.name;
           this.infoArchivoEscena = JSON.parse(reader.result.toString());
           this.archivoCargadoEscena =true;
     }catch{

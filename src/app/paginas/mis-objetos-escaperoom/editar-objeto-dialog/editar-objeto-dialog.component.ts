@@ -4,7 +4,7 @@ import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Http } from '@angular/http';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { EscenaEscaperoom, EscenarioEscaperoom } from 'src/app/clases';
+import { EscenaEscaperoom, EscenarioEscaperoom, Skin } from 'src/app/clases';
 import { SesionService, PeticionesAPIService } from 'src/app/servicios';
 import Swal from 'sweetalert2';
 import 'rxjs';
@@ -83,48 +83,80 @@ export class EditarObjetoDialogComponent implements OnInit {
     //document.getElementById('select').value=(this.types.find(tp=> tp.id==this.tipoObjeto).id);   
   }
 
-  EditarObjeto() {
-    console.log('Entro a editar');
-    // tslint:disable-next-line:max-line-length
-    this.peticionesAPI.ModificaObjeto(new ObjetoEscaperoom(this.nombreObjeto,  this.nombreImagenObjetoNueva, this.tipoObjeto), this.ObjetoEscaperoom.id,this.profesorId)
-    .subscribe((res) => {
-      if (res != null) {
-        this.ObjetoEscaperoom = res;
-        // this.cromosEditados.push (res);
-        // console.log('nombre del cromo + nivel' + this.cromosEditados[0].Nombre + this.cromosEditados[0].Nivel);
-        if (this.imagenObjetoCargada === true) {
-          // HACEMOS EL POST DE LA NUEVA IMAGEN EN LA BASE DE DATOS
-          console.log ('Nueva imagen'); 
-          var cont=0;
-          //var object = this.ObjetosEscaperoom.find(obj => obj.id == this.ObjetoEscaperoom.id);
-          //var index = this.ObjetosEscaperoom.indexOf(object);
-          for(let i=0; i<this.ObjetosEscaperoom.length; i++ ){
-            if(this.ObjetosEscaperoom[i].Imagen ==this.nombreImagenObjetoAntigua){
+  ComprobarImagenesObjeto(comprobar: String, objId:number){
+    
+    return new Promise ((resolve, reject)=>{
+      this.peticionesAPI.DameObjetosEscaperoomDelProfesor(this.profesorId).subscribe(data=>{
+        
+        var cont=0
+        for(let i =0; i<data.length && cont<1;i++){
+          if(data[i].id!=objId){
+            if(comprobar==data[i].Imagen){
               cont++;
             }
           }
-          if(cont==1){
-            this.peticionesAPI.BorrarImagenObjeto(this.nombreImagenObjetoAntigua).subscribe();
-          }          
-
-          this.ObjetosEscaperoom.splice(this.ObjetosEscaperoom.findIndex(obj => obj.id == this.ObjetoEscaperoom.id), 1, this.ObjetoEscaperoom);
-          const formData: FormData = new FormData();
-          formData.append(this.nombreImagenObjetoNueva, this.fileImagenObjeto);
-          this.peticionesAPI.PonImagenObjeto(formData)
-          .subscribe(() => console.log('Imagen cargado'));
-          this.imagenObjetoAntigua=this.imagenObjeto;
-          this.imagenObjetoCargada=false;
         }
-        
-        Swal.fire("Editado","Objeto editado con éxito",'success')
-        this.cambios = false;
-        this.changed=true;
-      } else {
-        
-        Swal.fire("Error","No se ha podido editar el objeto",'error')
-        console.log('fallo editando');
+        resolve(cont);
+
+      },(error)=>{
+        reject(-1);
+      })
+
+    })
+  }
+
+  EditarObjeto() {
+    console.log('Entro a editar');
+    // tslint:disable-next-line:max-line-length
+    this.ComprobarImagenesObjeto(this.nombreImagenObjetoNueva, this.ObjetoEscaperoom.id)
+    .then(cont=>{
+      if(cont==0){
+        this.peticionesAPI.ModificaObjeto(new ObjetoEscaperoom(this.nombreObjeto,  this.nombreImagenObjetoNueva, this.tipoObjeto), this.ObjetoEscaperoom.id,this.profesorId)
+        .subscribe((res) => {
+          if (res != null) {
+            this.ObjetoEscaperoom = res;
+            // this.cromosEditados.push (res);
+            // console.log('nombre del cromo + nivel' + this.cromosEditados[0].Nombre + this.cromosEditados[0].Nivel);
+            if (this.imagenObjetoCargada === true) {
+              // HACEMOS EL POST DE LA NUEVA IMAGEN EN LA BASE DE DATOS
+              console.log ('Nueva imagen'); 
+              var cont=0;
+              //var object = this.ObjetosEscaperoom.find(obj => obj.id == this.ObjetoEscaperoom.id);
+              //var index = this.ObjetosEscaperoom.indexOf(object);
+              for(let i=0; i<this.ObjetosEscaperoom.length; i++ ){
+                if(this.ObjetosEscaperoom[i].Imagen ==this.nombreImagenObjetoAntigua){
+                  cont++;
+                }
+              }
+              if(cont==1){
+                this.peticionesAPI.BorrarImagenObjeto(this.nombreImagenObjetoAntigua).subscribe();
+              }          
+
+              this.ObjetosEscaperoom.splice(this.ObjetosEscaperoom.findIndex(obj => obj.id == this.ObjetoEscaperoom.id), 1, this.ObjetoEscaperoom);
+              const formData: FormData = new FormData();
+              formData.append(this.nombreImagenObjetoNueva, this.fileImagenObjeto,this.nombreImagenObjetoNueva);
+              this.peticionesAPI.PonImagenObjeto(formData)
+              .subscribe(() => console.log('Imagen cargado'));
+              this.imagenObjetoAntigua=this.imagenObjeto;
+              this.imagenObjetoCargada=false;
+            }            
+            Swal.fire("Editado","Objeto editado con éxito",'success');
+            this.cambios = false;
+            this.changed=true;
+          } else {            
+            Swal.fire("Error","No se ha podido editar el objeto",'error');
+            console.log('fallo editando');
+          }
+        });
+      }else if(cont>0){        
+        Swal.fire("Error","Ya hay objetos con esta imagen",'error');
+      }else{        
+        Swal.fire("Error","Error en el servidor",'error');
       }
-    });
+
+      
+    })
+    
     // this.dialogRef.close(this.cromosEditados);
  }
 
@@ -148,9 +180,10 @@ ExaminarImagenObjeto($event) {
 
   const reader = new FileReader();
   reader.readAsDataURL(this.fileImagenObjeto);
+
   reader.onload = () => {
     this.nombreImagenObjetoAntigua=this.nombreImagenObjetoNueva;
-    this.nombreImagenObjetoNueva = this.fileImagenObjeto.name;
+    this.nombreImagenObjetoNueva = this.profesorId+this.fileImagenObjeto.name;
   
     console.log('ya objeto');
     this.imagenObjetoCargada= true;
