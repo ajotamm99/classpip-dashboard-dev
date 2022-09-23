@@ -150,16 +150,8 @@ BorrarEscenarioEscaperoom(EscenarioEscaperoom: EscenarioEscaperoom) {
         var escenas = escenas;
         for(let i = 0; i < (this.EscenasdeEscenario.length); i++) {
           this.peticionesAPI.BorrarEscenaEscaperoom(this.EscenasdeEscenario[i].id).subscribe(_=>{
-            var cont =0;
-            for (let b=0; b<escenas.length && cont<2; b++ ){
-            if(this.EscenasdeEscenario[i].Tilesheet == escenas[b].Tilesheet){
-              cont++;
-            }
-          }
-          if(cont<2){            
-            this.peticionesAPI.BorrarImagenEscena(this.EscenasdeEscenario[i].Tilesheet);
-          }
-          this.peticionesAPI.BorrarArchivoEscena(this.EscenasdeEscenario[i].Archivo);
+            this.peticionesAPI.BorrarImagenEscena(this.EscenasdeEscenario[i].Tilesheet).subscribe();
+            this.peticionesAPI.BorrarArchivoEscena(this.EscenasdeEscenario[i].Archivo).subscribe();
         });
         
         }
@@ -223,7 +215,7 @@ BorrarEscenarioEscaperoom(EscenarioEscaperoom: EscenarioEscaperoom) {
             let errors: HttpErrorResponse = error;
             if (errors.status>=500){
               this.BorrarEscenarioEscaperoom(EscenarioEscaperoom);
-              Swal.fire('Eliminado', EscenarioEscaperoom.Nombre + 'No hay ningún juego activo con este escenario, eliminado correctamente', 'success');
+              Swal.fire('Eliminado', 'No hay ningún juego activo con este escenario, eliminado correctamente', 'success');
           }
           });
       

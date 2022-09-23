@@ -29,6 +29,7 @@ EscenasAgregadas: EscenaEscaperoom [] = [];
 
 nombreImagenEscena: string;
 nombreArchivoEscena: string;
+nombreArchivoEscenaMostrar:string;
 fileImagenEscena: File;
 fileArchivoEscena: File;
 infoArchivoEscena;
@@ -77,11 +78,11 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
                 }
                 if(comprobarImagen==data[i].Tilesheet){
                   contImages++;
-                }                          
-            }
+                }                      
+            }            
+            resolve([contImages,contArchivos]);
           },error=>{});          
         });        
-        resolve([contImages,contArchivos]);
       });
     });
   }
@@ -96,6 +97,8 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
     //this.nombreArchivoEscena="pep.json";
     this.ComprobarImagenesyArchivosEscena(this.nombreImagenEscena,this.nombreArchivoEscena)
     .then(data=>{
+      console.log(data);
+
       if(data[0]==0 && data[1]==0){
         this.peticionesAPI.PonEscenaEscenario(
           new EscenaEscaperoom(this.nombreArchivoEscena, this.nombreImagenEscena, this.nombreEscena),this.EscenarioRecibido.id)
@@ -108,30 +111,29 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
               // this.CromosAgregados(res);
       
               // Hago el POST de la imagen de delante SOLO si hay algo cargado.
-              if (this.imagenCargadaEscena === true) {
+              if (this.imagenCargadaEscena === true && this.archivoCargadoEscena===true) {
       
                 // Hacemos el POST de la nueva imagen en la base de datos recogida de la función ExaminarImagenCromo
                 const formData: FormData = new FormData();
                 formData.append(this.nombreImagenEscena, this.fileImagenEscena,this.nombreImagenEscena);
                 this.peticionesAPI.PonImagenEscena(formData)
-                .subscribe(() => console.log('Imagen cargada'));
+                .subscribe(() => {
+                  console.log('Imagen cargada');
+                  const formData: FormData = new FormData();
+                  formData.append(this.nombreArchivoEscena, this.fileArchivoEscena,this.nombreArchivoEscena);
+                  this.peticionesAPI.PonArchivoEscena(formData)
+                  .subscribe(() => 
+                    console.log('Archivo cargado'));
+                    Swal.fire("Agregada","La escena ha sido agregada con éxito",'success');
+                    this.LimpiarCampos();
+                });
               }
-      
-              // Hago el POST de la imagen de detras SOLO si hay algo cargado.
-              if (this.archivoCargadoEscena === true) {
-      
-                // Hacemos el POST de la nueva imagen en la base de datos recogida de la función ExaminarImagenCromo
-                const formData: FormData = new FormData();
-                formData.append(this.nombreArchivoEscena, this.fileArchivoEscena,this.nombreArchivoEscena);
-                this.peticionesAPI.PonArchivoEscena(formData)
-                .subscribe(() => console.log('Archivo cargado'));
-              }
-              Swal.fire("Agregada","La escena ha sido agregada con éxito",'success');
-              this.LimpiarCampos();
             } else {          
               Swal.fire("Error","La escena no se ha podido agregar",'error');
               console.log('fallo en la asignación');
             }
+          },error=>{
+            Swal.fire("Error","Inserte imagen y archivo",'error');
           });
       }else if(data[0]>0 && data[1]>0){        
         Swal.fire("Error","Ya hay escenas con este nombre de archivo e imagen",'error');
@@ -196,7 +198,6 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
   ExaminarArchivoEscena($event) {
     this.fileArchivoEscena = $event.target.files[0];
   
-    this.nombreArchivoEscena = this.profesorId+this.fileArchivoEscena.name;
     
     console.log('fichero ' + this.fileArchivoEscena.name);
   
@@ -205,12 +206,15 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
     reader.readAsText(fileInfo, 'ISO-8859-1');
     reader.onload = () => {
       try {
-            this.infoArchivoEscena = JSON.parse(reader.result.toString());
-            this.archivoCargadoEscena =true;
+        this.infoArchivoEscena = JSON.parse(reader.result.toString());        
+        this.nombreArchivoEscena = this.profesorId+this.fileArchivoEscena.name;         
+        this.nombreArchivoEscenaMostrar= this.fileArchivoEscena.name;
+        this.archivoCargadoEscena =true;
       }catch{
         Swal.fire('Archivo JSON no válido','Prueba a subir otro archivo o corregir el existente', 'error')
         this.fileArchivoEscena = undefined;
         this.nombreArchivoEscena = undefined;
+        this.nombreArchivoEscenaMostrar= undefined;
       }
     }
   }
@@ -222,6 +226,7 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
     this.ArchivoEscena=undefined;
     this.nombreImagenEscena = undefined;
     this.nombreArchivoEscena = undefined;
+    this.nombreArchivoEscenaMostrar=undefined;
 
     this.fileImagenEscena=undefined;
     this.fileArchivoEscena=undefined;

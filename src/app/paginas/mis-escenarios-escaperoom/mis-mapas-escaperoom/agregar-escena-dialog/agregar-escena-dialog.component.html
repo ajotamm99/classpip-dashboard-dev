@@ -32,10 +32,10 @@
     </div>
     <div>
       <input #file id = "inputEscenaArchivo" type="file" accept= 'application/JSON' (change)="ExaminarArchivoEscena($event)" style="display:none">
-      <p *ngIf="archivoCargadoEscena"> {{nombreArchivoEscena}} </p>
       <button (click) = "ActivarInputEscenaArchivo()" type="button" class="btn Agregar">
       Archivo de Escena <i class="material-icons">add_photo_alternate</i>
       </button>
+      <p *ngIf="archivoCargadoEscena"> {{nombreArchivoEscenaMostrar}} </p>
     </div>
   </div>
 

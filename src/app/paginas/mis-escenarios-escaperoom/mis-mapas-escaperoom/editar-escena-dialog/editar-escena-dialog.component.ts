@@ -36,6 +36,7 @@ export class EditarEscenaDialogComponent implements OnInit {
   nombreImagenEscenaAntigua: string;
   nombreImagenEscenaNueva: string;
   nombreArchivoEscenaAntiguo: string;
+  nombreArchivoMostrar:string;
   nombreArchivoEscenaNuevo: string;
   fileImagenEscena: File;
   fileArchivoEscena: File;
@@ -102,17 +103,17 @@ export class EditarEscenaDialogComponent implements OnInit {
                   contImages++;
                 }
               }              
-            }
+            }            
+            resolve([contImages,contArchivos]);
           },error=>{});          
         });        
-        resolve([contImages,contArchivos]);
       });
     });
   }
 
   EditarEscena() {
     console.log('Entro a editar');
-    this.ComprobarImagenesyArchivosEscena(this.nombreArchivoEscenaNuevo,this.nombreImagenEscenaNueva,this.EscenaEscaperoom.id)
+    this.ComprobarImagenesyArchivosEscena(this.nombreImagenEscenaNueva,this.nombreArchivoEscenaNuevo,this.EscenaEscaperoom.id)
     .then(data=>{
       if(data[0]==0 && data[1]==0){
         this.peticionesAPI.ModificaEscenaEscenario(new EscenaEscaperoom( this.nombreArchivoEscenaNuevo, this.nombreImagenEscenaNueva, this.nombreEscena), this.EscenaEscaperoom.escenarioEscapeRoomId, this.EscenaEscaperoom.id)
@@ -134,10 +135,10 @@ export class EditarEscenaDialogComponent implements OnInit {
             if (this.archivoEscenaCargado === true) {
               // HACEMOS EL POST DE LA NUEVA IMAGEN EN LA BASE DE DATOS
               console.log ('Nueva imagen');          
-              this.peticionesAPI.BorrarImagenEscena(this.nombreArchivoEscenaAntiguo).subscribe();
+              this.peticionesAPI.BorrarArchivoEscena(this.nombreArchivoEscenaAntiguo).subscribe();
               const formData: FormData = new FormData();
               formData.append(this.nombreArchivoEscenaNuevo, this.fileArchivoEscena,this.nombreArchivoEscenaNuevo);
-              this.peticionesAPI.PonImagenEscena(formData)
+              this.peticionesAPI.PonArchivoEscena(formData)
               .subscribe(() => console.log('Imagen cargado'));
             }
             Swal.fire("Editada","Escena editada con éxito",'success');
@@ -147,6 +148,8 @@ export class EditarEscenaDialogComponent implements OnInit {
             Swal.fire("Error","No se ha podido editar la escena",'error');
             console.log('fallo editando');
           }
+        },error=>{
+          Swal.fire("Error","Inserte imagen y archivo",'error');
         });
       }else if(data[0]>0 && data[1]>0){        
         Swal.fire("Error","Ya hay escenas con este nombre de archivo e imagen",'error');
@@ -209,6 +212,7 @@ ExaminarArchivoEscena($event) {
           this.archivoEscenaCargado =true;
           this.nombreArchivoEscenaAntiguo = this.nombreArchivoEscenaNuevo;
           this.nombreArchivoEscenaNuevo = this.profesorId+this.fileArchivoEscena.name;
+          this.nombreArchivoMostrar=this.fileArchivoEscena.name;
           this.cambios=true;
     }catch{
       Swal.fire('Archivo JSON no válido','Prueba a subir otro archivo o corregir el existente', 'error')
@@ -241,5 +245,7 @@ Cerrar(): void {
     }
   }
 }
+
+
 
 }

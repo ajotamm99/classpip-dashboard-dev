@@ -208,27 +208,21 @@ export class EditarMapaComponent implements OnInit {
         //this.EscenasdeEscenario = nueva;
         console.log ('ya esta borrado');
         console.log (this.EscenasdeEscenario);
-      }
-    );
-    console.log (this.EscenasdeEscenario);
-    this.peticionesAPI.BorrarImagenEscena(escena.Tilesheet).subscribe( () => {
-        // tslint:disable-next-line:max-line-length
-        //const nueva = this.imagenesCromosDelante.slice(0, posicion).concat(this.imagenesCromosDelante.slice(posicion + 1, this.imagenesCromosDelante.length));
-        //this.imagenesEscenas =nueva;
-        this.imagenesEscenas.splice(posicion,1);
-      }
-    );
-      this.peticionesAPI.BorrarArchivoEscena(escena.Archivo).subscribe( () => {
-        // tslint:disable-next-line:max-line-length
-        //const nueva = this.ArchivosEscenas.slice(0, posicion).concat(this.imagenesCromosDetras.slice(posicion + 1, this.imagenesCromosDetras.length));
-        //this.archivosEscenas =nueva;
-        this.archivosEscenas.splice(posicion,1);
-      }
+        this.peticionesAPI.BorrarImagenEscena(escena.Tilesheet).subscribe( () => {
+          // tslint:disable-next-line:max-line-length
+          //const nueva = this.imagenesCromosDelante.slice(0, posicion).concat(this.imagenesCromosDelante.slice(posicion + 1, this.imagenesCromosDelante.length));
+          //this.imagenesEscenas =nueva;
+          this.imagenesEscenas.splice(posicion,1);
+          this.peticionesAPI.BorrarArchivoEscena(escena.Archivo).subscribe( () => {
+            // tslint:disable-next-line:max-line-length
+            //const nueva = this.ArchivosEscenas.slice(0, posicion).concat(this.imagenesCromosDetras.slice(posicion + 1, this.imagenesCromosDetras.length));
+            //this.archivosEscenas =nueva;
+            this.archivosEscenas.splice(posicion,1);
+          }
+          );        
+        }
       );
-    
-
-
-
+      });
   }
 
 
