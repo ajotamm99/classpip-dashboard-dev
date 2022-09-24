@@ -9,8 +9,9 @@
               <span style="font-weight: bold;">Nombre: </span>
               <input style="background-color: transparent" type="text" name="nombre" placeholder="Escribe el nombre" (change) = "cambios=true" requiered [(ngModel)]="nombreEscenario">
               <br>
-              <br>
-              <input style="background-color: transparent; font-size: 70%" type="text" name="descripcion" placeholder="Escribe la descripcion" (change) = "cambios=true" requiered [(ngModel)]="descripcionEscenario">
+              <br>              
+              <span style="font-weight: bold;">Descripción: </span>
+              <textarea style="background-color: transparent; font-size: 100%" type="text" name="descripcion" placeholder="Escribe la descripcion" (change) = "cambios=true" requiered [(ngModel)]="descripcionEscenario"></textarea>
               <br>
               <button *ngIf = "cambios" type="button" class="btn Aceptar"  (click)= "EditarEscenario()">Aceptar Cambios <i class="material-icons">
                   check </i></button>

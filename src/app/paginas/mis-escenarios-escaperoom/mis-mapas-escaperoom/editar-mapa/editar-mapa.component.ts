@@ -85,14 +85,15 @@ export class EditarMapaComponent implements OnInit {
     }*/
 
     // tslint:disable-next-line:max-line-length
-    this.peticionesAPI.ModificaEscenarioEscaperoom(new EscenarioEscaperoom(this.EscenarioEscaperoom.profesorId, this.nombreEscenario, this.descripcionEscenario), this.EscenarioEscaperoom.profesorId, this.EscenarioEscaperoom.id)
+    var escena= new EscenarioEscaperoom(this.EscenarioEscaperoom.profesorId, this.nombreEscenario, this.descripcionEscenario);
+    escena.setPublica(this.EscenarioEscaperoom.Publica);
+    this.peticionesAPI.ModificaEscenarioEscaperoom(escena, this.EscenarioEscaperoom.profesorId, this.EscenarioEscaperoom.id)
     .subscribe((res) => {
       if (res != null) {
-        console.log('Voy a editar el escenario con id ' + this.EscenarioEscaperoom.id);
+        Swal.fire("Editado","Escenario editado con éxito",'success');
         this.EscenarioEscaperoom = res;
 
       } else {
-        console.log('fallo editando');
       }
     });
     this.cambios = false;

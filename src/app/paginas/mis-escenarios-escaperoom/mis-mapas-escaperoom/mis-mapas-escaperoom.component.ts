@@ -92,6 +92,24 @@ export class MisMapasEscaperoomComponent implements OnInit {
 
 }
 
+HazPublico(escenarioEscaperoom: EscenarioEscaperoom){
+  escenarioEscaperoom.Publica = true;
+  this.peticionesAPI.ModificaEscenarioEscaperoom(escenarioEscaperoom, this.profesorId, escenarioEscaperoom.id).subscribe(res=>{
+    this.EscenariosPublicos.push(res);
+    this.EscenariosProfesor.splice(this.EscenariosProfesor.findIndex(sc=>sc.id==escenarioEscaperoom.id),1,res);  
+    this.dataSourcePublicas = new MatTableDataSource(this.EscenariosPublicos);
+  });
+}
+
+HazPrivado(escenarioEscaperoom: EscenarioEscaperoom){
+  escenarioEscaperoom.Publica = false;
+  this.peticionesAPI.ModificaEscenarioEscaperoom(escenarioEscaperoom, this.profesorId, escenarioEscaperoom.id).subscribe(res=>{
+    this.EscenariosPublicos=this.EscenariosPublicos.filter(sc=>sc.id!=res.id);
+    this.EscenariosProfesor.splice(this.EscenariosProfesor.findIndex(sc=>sc.id==escenarioEscaperoom.id),1,res);
+    this.dataSourcePublicas = new MatTableDataSource(this.EscenariosPublicos);
+  });
+}
+
 Crear(){
   this.router.navigate(['/inicio/' + this.profesorId + '/recursos/misRecursosEscaperoom/crearMapa']);
 
@@ -127,6 +145,7 @@ VerEscenasPublicas(EscenarioEscaperoom: EscenarioEscaperoom) {
   this.peticionesAPI.DameEscenasdeEscenariosEscaperoom(EscenarioEscaperoom.id).subscribe(res =>{
       this.EscenasdeEscenario=res;
       this.sesion.TomaEscenasdeEscenario(this.EscenasdeEscenario);
+      this.router.navigate(['/inicio/' + this.profesorId + '/recursos/misRecursosEscaperoom/misMapas/escenasPublicas']);
   }, (error) =>{
     console.log("no hay ninguna escena en el escenario", error);
     let errors: HttpErrorResponse = error;
@@ -134,9 +153,9 @@ VerEscenasPublicas(EscenarioEscaperoom: EscenarioEscaperoom) {
       //Swal.fire('Escenas', 'No hay ninguna escena en el escenario: '+EscenarioEscaperoom.Nombre, 'warning');
     }    
     this.sesion.TomaEscenasdeEscenario(this.EscenasdeEscenario);
+    this.router.navigate(['/inicio/' + this.profesorId + '/recursos/misRecursosEscaperoom/misMapas/escenasPublicas']);
   });
-  this.router.navigate(['/inicio/' + this.profesorId + '/recursos/misRecursosEscaperoom/misMapas/escenasPublicas']);
-
+  
 }
 
    // Utilizamos esta función para eliminar una colección de la base de datos y actualiza la lista de colecciones
@@ -171,7 +190,9 @@ BorrarEscenarioEscaperoom(EscenarioEscaperoom: EscenarioEscaperoom) {
 
     console.log ('La saco de la lista');
     this.EscenariosProfesor = this.EscenariosProfesor.filter(escenario => escenario.id !== EscenarioEscaperoom.id);
+    this.EscenariosPublicos=this.EscenariosPublicos.filter(escenario => escenario.id !== EscenarioEscaperoom.id);
     this.dataSource = new MatTableDataSource(this.EscenariosProfesor);
+    this.dataSourcePublicas = new MatTableDataSource(this.EscenariosPublicos);
     //this.ngOnInit();
 }
 

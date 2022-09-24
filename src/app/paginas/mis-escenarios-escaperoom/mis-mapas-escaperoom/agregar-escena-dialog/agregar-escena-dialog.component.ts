@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatTableDataSource } from '@angular/material';
 import { Cromo, EscenaEscaperoom, EscenarioEscaperoom } from 'src/app/clases';
 import { OpcionSeleccionada } from 'src/app/paginas/juego/juego.component';
 import { AgregarCromoDialogComponent } from 'src/app/paginas/mis-colecciones/agregar-cromo-dialog/agregar-cromo-dialog.component';
@@ -23,11 +23,14 @@ nombreEscena: string;
 imagenEscena: string;
 ArchivoEscena: string;
 EscenasAgregadas: EscenaEscaperoom [] = [];
+EscenasAgregadasMostrar: EscenaEscaperoom[]=[];
+dataSourceMostrar;
 // tslint:disable-next-line:ban-types
 
 // COMPARTIDO
 
 nombreImagenEscena: string;
+nombreImagenEscenaMostrar: string;
 nombreArchivoEscena: string;
 nombreArchivoEscenaMostrar:string;
 fileImagenEscena: File;
@@ -107,6 +110,11 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
               console.log('asignado correctamente');
               // Añadimos el cromo a la lista
               this.EscenasAgregadas.push(res);
+              var Escena =new EscenaEscaperoom(this.nombreArchivoEscenaMostrar,this.nombreImagenEscenaMostrar,res.Nombre,res.escenarioEscapeRoomId);
+              Escena.Publica=res.Publica;
+              Escena.id=res.id;
+              this.EscenasAgregadasMostrar.push(Escena);
+              this.dataSourceMostrar= new MatTableDataSource(this.EscenasAgregadasMostrar);
               //this.EscenasAgregadas = this.EscenasAgregadas.filter(result => result.Nombre !== '');
               // this.CromosAgregados(res);
       
@@ -155,7 +163,10 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
     .subscribe(() => {
       // Elimino el cromo de la lista
       this.EscenasAgregadas = this.EscenasAgregadas.filter(res => res.id !== escena.id);
+      this.EscenasAgregadasMostrar = this.EscenasAgregadasMostrar.filter(res => res.id !== escena.id);
+      this.dataSourceMostrar= new MatTableDataSource(this.EscenasAgregadasMostrar);
       console.log('Cromo borrado correctamente');
+      Swal.fire("Eliminada","Escena eliminada con éxito", 'success');
   
     });
     if(escena.Tilesheet!== undefined){
@@ -188,6 +199,7 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
     reader.onload = () => {
       
     this.nombreImagenEscena = this.profesorId+this.fileImagenEscena.name;
+    this.nombreImagenEscenaMostrar=this.fileImagenEscena.name;
       console.log('ya Escena');
       this.imagenCargadaEscena= true;
       // this.imagenCargadoCromo = true;
@@ -225,6 +237,7 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
     this.imagenEscena=undefined;
     this.ArchivoEscena=undefined;
     this.nombreImagenEscena = undefined;
+    this.nombreImagenEscenaMostrar=undefined;
     this.nombreArchivoEscena = undefined;
     this.nombreArchivoEscenaMostrar=undefined;
 

@@ -14,4 +14,8 @@ export class EscenarioEscaperoom {
       this.Publica = false;
   
     }
+
+    public setPublica(publics:boolean){
+      this.Publica=publics;
+    }
   }

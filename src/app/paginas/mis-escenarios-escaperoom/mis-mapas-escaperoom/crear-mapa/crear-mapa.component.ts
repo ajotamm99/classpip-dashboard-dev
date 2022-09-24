@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { EscenaEscaperoom } from './../../../../clases/clasesParaJuegoDeEscapeRoom/EscenaEscaperoom';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatTabGroup, MatDialog } from '@angular/material';
+import { MatTabGroup, MatDialog, MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { Coleccion, Cromo, EscenarioEscaperoom } from 'src/app/clases';
@@ -41,12 +41,15 @@ nombreEscena: string;
 imagenEscena: string;
 ArchivoEscena: string;
 EscenasAgregadas: EscenaEscaperoom [] = [];
+EscenasAgregadasMostrar: EscenaEscaperoom[]=[];
+dataSourceMostrar;
 // tslint:disable-next-line:ban-types
 
 // COMPARTIDO
 profesorId: number;
 
 nombreImagenEscena: string;
+nombreImagenEscenaMostrar: string;
 nombreArchivoEscena: string;
 nombreArchivoEscenaMostrar: string;
 fileImagenEscena: File;
@@ -168,6 +171,11 @@ AgregarEscenaEscenario() {
             console.log('asignado correctamente');
             // Añadimos el cromo a la lista
             this.EscenasAgregadas.push(res);
+            var Escena =new EscenaEscaperoom(this.nombreArchivoEscenaMostrar,this.nombreImagenEscenaMostrar,res.Nombre,res.escenarioEscapeRoomId);
+            Escena.Publica=res.Publica;
+            Escena.id=res.id;
+            this.EscenasAgregadasMostrar.push(Escena);
+            this.dataSourceMostrar= new MatTableDataSource(this.EscenasAgregadasMostrar);
             //this.EscenasAgregadas = this.EscenasAgregadas.filter(result => result.Nombre !== '');
             // this.CromosAgregados(res);
             console.log(this.imagenEscena,this.infoArchivoEscena);
@@ -215,7 +223,9 @@ BorrarEscena(escena: EscenaEscaperoom) {
   .subscribe(() => {
     // Elimino el cromo de la lista
     this.EscenasAgregadas = this.EscenasAgregadas.filter(res => res.id !== escena.id);
-    console.log('Cromo borrado correctamente');
+    this.EscenasAgregadasMostrar = this.EscenasAgregadasMostrar.filter(res => res.id !== escena.id);
+    this.dataSourceMostrar= new MatTableDataSource(this.EscenasAgregadasMostrar);
+    Swal.fire("Eliminada","Escena eliminada con éxito", 'success');
     if(escena.Tilesheet!== undefined && escena.Archivo!==undefined){
       this.peticionesAPI.BorrarImagenEscena (escena.Tilesheet).subscribe(_=>{
         this.peticionesAPI.BorrarArchivoEscena (escena.Archivo).subscribe();
@@ -250,6 +260,7 @@ ExaminarImagenEscena($event) {
   reader.readAsDataURL(this.fileImagenEscena);
   reader.onload = () => {
     this.nombreImagenEscena = this.profesorId+this.fileImagenEscena.name;
+    this.nombreImagenEscenaMostrar=this.fileImagenEscena.name;
     console.log('ya Escena');
     this.imagenCargadaEscena= true;
     this.imagenEscena = reader.result.toString();
@@ -287,6 +298,7 @@ LimpiarCampos() {
     this.imagenEscena=undefined;
     this.ArchivoEscena=undefined;
     this.nombreImagenEscena = undefined;
+    this.nombreImagenEscenaMostrar= undefined;
     this.nombreArchivoEscena = undefined;
     this.nombreArchivoEscenaMostrar=undefined;
 

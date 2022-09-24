@@ -7,7 +7,7 @@
     <mat-tab label="Mis Escenarios">
       <br>
       <div class ='enColumna'>
-        <form style = "width: 100%"  *ngIf="EscenariosProfesor.length>0;else Aviso_no_escenarios">
+        <form style = "width: 100%"  *ngIf="EscenariosProfesor[0];else Aviso_no_escenarios">
 
           <div class = "filter">
             <mat-form-field>
@@ -40,14 +40,12 @@
                     <button (click) = "Descargar(escenario)" mat-icon-button matTooltip="Descargar recursos del escenario">
                       <i class="material-icons blue md-36">get_app</i>
                     </button>
-                    <!-- TODAVÍA NO ESTÁ CLARA LA ESTRATEGIA DE PUBLICACION DE ESCENARIOS EN LA APP 
-                    <button *ngIf = "!coleccion.Publica" (click) = "HazPublica(coleccion)" mat-icon-button matTooltip="Haz pública la colección">
+                    <button *ngIf = "!escenario.Publica" (click) = "HazPublico(escenario)" mat-icon-button matTooltip="Haz pública la colección">
                       <i class="material-icons grey md-36">public_off</i>
                     </button>
-                    <button *ngIf = "coleccion.Publica" (click) = "HazPrivada(coleccion)" mat-icon-button matTooltip="Haz privada la colección">
+                    <button *ngIf = "escenario.Publica" (click) = "HazPrivado(escenario)" mat-icon-button matTooltip="Haz privada la colección">
                       <i class="material-icons green md-36">public</i>
                     </button>
-                    -->
                   </div>
               </td>
             </ng-container>
@@ -66,7 +64,7 @@
     <mat-tab label= "Escenarios públicos">
       <br>
       <div class ='enColumna'>
-        <form style = "width: 100%" *ngIf="EscenariosPublicos.length>0;else Aviso_no_escenarios_publicos">
+        <form style = "width: 100%" *ngIf="EscenariosPublicos[0];else Aviso_no_escenarios_publicos">
 
           <div class = "filter">
             <mat-form-field>
