@@ -5,20 +5,15 @@
   <div class= "enColumna">
   <mat-card class="panel">
     <mat-card-content>
-
-
-            <div class="texto" style=" text-align: left;">
-                <mat-form-field style="margin: 15px;">
-                    <mat-label style="color: white;">Nombre </mat-label>
-                    <mat-label style="background-color: transparent">{{nombreSkin}}</mat-label>
-                  </mat-form-field>
-            </div>
-
-            <div class="enFila" style="width: 100%">
-              <div>
-                <img class="imagenSkin" *ngIf="imagenObjeto" mat-card-image [src]="imagenSkin">
-              </div>
-            </div>
+      <div class="enColumna">
+        <div class="texto" style=" text-align: center;">
+          <mat-label style="color: white;">Nombre: </mat-label>
+          <mat-label style="background-color: transparent">{{nombreSkin}}</mat-label>
+        </div>
+        <br>
+        <br>
+        <img style="max-width: 30%; max-height: 30%;" class="imagenEscenaEscaperoom" *ngIf="imagenSkin" mat-card-image [src]="imagenSkin">
+      </div>
     </mat-card-content>
   </mat-card>
 

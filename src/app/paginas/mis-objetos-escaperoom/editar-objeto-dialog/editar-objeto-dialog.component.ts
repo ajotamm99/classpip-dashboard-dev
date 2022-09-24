@@ -111,7 +111,9 @@ export class EditarObjetoDialogComponent implements OnInit {
     this.ComprobarImagenesObjeto(this.nombreImagenObjetoNueva, this.ObjetoEscaperoom.id)
     .then(cont=>{
       if(cont==0){
-        this.peticionesAPI.ModificaObjeto(new ObjetoEscaperoom(this.nombreObjeto,  this.nombreImagenObjetoNueva, this.tipoObjeto), this.ObjetoEscaperoom.id,this.profesorId)
+        var objeto=new ObjetoEscaperoom(this.nombreObjeto,  this.nombreImagenObjetoNueva, this.tipoObjeto);
+        objeto.Publica=this.ObjetoEscaperoom.Publica;
+        this.peticionesAPI.ModificaObjeto(objeto, this.ObjetoEscaperoom.id,this.profesorId)
         .subscribe((res) => {
           if (res != null) {
             this.ObjetoEscaperoom = res;

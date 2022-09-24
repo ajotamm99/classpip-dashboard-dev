@@ -100,6 +100,23 @@ Descargar(skinEscaperoom: Skin) {
 
 }
 
+HazPublica(skinEscaperoom: Skin){
+  skinEscaperoom.Publica = true;
+  this.peticionesAPI.ModificaSkin(skinEscaperoom, skinEscaperoom.id, this.profesorId).subscribe(res=>{
+    this.SkinsEscaperoomPublicas.push(res);
+    this.SkinsEscaperoom.splice(this.SkinsEscaperoom.findIndex(sc=>sc.id==skinEscaperoom.id),1,res);  
+    this.dataSourcePublicas = new MatTableDataSource(this.SkinsEscaperoomPublicas);
+  });
+}
+
+HazPrivada(skinEscaperoom: Skin){
+  skinEscaperoom.Publica = false;
+  this.peticionesAPI.ModificaSkin(skinEscaperoom, skinEscaperoom.id, this.profesorId).subscribe(res=>{
+    this.SkinsEscaperoomPublicas=this.SkinsEscaperoomPublicas.filter(sc=>sc.id!=res.id);
+    this.SkinsEscaperoom.splice(this.SkinsEscaperoom.findIndex(sc=>sc.id==skinEscaperoom.id),1,res);
+    this.dataSourcePublicas = new MatTableDataSource(this.SkinsEscaperoomPublicas);
+  });
+}
 
 VerSkinDialog(SkinEscaperoom: Skin) {
 
@@ -121,16 +138,10 @@ VerSkinDialog(SkinEscaperoom: Skin) {
     if(nuevaSkin!=null){
       //tslint:disable-next-line:prefer-for-of
       
-      /*const skinBuscar= this.SkinsEscaperoom.findIndex(sk=> sk.id== nuevaSkin.id)[0];
-      const index= this.SkinsEscaperoom.indexOf(skinBuscar);
-      this.SkinsEscaperoom.splice(index,1,nuevaSkin);*/
       this.SkinsEscaperoom.splice(this.SkinsEscaperoom.findIndex(sk=> sk.id== nuevaSkin.id),1,nuevaSkin);
-      
-      
-      //this.SkinsEscaperoom = this.SkinsEscaperoom.filter(sk => sk.id !== nuevaSkin.id);
-      //this.SkinsEscaperoom.push (nuevaSkin);     
-
+      this.SkinsEscaperoomPublicas.splice(this.SkinsEscaperoom.findIndex(sk=> sk.id== nuevaSkin.id),1,nuevaSkin);
       this.dataSource = new MatTableDataSource(this.SkinsEscaperoom);
+      this.dataSourcePublicas = new MatTableDataSource(this.SkinsEscaperoomPublicas);
       this.TraeImagenesSkins();
       this.sesion.TomaSkisnEscaperoom(this.SkinsEscaperoom);
     }
@@ -176,8 +187,10 @@ BorrarSkinEscaperoom(skinEscaperoom: Skin) {
 
     console.log ('La saco de la lista');
     this.SkinsEscaperoom = this.SkinsEscaperoom.filter(sk => sk.id !== skinEscaperoom.id);
+    this.SkinsEscaperoomPublicas = this.SkinsEscaperoomPublicas.filter(sk => sk.id !== skinEscaperoom.id);
     this.sesion.TomaSkisnEscaperoom(this.SkinsEscaperoom);
     this.dataSource = new MatTableDataSource(this.SkinsEscaperoom);
+    this.dataSourcePublicas = new MatTableDataSource(this.SkinsEscaperoomPublicas);
 }
 
 

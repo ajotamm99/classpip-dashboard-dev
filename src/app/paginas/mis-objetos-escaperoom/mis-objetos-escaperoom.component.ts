@@ -1,12 +1,11 @@
 import { ObjetoActivo } from './../../clases/clasesParaJuegoDeEscapeRoom/ObjetoActivo';
 import { MostrarObjetosPublicosComponent } from './mostrar-objetos-publicos/mostrar-objetos-publicos.component';
 import { EditarObjetoDialogComponent } from './editar-objeto-dialog/editar-objeto-dialog.component';
-import { ObjetoEscaperoom } from './../../clases/clasesParaJuegoDeEscapeRoom/ObjetoEscaperoom';
 import { Component, OnInit } from '@angular/core';
 import { Http } from '@angular/http';
 import { MatDialog, MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
-import { EscenarioEscaperoom, EscenaEscaperoom, JuegoDeEscapeRoom } from 'src/app/clases';
+import { EscenarioEscaperoom, EscenaEscaperoom, JuegoDeEscapeRoom, ObjetoEscaperoom } from 'src/app/clases';
 import { SesionService, PeticionesAPIService } from 'src/app/servicios';
 import { Location } from '@angular/common';
 import Swal from 'sweetalert2';
@@ -111,6 +110,24 @@ Descargar(objetoEscaperoom: ObjetoEscaperoom) {
 
 }
 
+HazPublico(objetoEscaperoom: ObjetoEscaperoom){
+  objetoEscaperoom.Publica = true;
+  this.peticionesAPI.ModificaObjeto(objetoEscaperoom, objetoEscaperoom.id, this.profesorId).subscribe(res=>{
+    this.ObjetosEscaperoomPublicos.push(res);
+    this.ObjetosEscaperoom.splice(this.EscenariosProfesor.findIndex(sc=>sc.id==objetoEscaperoom.id),1,res);  
+    this.dataSourcePublicas = new MatTableDataSource(this.ObjetosEscaperoomPublicos);
+  });
+}
+
+HazPrivado(objetoEscaperoom: ObjetoEscaperoom){
+  objetoEscaperoom.Publica = false;
+  this.peticionesAPI.ModificaObjeto(objetoEscaperoom, objetoEscaperoom.id, this.profesorId).subscribe(res=>{
+    this.ObjetosEscaperoomPublicos=this.ObjetosEscaperoomPublicos.filter(sc=>sc.id!=res.id);
+    this.ObjetosEscaperoom.splice(this.ObjetosEscaperoom.findIndex(sc=>sc.id==objetoEscaperoom.id),1,res);
+    this.dataSourcePublicas = new MatTableDataSource(this.ObjetosEscaperoomPublicos);
+  });
+}
+
 
 VerObjetoDialog(ObjetoEscaperoom: ObjetoEscaperoom) {
 
@@ -133,8 +150,10 @@ VerObjetoDialog(ObjetoEscaperoom: ObjetoEscaperoom) {
       //var objetoBuscar = this.ObjetosEscaperoom.filter(obj => obj.id == nuevoObjeto.id)[0];
       //var index = this.ObjetosEscaperoom.indexOf(objetoBuscar);
       this.ObjetosEscaperoom.splice(this.ObjetosEscaperoom.findIndex(obj => obj.id == nuevoObjeto.id), 1 ,nuevoObjeto);
+      this.ObjetosEscaperoomPublicos.splice(this.ObjetosEscaperoomPublicos.findIndex(obj => obj.id == nuevoObjeto.id), 1 ,nuevoObjeto)
       this.sesion.TomaObjetosEscaperoomProfesor;
       this.dataSource = new MatTableDataSource(this.ObjetosEscaperoom);
+      this.dataSourcePublicas = new MatTableDataSource(this.ObjetosEscaperoomPublicos);
       //this.TraeImagenColeccion(this.coleccion);
       this.TraeImagenesObjetos();
     }
@@ -181,7 +200,9 @@ BorrarObjetoEscaperoom(objetoEscaperoom: ObjetoEscaperoom) {
 
     console.log ('La saco de la lista');
     this.ObjetosEscaperoom = this.ObjetosEscaperoom.filter(obj => obj.id !== objetoEscaperoom.id);
+    this.ObjetosEscaperoomPublicos = this.ObjetosEscaperoomPublicos.filter(obj => obj.id !== objetoEscaperoom.id);
     this.sesion.TomaObjetosEscaperoomProfesor(this.ObjetosEscaperoom);
+    this.dataSourcePublicas= new MatTableDataSource(this.ObjetosEscaperoomPublicos);
     this.dataSource = new MatTableDataSource(this.ObjetosEscaperoom);
 }
 

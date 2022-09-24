@@ -90,7 +90,9 @@ export class EditarSkinDialogComponent implements OnInit {
     this.ComprobarImagenesSkins(this.nombreImageSkinNueva,this.skinEscaperoom.id)
     .then(cont=>{
       if(cont==0){
-        this.peticionesAPI.ModificaSkin(new Skin(this.nombreImageSkinNueva,  this.nombreSkin), this.skinEscaperoom.id,this.profesorId)
+        var skin=new Skin(this.nombreImageSkinNueva,  this.nombreSkin);
+        skin.Publica=this.skinEscaperoom.Publica;
+        this.peticionesAPI.ModificaSkin(skin, this.skinEscaperoom.id,this.profesorId)
         .subscribe((res) => {
           if (res != null) {
             this.skinEscaperoom = res;
