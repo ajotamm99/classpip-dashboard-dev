@@ -49,6 +49,7 @@ import { JuegoMEMORAMA } from '../clases/JuegoMemorama';
 import{Carta} from 'src/app/clases/Carta';
 import { noUndefined } from '@angular/compiler/src/util';
 import { data } from 'jquery';
+import { HttpResponseEncoding } from 'tns-core-modules';
 
 @Injectable({
   providedIn: 'root'
@@ -2814,5 +2815,26 @@ public ModificaInscripcionAlumnoJuegoDeVotacionAOpciones(inscripcion: AlumnoJueg
   public BorrarImagenSkin(imagenSkin: string): Observable<any> {
 
     return this.http.delete<any>(this.APIUrlImagenesSkins + '/files/' + imagenSkin);
+  }
+
+  public DameImagenSkin(imagenSkin: string): Observable<any>{
+    return this.httpImagenes.get(this.APIUrlImagenesSkins + '/download/' + imagenSkin,
+    { responseType: ResponseContentType.Blob });
+
+  }
+  public DameImagenObjeto(imagenObjeto: string): Observable<any>{
+    return this.httpImagenes.get(this.APIUrlImagenesObjetos + '/download/' + imagenObjeto,
+    { responseType: ResponseContentType.Blob });
+
+  }
+  public DameImagenEscena(imagenEscena: string): Observable<any>{
+    return this.httpImagenes.get(this.APIUrlImagenesEscenas + '/download/' + imagenEscena,
+    { responseType: ResponseContentType.Blob });
+
+  }
+  public DameArchivoEscena(archivoEscena: string): Observable<any>{
+    return this.httpImagenes.get(this.APIUrlArchivosEscenas + '/download/' + archivoEscena,
+    { responseType: ResponseContentType.Blob });
+
   }
 }

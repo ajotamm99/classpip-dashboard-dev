@@ -12,6 +12,8 @@ import { MostrarObjetosPublicosComponent } from '../mis-objetos-escaperoom/mostr
 import 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 
+import * as URL from '../../URLs/urls';
+
 @Component({
   selector: 'app-mis-skins-escaperoom',
   templateUrl: './mis-skins-escaperoom.component.html',
@@ -21,6 +23,7 @@ export class MisSkinsEscaperoomComponent implements OnInit {
 
   profesorId: number;
   Skin: Skin;
+  imagenSkinData: string;
   SkinsEscaperoom: Skin[]=[];
   SkinsEscaperoomPublicas: Skin[]= [];
   imagenesSkinsEscaperoom: string[]=[];
@@ -96,7 +99,20 @@ export class MisSkinsEscaperoomComponent implements OnInit {
 Descargar(skinEscaperoom: Skin) {
 
   this.sesion.TomaSkinEscaperoom(skinEscaperoom);
-  //this.router.navigate(['/inicio/' + this.profesorId + '/recursos/misRecursosEscaperoom/misMapas/guardarMapa']);
+  this.peticionesAPI.DameImagenSkin(skinEscaperoom.Spritesheet)
+  .subscribe(response => {
+    const blob = new Blob([response.blob()], { type: 'image/jpg'});
+
+    if (blob) {
+      const a = document.createElement('a');
+      a.href = window.URL.createObjectURL(blob);      
+      a.download ='skinSprite.png';      
+      a.setAttribute('target', '_blank');
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
+  });
 
 }
 

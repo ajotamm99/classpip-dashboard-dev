@@ -106,8 +106,20 @@ export class MisObjetosEscaperoomComponent implements OnInit {
 Descargar(objetoEscaperoom: ObjetoEscaperoom) {
 
   this.sesion.TomaObjetoEscaperoom(objetoEscaperoom);
-  //this.router.navigate(['/inicio/' + this.profesorId + '/recursos/misRecursosEscaperoom/misMapas/guardarMapa']);
+  this.peticionesAPI.DameImagenObjeto(objetoEscaperoom.Imagen)
+  .subscribe(response => {
+    const blob = new Blob([response.blob()], { type: 'image/jpg'});
 
+    if (blob) {
+      const a = document.createElement('a');
+      a.href = window.URL.createObjectURL(blob);      
+      a.download ='objetoImagen.png';      
+      a.setAttribute('target', '_blank');
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
+  });
 }
 
 HazPublico(objetoEscaperoom: ObjetoEscaperoom){

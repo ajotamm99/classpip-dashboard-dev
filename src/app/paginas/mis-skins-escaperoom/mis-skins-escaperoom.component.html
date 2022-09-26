@@ -37,10 +37,10 @@
                     <button (click) = "Descargar(skin)" mat-icon-button matTooltip="Descargar skin">
                       <i class="material-icons blue md-36">get_app</i>
                     </button>
-                   <button *ngIf = "!skin.Publica" (click) = "HazPublica(skin)" mat-icon-button matTooltip="Haz pública la colección">
+                   <button *ngIf = "!skin.Publica" (click) = "HazPublica(skin)" mat-icon-button matTooltip="Haz pública la skin">
                       <i class="material-icons grey md-36">public_off</i>
                     </button>
-                    <button *ngIf = "skin.Publica" (click) = "HazPrivada(skin)" mat-icon-button matTooltip="Haz privada la colección">
+                    <button *ngIf = "skin.Publica" (click) = "HazPrivada(skin)" mat-icon-button matTooltip="Haz privada la skin">
                       <i class="material-icons green md-36">public</i>
                     </button>
                     

@@ -40,10 +40,10 @@
                     <button (click) = "Descargar(objeto)" mat-icon-button matTooltip="Descargar objeto">
                       <i class="material-icons blue md-36">get_app</i>
                     </button>
-                    <button *ngIf = "!objeto.Publica" (click) = "HazPublico(objeto)" mat-icon-button matTooltip="Haz pública la colección">
+                    <button *ngIf = "!objeto.Publica" (click) = "HazPublico(objeto)" mat-icon-button matTooltip="Haz público el objeto">
                       <i class="material-icons grey md-36">public_off</i>
                     </button>
-                    <button *ngIf = "objeto.Publica" (click) = "HazPrivado(objeto)" mat-icon-button matTooltip="Haz privada la colección">
+                    <button *ngIf = "objeto.Publica" (click) = "HazPrivado(objeto)" mat-icon-button matTooltip="Haz privado el objeto">
                       <i class="material-icons green md-36">public</i>
                     </button>
                   </div>

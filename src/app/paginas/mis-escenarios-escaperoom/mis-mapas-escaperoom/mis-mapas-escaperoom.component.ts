@@ -1,3 +1,6 @@
+import { EscenaBase64 } from './../../../clases/EscenaBase64';
+import { data } from 'jquery';
+import { TrustedString } from '@angular/core/src/sanitization/bypass';
 import { HttpErrorResponse } from '@angular/common/http';
 import { EscenaEscaperoom } from './../../../clases/clasesParaJuegoDeEscapeRoom/EscenaEscaperoom';
 import { Escenario } from 'src/app/clases/Escenario';
@@ -8,6 +11,9 @@ import { Router } from '@angular/router';
 import { EscenarioEscaperoom, JuegoDeEscapeRoom } from 'src/app/clases';
 import { SesionService, PeticionesAPIService } from 'src/app/servicios';
 import Swal from 'sweetalert2';
+import 'rxjs';
+import * as JSZip from 'jszip';
+import * as saveAs from 'file-saver';
 
 @Component({
   selector: 'app-mis-mapas-escaperoom',
@@ -21,6 +27,7 @@ export class MisMapasEscaperoomComponent implements OnInit {
   EscenariosProfesor: EscenarioEscaperoom[] = [];
   EscenariosPublicos: EscenarioEscaperoom[] = [];
   EscenasdeEscenario: EscenaEscaperoom[] = [];
+  EscenasBase64: EscenaBase64[]=[];
 
   JuegoEscaperoom: JuegoDeEscapeRoom | JuegoDeEscapeRoom[];
   numeroDeEscenarios: number;
@@ -88,8 +95,72 @@ export class MisMapasEscaperoomComponent implements OnInit {
  Descargar(EscenarioEscaperoom: EscenarioEscaperoom) {
 
   this.sesion.TomaEscenarioEscaperoom(EscenarioEscaperoom);
-  this.router.navigate(['/inicio/' + this.profesorId + '/recursos/misRecursosEscaperoom/misMapas/guardarMapa']);
+  var lista: string [] = [];
 
+  //this.router.navigate(['/inicio/' + this.profesorId + '/recursos/misRecursosEscaperoom/misMapas/guardarMapa']);
+  var zip= new JSZip();
+  this.peticionesAPI.DameEscenasdeEscenariosEscaperoom(EscenarioEscaperoom.id)
+  .subscribe(res=>{
+    this.ImagenesAsync(res)
+    .then(_=>{
+      console.log(this.EscenasBase64);
+      var cont=0;
+      for(let i=0; i<this.EscenasBase64.length;i++){   
+        var fld=zip.folder(this.EscenasBase64[i].Nombre);     
+        fld.file(this.EscenasBase64[i].Nombre+".png",this.EscenasBase64[i].Imagen64, {base64: true});
+        fld.file(this.EscenasBase64[i].Nombre+".json",this.EscenasBase64[i].Archivo64, {base64: true});
+        cont++;
+        if(cont==this.EscenasBase64.length){
+          zip.generateAsync({type:"blob"})
+          .then(function(content) {
+          // see FileSaver.js
+          saveAs(content, EscenarioEscaperoom.Nombre+".zip");
+          });    
+        }   
+      }      
+    });
+  },error=>{
+    Swal.fire("Error","No hay escenas en el escenario",'error');
+  })
+
+}
+
+async ImagenesAsync(escenasEscaperoom: EscenaEscaperoom[]){
+  await new Promise<void>(async (resolve, _) => {
+    var cont=0;
+    for(let i=0; i<escenasEscaperoom.length; i++){
+      this.peticionesAPI.DameImagenEscena(escenasEscaperoom[i].Tilesheet)
+      .subscribe( res=>{
+        const blob1 = new Blob([res.blob()], { type: 'image/jpg'});
+        this.blobToBase64(blob1)
+        .then(data1=>{
+          this.EscenasBase64[i]=(new EscenaBase64(escenasEscaperoom[i].Nombre,data1));
+          this.peticionesAPI.DameArchivoEscena(escenasEscaperoom[i].Archivo)
+          .subscribe( res=>{
+            const blob2 = new Blob([res.blob()], { type: 'application/json'});
+            this.blobToBase64(blob2)
+            .then(data2=>{
+              this.EscenasBase64[i].Archivo64=data2;
+              cont++;
+              if(cont==escenasEscaperoom.length){
+                resolve();
+              }
+            })        
+          });
+        })        
+      });
+    }
+  });
+}
+
+blobToBase64(blob: Blob) {
+  return new Promise<string>((resolve, _) => {
+    const reader = new FileReader();    
+    reader.readAsDataURL(blob);
+    reader.onloadend = () => {
+      resolve(reader.result.toString().split(',')[1]);
+    };
+  });
 }
 
 HazPublico(escenarioEscaperoom: EscenarioEscaperoom){
