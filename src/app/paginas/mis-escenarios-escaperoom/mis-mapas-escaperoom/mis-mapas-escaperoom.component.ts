@@ -101,7 +101,7 @@ export class MisMapasEscaperoomComponent implements OnInit {
   var zip= new JSZip();
   this.peticionesAPI.DameEscenasdeEscenariosEscaperoom(EscenarioEscaperoom.id)
   .subscribe(res=>{
-    this.ImagenesAsync(res)
+    this.ImagenesArchivosAsync(res)
     .then(_=>{
       console.log(this.EscenasBase64);
       var cont=0;
@@ -125,7 +125,7 @@ export class MisMapasEscaperoomComponent implements OnInit {
 
 }
 
-async ImagenesAsync(escenasEscaperoom: EscenaEscaperoom[]){
+async ImagenesArchivosAsync(escenasEscaperoom: EscenaEscaperoom[]){
   await new Promise<void>(async (resolve, _) => {
     var cont=0;
     for(let i=0; i<escenasEscaperoom.length; i++){
