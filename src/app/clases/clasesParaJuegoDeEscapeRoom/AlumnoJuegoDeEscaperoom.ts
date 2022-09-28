@@ -6,13 +6,15 @@ export class AlumnoJuegoDeEscaperoom {
     juegoDeEscaperoomId: number;
     TiempoEnResolver: number;
     Resuelto: boolean;
+    MaxObjetos:number;
   
-    constructor(alumnoId?: number, juegoDeEscaperoomId?: number, PuntosTotalesAlumno?: number) {
+    constructor(alumnoId?: number, juegoDeEscaperoomId?: number, PuntosTotalesAlumno?: number, MaxObjetos?:number) {
   
       this.PuntosTotalesAlumno = PuntosTotalesAlumno;
       this.alumnoId = alumnoId;
       this.juegoDeEscaperoomId = juegoDeEscaperoomId;
       this.TiempoEnResolver = 0;
       this.Resuelto = false;
+      this.MaxObjetos=MaxObjetos;
     }
   }

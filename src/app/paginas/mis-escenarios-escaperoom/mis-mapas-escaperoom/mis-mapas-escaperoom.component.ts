@@ -1,4 +1,4 @@
-import { EscenaBase64 } from './../../../clases/EscenaBase64';
+import { EscenaBase64 } from '../../../clases/clasesParaJuegoDeEscapeRoom/EscenaBase64';
 import { data } from 'jquery';
 import { TrustedString } from '@angular/core/src/sanitization/bypass';
 import { HttpErrorResponse } from '@angular/common/http';

@@ -239,6 +239,16 @@
                 
 
                     </div>
+                    <div class = "enFila" style = "height: 20%">
+
+                      <div class = "enColumna" (click) = "TipoDeJuegoSeleccionado ('Juego De Escaperoom')" style = "background: rgb(93, 199, 181); width:22%">
+                        <div style = "height: 10%"><strong>Juego de EscapeRoom</strong></div>
+                        <br>
+                        <div style = "height: 40%" >
+                          <img src="../assets/EscapeRoom2.png" class = "imagenPanelJuegos" />
+                        </div>
+                      </div>
+                    </div>
               
                     
                   </div>
@@ -2341,6 +2351,148 @@
                     </div>
                   </mat-step>
             </div>
+
+
+            <!-- ////////////////////////////SI ESCOGEMOS EL JUEGO DE TIPO ESCAPEROOM  ////////////////////////////////-->
+            <div *ngIf="tipoDeJuegoSeleccionado === 'Juego De Escaperoom' && tengoModo">
+               <!-- Elijo si es Presencial o no-->
+              <mat-step>
+                <ng-template matStepLabel><div>Presencial</div></ng-template>
+                <div>
+                  <label class = "LabelStepper">Selecciona si es presencial o como tarea:</label>
+  
+                  <mat-chip-list class="mat-chip-list-stacked">
+                    <mat-chip  style = 'width: 300px' *ngFor="let presencial of seleccionModalidadPresencialJuegoEscaperoom; let i = index" selected [color]="presencial.color"  selected="{{seleccionModalidadPresencialJuegoEscaperoom[i].selected}}"
+                    (click)="ModalidadPresencialDeJuegoSeleccionada(seleccionModalidadPresencialJuegoEscaperoom[i])" [value]="presencial.nombre" [selectable]="true">
+                      {{presencial.nombre}}
+                    </mat-chip>
+                  </mat-chip-list>
+  
+                  <span *ngIf = "modalidadPresencialSeleccionada" style ="font-weight: bold;color:green;"> Has elegido ... {{modalidadPresencialSeleccionada}}</span>
+  
+                </div>
+                <div class="btnCambiarStep">
+                  <button type="button" class="btn Back" matStepperPrevious>Atrás</button>
+                  <button [disabled]="!tengoModalidadPresencial" type="button" class="btn Next" matStepperNext>Siguiente</button>
+                </div>
+              </mat-step>
+
+              <!-- Elijo si es Online o no-->
+              <mat-step>
+              <ng-template matStepLabel><div>Online</div></ng-template>
+              <div>
+                <label class = "LabelStepper">Elige entre online y offline:</label>
+
+                <mat-chip-list class="mat-chip-list-stacked">
+                  <mat-chip  style = 'width: 300px' *ngFor="let online of seleccionModalidadOnlineJuegoEscaperoom; let i = index" selected [color]="online.color"  selected="{{seleccionModalidadOnlineJuegoEscaperoom[i].selected}}"
+                  (click)="ModalidadOnlineDeJuegoSeleccionada(seleccionModalidadOnlineJuegoEscaperoom[i])" [value]="online.nombre" [selectable]="true">
+                    {{online.nombre}}
+                  </mat-chip>
+                </mat-chip-list>
+
+                <span *ngIf = "onlineSeleccionado" style ="font-weight: bold;color:green;"> Has elegido ... {{onlineSeleccionado}}</span>
+
+              </div>
+              <div class="btnCambiarStep">
+                <button type="button" class="btn Back" matStepperPrevious>Atrás</button>
+                <button [disabled]="!tengoOnline" type="button" class="btn Next" matStepperNext>Siguiente</button>
+              </div>
+            </mat-step>
+              
+              
+              
+              <!--Escogemos el escenario-->
+
+              <mat-step>
+                <ng-template matStepLabel>
+                  <div>Escenario</div>
+                </ng-template>
+                <label class="LabelStepper" style = "font-size: larger; font-weight: bolder;">Selecciona el escenario</label>
+              
+                <app-asigna-escenario (emisorEscenario)="RecibeEscenario ($event)">
+                </app-asigna-escenario>
+              
+                <span *ngIf="tengoEscenario" style="font-weight: bold;color:green;"> Has elegido ...
+                  {{tipoDeJuegoSeleccionado}}... {{tipoJuegoCompeticionSeleccionado}} ... {{modoDeJuegoSeleccionado}}
+                  ... {{escenario.Mapa}} </span>
+                <div class="btnCambiarStep">
+                  <button type="button" class="btn Back" matStepperPrevious>Atrás</button>
+                  <button [disabled]="!tengoEscenario" type="button" class="btn Next"
+                    matStepperNext>Siguiente</button>
+                </div>
+              </mat-step>
+
+              <!--Añadir preguntas-->
+              <mat-step>
+                <ng-template matStepLabel>
+                  <div>Preguntas</div>
+                </ng-template>
+                <div>
+                  <button type="button" class="btn Agregar" (click)="AbrirDialogoAgregarPreguntas()"
+                    style="width: auto;">Añadir preguntas<i class="material-icons">
+                      post_add </i></button>
+                </div>
+                <div class="btnCambiarStep">
+                  <button type="button" class="btn Back" matStepperPrevious>Atrás</button>
+                  <button [disabled]="!tengoPreguntas" type="button" class="btn Next"
+                    matStepperNext>Siguiente</button>
+                </div>
+              </mat-step>
+
+
+
+              <!--Tercer paso, establecemos la puntuacion-->
+              <mat-step>
+                <ng-template matStepLabel>
+                  <div>Puntuación</div>
+                </ng-template>
+
+                <mat-form-field>
+                  <mat-label>Introduzca la puntuacion por respuesta correcta</mat-label>
+                  <input matInput formControlName="PuntuacionCorrectaGeo" placeholder="Escriba la puntuacion"
+                    requiered>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <mat-label>Introduzca la puntuacion por respuesta incorrecta (si no quiere restar ponga 0)
+                  </mat-label>
+                  <input matInput formControlName="PuntuacionIncorrectaGeo" placeholder="Escriba la puntuacion"
+                    requiered>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <mat-label>Introduzca el porcentaje a sumar por respuesta bonus correcta </mat-label>
+                  <input matInput formControlName="PuntuacionCorrectaGeoBonus" placeholder="Escriba el porcentaje"
+                    requiered>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <mat-label>Introduzca el porcentaje a restar por respuesta bonus incorrecta </mat-label>
+                  <input matInput formControlName="PuntuacionIncorrectaGeoBonus" placeholder="Escriba el porcentaje"
+                    requiered>
+                </mat-form-field>
+                <div class="btnCambiarStep">
+                  <button type="button" class="btn Back" matStepperPrevious>Atrás</button>
+                  <button [disabled]="!TengoPuntuacionesGeocatching()" (click)="GuardarPuntuacionGeocaching()"
+                    type="button" class="btn Next" matStepperNext>Siguiente</button>
+                </div>
+              </mat-step>
+              <!--Cuarto paso, finalizamos-->
+
+              <mat-step>
+                <ng-template matStepLabel>
+                  <div>Finalizar</div>
+                </ng-template>
+
+                <div class="btnCambiarStep">
+                  <button type="button" class="btn Back" matStepperPrevious>Atrás</button>
+                  <button style="width: 60%" type="button" class="btn Aceptar"
+                    (click)="CrearJuegoDeGeocaching()">Crear juego de geocaching</button>
+                </div>
+              </mat-step>
+
+        </div>
+
             </mat-horizontal-stepper>
           </mat-card-content>
         </mat-card>

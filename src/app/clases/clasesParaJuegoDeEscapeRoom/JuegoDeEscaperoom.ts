@@ -7,11 +7,13 @@ export class JuegoDeEscapeRoom {
     Nombre:string;
     Activo: boolean;
     Tipo: string;
+    Presencial: string;
     Modo: string;
     Online: boolean;
     Terminado:boolean;
+    MecanicaEspecial: string;
 
-    constructor(escenarioEscaperoomId?: number, grupoId?:number, TiempoLimite?: number, Nombre?: string, Tipo?: string, Modo?: string, Online?: boolean, Activo?:boolean){
+    constructor(escenarioEscaperoomId?: number, grupoId?:number, TiempoLimite?: number, Nombre?: string, Tipo?: string, Modo?: string, Online?: boolean, Activo?:boolean, MecanicaEspecial?: string){
         this.Terminado =false; 
         this.escenarioEscaperoomId =escenarioEscaperoomId;
         this.grupoId=grupoId;
@@ -21,6 +23,7 @@ export class JuegoDeEscapeRoom {
         this.Modo =Modo;
         this.Online=Online;
         this.Activo =Activo;
+        this.MecanicaEspecial=MecanicaEspecial;
     }
 
   }

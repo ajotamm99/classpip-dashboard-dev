@@ -13,13 +13,15 @@ export class ObjetoActivo {
     MovilBool: boolean;
     PreguntaBool: boolean;
     Lugar: string;
+    RequisitoObjeto:boolean;
 
-    constructor(objetoEscaperoomId?: number, alumnoJuegoDeEscaperoomId?: number, equipoJuegoDeEscaperoomId?: number) {
+    constructor(objetoEscaperoomId?: number, alumnoJuegoDeEscaperoomId?: number, equipoJuegoDeEscaperoomId?: number, RequisitoObjeto?:boolean) {
   
       this.objetoEscaperoomId = objetoEscaperoomId;
       this.alumnoJuegoDeEscaperoomId = alumnoJuegoDeEscaperoomId;
       this.equipoJuegoDeEscaperoomId = equipoJuegoDeEscaperoomId;
       this.Usado =false;
       this.EnMochila =false;
+      this.RequisitoObjeto=RequisitoObjeto;
     }
   }

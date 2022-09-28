@@ -311,6 +311,13 @@ import { MostrarEnigmasPublicosComponent } from './paginas/mis-enigmas-escaperoo
 import { MostrarSkinsPublicasComponent } from './paginas/mis-skins-escaperoom/mostrar-skins-publicas/mostrar-skins-publicas.component';
 import { CrearSkinsComponent } from './paginas/mis-skins-escaperoom/crear-skins/crear-skins.component';
 import { EditarSkinDialogComponent } from './paginas/mis-skins-escaperoom/editar-skin-dialog/editar-skin-dialog.component';
+import { AsignarEscenarioEscaperoomComponent } from './paginas/juego/DialogosEscaperoom/asignar-escenario-escaperoom/asignar-escenario-escaperoom.component';
+import { AsignarEscenasEscaperoomComponent } from './paginas/juego/DialogosEscaperoom//asignar-escenas-escaperoom/asignar-escenas-escaperoom.component';
+import { AsignarObjetosEscaperoomComponent } from './paginas/juego/DialogosEscaperoom/asignar-objetos-escaperoom/asignar-objetos-escaperoom.component';
+import { EditarObjetosActivosEscaperoomComponent } from './paginas/juego/DialogosEscaperoom/editar-objetos-activos-escaperoom/editar-objetos-activos-escaperoom.component';
+import { EditarEscenasActivasEscaperoomComponent } from './paginas/juego/DialogosEscaperoom/editar-escenas-activas-escaperoom/editar-escenas-activas-escaperoom.component';
+import { AsignarPreguntasEscaperoomComponent } from './paginas/juego/DialogosEscaperoom/asignar-preguntas-escaperoom/asignar-preguntas-escaperoom.component';
+import { EditarPreguntasActivasEscaperoomComponent } from './paginas/juego/DialogosEscaperoom/editar-preguntas-activas-escaperoom/editar-preguntas-activas-escaperoom.component';
 
 
 
@@ -506,7 +513,14 @@ import { EditarSkinDialogComponent } from './paginas/mis-skins-escaperoom/editar
     MostrarEnigmasPublicosComponent,
     MostrarSkinsPublicasComponent,
     CrearSkinsComponent,
-    EditarSkinDialogComponent
+    EditarSkinDialogComponent,
+    AsignarEscenarioEscaperoomComponent,
+    AsignarEscenasEscaperoomComponent,
+    AsignarObjetosEscaperoomComponent,
+    EditarObjetosActivosEscaperoomComponent,
+    EditarEscenasActivasEscaperoomComponent,
+    AsignarPreguntasEscaperoomComponent,
+    EditarPreguntasActivasEscaperoomComponent
 
   ],
   imports: [

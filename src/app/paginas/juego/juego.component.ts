@@ -412,6 +412,21 @@ export class JuegoComponent implements OnInit {
   idcartas: any[] = [];
 
 
+  //Datos para juego de escaperoom
+  seleccionModalidadPresencialJuegoEscaperoom: ChipColor[] = [
+    {nombre: 'Casa', color: 'primary'},
+    {nombre: 'Clase', color: 'warn'}
+  ];
+  modalidadPresencialSeleccionada: string;
+  tengoModalidadPresencial: boolean=false;
+
+  seleccionModalidadOnlineJuegoEscaperoom: ChipColor[] = [
+    {nombre: 'Online', color: 'primary'},
+    {nombre: 'Offline', color: 'warn'}
+  ];  
+  onlineSeleccionado: string;
+  tengoOnline: boolean=false;
+
   constructor(
     public dialog: MatDialog,
     private calculos: CalculosService,
@@ -3205,6 +3220,26 @@ export class JuegoComponent implements OnInit {
     });
 
 
+  }
+
+  // Para los juegos de escaperoom
+
+  ModalidadPresencialDeJuegoSeleccionada(modalidad: ChipColor) {
+    if (modalidad.nombre === 'Casa') {
+      Swal.fire('Atención', 'La modalidad en casa no está implementada para los juegos de escaperoom', 'error');
+    } else {
+      this.modalidadPresencialSeleccionada = modalidad.nombre;
+      this.tengoModalidadPresencial = true;
+    }
+  }
+
+  ModalidadOnlineDeJuegoSeleccionada(modalidad: ChipColor) {
+    if (modalidad.nombre === 'Online') {
+      Swal.fire('Atención', 'La modalidad Online no está implementada para los juegos de escaperoom', 'error');
+    } else {
+      this.onlineSeleccionado = modalidad.nombre;
+      this.tengoOnline = true;
+    }
   }
 
 }
