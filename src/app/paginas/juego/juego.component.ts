@@ -1,3 +1,4 @@
+import { EscenarioEscaperoom } from './../../clases/clasesParaJuegoDeEscapeRoom/EscenarioEscaperoom';
 import { EquipoJuegoDeVotacionTodosAUno } from './../../clases/EquipoJuegoDeVotacionTodosAUno';
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
@@ -71,7 +72,11 @@ export interface ChipColor {
   color: ThemePalette;
 }
 
-
+export interface mecanicasEscaperoom {
+  nombre: string;
+  descripcion: string;
+  id: string;
+}
 
 @Component({
   selector: 'app-juego',
@@ -427,6 +432,22 @@ export class JuegoComponent implements OnInit {
   onlineSeleccionado: string;
   tengoOnline: boolean=false;
 
+  tiempoLimiteEscaperoom:string;
+  tiempoLimiteEscaperoomNumber:number;
+  tengoTiempoLimite:boolean;
+
+  mecanicasEscaperoom: mecanicasEscaperoom[]=[
+    {nombre: 'Fantasma', descripcion: 'Se mueven objetos aleatoriamente', id: 'fantasma'},
+    {nombre: 'Agujero Negro', descripcion: 'La velocidad normal del tiempo cambia según la escena', id: 'agujeroNegro'},
+    {nombre: 'Fango', descripcion: 'Te mueves más lento en algunas escenas', id: 'fango'},
+    {nombre: 'Matrix', descripcion: 'Fallo en la matrix, vuelves a responder preguntas o pasar por escenas anteriores', id: 'matrix'}
+  ];
+
+  selectedMecanica:string;
+
+  tengoEscenarioEscaperoom:boolean;
+  escenarioEscaperoomRecibido: EscenarioEscaperoom;
+
   constructor(
     public dialog: MatDialog,
     private calculos: CalculosService,
@@ -558,11 +579,14 @@ export class JuegoComponent implements OnInit {
     this.dataSource = new MatTableDataSource(this.TablaPuntuacion);
     this.Puntuacion[0] = 10;
 
-
-
-
     this.listaConceptos = [];
     this.totalPesos = 0;
+
+    //init escaperoom
+    this.selectedMecanica=this.mecanicasEscaperoom[0].id;
+    this.tengoTiempoLimite=false;
+
+    this.tengoEscenarioEscaperoom=false;
 
   }
 
@@ -3240,6 +3264,21 @@ export class JuegoComponent implements OnInit {
       this.onlineSeleccionado = modalidad.nombre;
       this.tengoOnline = true;
     }
+  }
+
+  TengoTiempoLimiteEscaperoom(){
+    if(!isNaN(+this.tiempoLimiteEscaperoom)){
+      this.tengoTiempoLimite=true;
+    }else{
+      this.tengoTiempoLimite=false;
+    }
+  }
+
+  RecibeEscenarioEscaperoom($event) {
+    this.escenarioEscaperoomRecibido = $event;
+    this.tengoEscenarioEscaperoom = true;
+    console.log ('he recibido escenario Escaperoom');
+    //this.DameEscenasEscenarioEscaperoom(this.escenarioEscaperoomRecibido);
   }
 
 }
