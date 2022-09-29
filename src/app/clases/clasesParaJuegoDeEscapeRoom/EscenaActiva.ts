@@ -8,9 +8,8 @@ export class EscenaActiva {
     TiempoLimite: number;
     TipoRequisito: string;
     RequisitoPuntos: number;
-    RequisitoObjetos: number[];
   
-    constructor(escenarioEscaperoomId?: number, escenaEscaperoomId?: number, juegoDeEscaperoomId?: number, orden?: number, tiempoLimite?:number, tipoRequisito?:string, requisitoPuntos?:number, requisitoObjetos?:number[]) {
+    constructor(escenarioEscaperoomId?: number, escenaEscaperoomId?: number, juegoDeEscaperoomId?: number, orden?: number, tiempoLimite?:number, tipoRequisito?:string, requisitoPuntos?:number) {
   
       this.escenarioEscaperoomId = escenarioEscaperoomId 
       this.escenaEscaperoomId = escenaEscaperoomId;
@@ -19,6 +18,5 @@ export class EscenaActiva {
       this.TiempoLimite=tiempoLimite;
       this.TipoRequisito = tipoRequisito;
       this.RequisitoPuntos =requisitoPuntos;
-      this.RequisitoObjetos= requisitoObjetos;
     }
   }
