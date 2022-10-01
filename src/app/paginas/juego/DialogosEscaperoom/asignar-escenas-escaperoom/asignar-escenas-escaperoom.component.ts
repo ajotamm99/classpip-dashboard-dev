@@ -91,13 +91,6 @@ export class AsignarEscenasEscaperoomComponent implements OnInit {
     this.dataSourceEscenasDeEscenario= new MatTableDataSource(this.data.escenas);
   }
 
-  HaSeleccionado() {
-    if (this.selection.selected.length === 0) {
-     return false;
-    } else {
-      return true;
-    }
-  }// cambiar por variable
 
   Marcar(row) {
     if (this.selection.isSelected(row)) {

@@ -1,3 +1,45 @@
-<p>
-  editar-escenas-activas-escaperoom works!
-</p>
+<div align="center">
+  <mat-card class="panel">
+  
+    <form>
+      <div class="enColumna">
+
+        <span style="font-weight: bold;color:black;">Nombre: {{escenaNombre}}</span>
+        <br>
+        <img style="margin-left: 15px;" class="imagenEscena" mat-card-image [src]="imagenEscena">
+        <br>
+        <br>
+        <span style="font-weight: bold;">Orden: </span>
+        <input style="background-color: transparent" type="number" name="nombre" placeholder="Escribe el orden de la escena" (change) = "TengoOrdenEscena()" requiered [(ngModel)]="ordenEscena" [ngModelOptions]="{standalone: true}">
+        <br>
+        <br>
+        <span style="font-weight: bold;">Tiempo Límite: </span>
+        <input style="background-color: transparent" type="text" name="nombre" placeholder="Escribe el tiempo en minutos(0 si no tiene)" (keyup) = "TengoTiempoLimiteEscena()" requiered [(ngModel)]="TiempoLimiteEscena" [ngModelOptions]="{standalone: true}">
+        <br>
+        <br>   
+        <span style="font-weight: bold;">Tipo de requisito: </span>
+        <mat-select name="Types" placeholder="Selecciona el tipo de requisito de Escena" (selectionChange)="AsignarTipo()" [(ngModel)]="TipoRequisito" [ngModelOptions]="{standalone: true}" required>
+          <mat-option *ngFor="let type of tipos" [value]="type.id" matTooltip={{type.descripcion}}>
+            {{type.nombre}}
+          </mat-option>
+        </mat-select>
+        <br>
+        <br>
+        <div *ngIf="tengoTipoPuntos">
+          <span style="font-weight: bold;">Requisito de puntos: </span>
+          <input style="background-color: transparent" type="text" name="puntos" placeholder="Escribe el requisito de puntos para completar la escena" (keyup) = "TengoPuntosEscena()" requiered [(ngModel)]="RequisitoPuntosEscena" [ngModelOptions]="{standalone: true}">
+        </div>
+      </div>
+    </form>
+  
+    <div  *ngIf="cambios" class = "enColumna" align="center">
+      <button style = "width: 20%" (click)="EditarEscena()" [disabled]="!cambios" type="button" class="btn Aceptar">Editar Escena</button>
+    </div>
+  <br>
+  
+    <mat-dialog-actions align= "center">
+      <!-- <button mat-button [mat-dialog-close] class="btn Cerrar">Cerrar</button> routerLink= "editarColeccion" -->
+        <button mat-button (click)= "Cerrar();" class="btn Cerrar">Cerrar</button>
+    </mat-dialog-actions>
+  </mat-card>
+  </div>

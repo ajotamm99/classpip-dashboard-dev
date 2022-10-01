@@ -65,6 +65,7 @@ import { RecursoLibro } from 'src/app/clases/clasesParaLibros/recursoLibro';
 import { AlumnoJuegoDeMemorama } from 'src/app/clases/AlumnoJuegoDeMemorama';
 import { EquipoJuegoDeMemorama } from 'src/app/clases/EquipoJuegoDeMemorama';
 import * as URL from '../../URLs/urls';
+import { EditarEscenasActivasEscaperoomComponent } from './DialogosEscaperoom/editar-escenas-activas-escaperoom/editar-escenas-activas-escaperoom.component';
 
 export interface OpcionSeleccionada {
   nombre: string;
@@ -3483,4 +3484,35 @@ export class JuegoComponent implements OnInit {
   });
   }
 
+  EditarEscenasActivas(EscenaActiva: EscenasActMostrar){ 
+
+    const dialogRef = this.dialog.open(EditarEscenasActivasEscaperoomComponent, {
+      width: '900px',
+      maxHeight: '600px',
+      data:{
+        escena: EscenaActiva,
+        numero: this.numeroEscenasActivas,
+        //idEscenario: this.escenasEscenarioRecibidas[this.escenasEscenarioRecibidas.findIndex(sc=>sc.id==+EscenaActiva.IdEscenaAct)].escenarioEscapeRoomId,
+        imagen: this.escenasEscenarioRecibidas[this.escenasEscenarioRecibidas.findIndex(sc=>sc.id==+EscenaActiva.IdEscenaAct)].Tilesheet
+      }
+    });
+
+     // RECUPERAREMOS LA NUEVA LISTA DE LOS CROMO Y VOLVEREMOS A BUSCAR LOS CROMOS QUE TIENE LA COLECCION
+    dialogRef.afterClosed().subscribe(escenaAgregada => {
+      if(escenaAgregada!=null){
+        if(EscenaActiva.Orden==escenaAgregada.Orden){
+          this.escenasActivasMostrar= this.escenasActivasMostrar.splice(this.escenasActivasMostrar.findIndex(sc=>{sc.Orden==escenaAgregada.Orden}),1,escenaAgregada);
+          //this.escenaModificar=
+          //this.escenasActivasRecibidas= this.;
+          this.dataSourceEscenas= new MatTableDataSource(this.escenasActivasMostrar);
+        }else{
+          this.escenasActivasMostrar= this.escenasActivasMostrar.splice(this.escenasActivasMostrar.findIndex(sc=>{sc.Orden==escenaAgregada.Orden}),1,escenaAgregada);
+          
+
+          
+          this.dataSourceEscenas= new MatTableDataSource(this.escenasActivasMostrar);
+        }
+      }
+    });
+  }
 }
