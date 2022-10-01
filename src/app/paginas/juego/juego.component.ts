@@ -1,3 +1,7 @@
+import { AsignarEscenasEscaperoomComponent } from './DialogosEscaperoom/asignar-escenas-escaperoom/asignar-escenas-escaperoom.component';
+import { EscenaActiva } from './../../clases/clasesParaJuegoDeEscapeRoom/EscenaActiva';
+import { PreguntaActiva } from './../../clases/clasesParaJuegoDeEscapeRoom/PreguntaActiva';
+import { ObjetoActivo } from './../../clases/clasesParaJuegoDeEscapeRoom/ObjetoActivo';
 import { EscenarioEscaperoom } from './../../clases/clasesParaJuegoDeEscapeRoom/EscenarioEscaperoom';
 import { EquipoJuegoDeVotacionTodosAUno } from './../../clases/EquipoJuegoDeVotacionTodosAUno';
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
@@ -5,7 +9,7 @@ import { ThemePalette } from '@angular/material/core';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatDialog, MatTabGroup } from '@angular/material';
 import { Location } from '@angular/common';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
@@ -27,7 +31,7 @@ import {
   JuegoDeVotacionUnoATodos, AlumnoJuegoDeVotacionUnoATodos,
   JuegoDeVotacionTodosAUno, AlumnoJuegoDeVotacionTodosAUno, CuestionarioSatisfaccion,
   JuegoDeCuestionarioSatisfaccion, AlumnoJuegoDeCuestionarioSatisfaccion, Rubrica,
-  JuegoDeControlDeTrabajoEnEquipo, AlumnoJuegoDeControlDeTrabajoEnEquipo, EquipoJuegoDeCuestionario, Evento, AlumnoJuegoDeCuento, JuegoDeCuento, RecursoCuento, RecursoCuentoJuego, JuegoDeVotacionAOpciones, AlumnoJuegoDeVotacionAOpciones
+  JuegoDeControlDeTrabajoEnEquipo, AlumnoJuegoDeControlDeTrabajoEnEquipo, EquipoJuegoDeCuestionario, Evento, AlumnoJuegoDeCuento, JuegoDeCuento, RecursoCuento, RecursoCuentoJuego, JuegoDeVotacionAOpciones, AlumnoJuegoDeVotacionAOpciones, EscenaEscaperoom
 } from '../../clases/index';
 
 
@@ -76,6 +80,33 @@ export interface mecanicasEscaperoom {
   nombre: string;
   descripcion: string;
   id: string;
+}
+
+export interface EscenasActMostrar {
+  Nombre: string;
+  IdEscenaAct: string;
+  TiempoLimite: number;
+  Requisito: string;
+  Puntosrequisito?: string;
+  Orden: number;
+}
+
+export interface ObjetoActMostrar {
+  Nombre: string;
+  IdObjetoEscenaAct: string;
+  Tipo: string;
+  PistaString?: string;
+  Lugar: string;
+  EsRequisito: boolean;
+}
+
+export interface PreguntaActMostrar {
+  Nombre: string;
+  IdPreguntaAct: string;
+  Tipo: number;
+  Pregunta: string;
+  PuntosSumar: string;
+  PuntosRestar: number;
 }
 
 @Component({
@@ -447,6 +478,33 @@ export class JuegoComponent implements OnInit {
 
   tengoEscenarioEscaperoom:boolean;
   escenarioEscaperoomRecibido: EscenarioEscaperoom;
+  escenasdeEscenarioRecibido: EscenaEscaperoom[]=[];
+  hayEscenas:boolean;
+
+  escenasEscenarioRecibidas: EscenaEscaperoom[]=[];
+  escenasActivasRecibidas: EscenaActiva[]=[];
+  escenasActivasMostrar: EscenasActMostrar[]=[];
+  escenaModificar: EscenaActiva;
+  escenaMostrarModificar: EscenasActMostrar;
+  tengoEscenasEscaperoom: boolean;
+  numeroEscenasActivas: number;
+  dataSourceEscenas;  
+  tiemposEscenas: number;
+  tengoTiempos:boolean;
+  tiempoRestante:number;
+  displayedColumnsEscenas: string[] = ['Orden','Nombre', 'Tiempo Limite', 'Requisito', 'Iconos'];
+
+  objetosEscenasRecibidas: ObjetoActivo[]=[];
+  tengoObjetosActivos:  boolean;
+  dataSourceObjetos;  
+  displayedColumnsObjetos: string[] = ['Nombre', 'Tipo', 'Lugar', 'Es requisito', 'Iconos'];
+
+  preguntasObjetosRecibidas: PreguntaActiva[]=[];
+  tengoPreguntasObjetos: boolean;
+  dataSourcePreguntas;
+  displayedColumnsPreguntasActivas: string[] = ['Nombre', 'Puntos Sumar', 'Puntos Restar', 'Iconos'];
+  
+
 
   constructor(
     public dialog: MatDialog,
@@ -587,6 +645,14 @@ export class JuegoComponent implements OnInit {
     this.tengoTiempoLimite=false;
 
     this.tengoEscenarioEscaperoom=false;
+    this.hayEscenas=false;
+    this.tengoEscenasEscaperoom=false;
+    this.tengoObjetosActivos=false;
+    this.tengoPreguntasObjetos=false;
+    this.numeroEscenasActivas=0;
+    this.tiemposEscenas=0;
+    this.tengoTiempos=false;
+    this.tiempoRestante=1;
 
   }
 
@@ -3269,8 +3335,11 @@ export class JuegoComponent implements OnInit {
   TengoTiempoLimiteEscaperoom(){
     if(!isNaN(+this.tiempoLimiteEscaperoom)){
       this.tengoTiempoLimite=true;
+      this.tiempoLimiteEscaperoomNumber=+this.tiempoLimiteEscaperoom;
+      this.tiempoRestante=+this.tiempoLimiteEscaperoom;
     }else{
       this.tengoTiempoLimite=false;
+      this.tiempoLimiteEscaperoomNumber=undefined;
     }
   }
 
@@ -3278,7 +3347,140 @@ export class JuegoComponent implements OnInit {
     this.escenarioEscaperoomRecibido = $event;
     this.tengoEscenarioEscaperoom = true;
     console.log ('he recibido escenario Escaperoom');
-    //this.DameEscenasEscenarioEscaperoom(this.escenarioEscaperoomRecibido);
+    this.DameEscenasEscenarioEscaperoom(this.escenarioEscaperoomRecibido);
+  }
+
+  DameEscenasEscenarioEscaperoom(escenarioRecibido:EscenarioEscaperoom){
+    this.peticionesAPI.DameEscenasdeEscenariosEscaperoom(escenarioRecibido.id)
+    .subscribe(res=>{
+      if(res.length>0){
+        this.escenasEscenarioRecibidas= res;
+        this.hayEscenas=true;
+        console.log(this.hayEscenas,res);
+      }else{
+        Swal.fire("Error","El escenario "+escenarioRecibido.Nombre+" no tiene escenas todavía", 'error');
+        this.hayEscenas=false;
+      }
+
+    },error=>{
+      Swal.fire("Error","No se han podido obtener las escenas del escenario "+escenarioRecibido.Nombre, 'error');
+    })
+  }
+
+  applyFilterEscenas(filterValue: string) {
+    this.dataSourceEscenas.filter = filterValue.trim().toLowerCase();
+  }
+
+  AbrirDialogoAgregarEscena(){
+    const dialogRef = this.dialog.open(AsignarEscenasEscaperoomComponent, {
+      width: '900px',
+      maxHeight: '600px',
+      data:{
+        escenas: this.escenasEscenarioRecibidas,
+        numero: this.numeroEscenasActivas
+      }
+    });
+
+     // RECUPERAREMOS LA NUEVA LISTA DE LOS CROMO Y VOLVEREMOS A BUSCAR LOS CROMOS QUE TIENE LA COLECCION
+    dialogRef.afterClosed().subscribe(escenaAgregada => {
+      console.log("1",this.escenasActivasRecibidas);
+      if(escenaAgregada.EscenaAct!=null && escenaAgregada.EscenaAct!=undefined){
+        this.numeroEscenasActivas+=1;
+        console.log("escenas",this.escenasActivasRecibidas);
+        console.log ('volvemos de agregar escena ' + <EscenaActiva>escenaAgregada.EscenaAct);
+        // tslint:disable-next-line:prefer-for-of
+        if(escenaAgregada.EscenaAct.orden == this.numeroEscenasActivas){
+          this.escenasActivasRecibidas.push(escenaAgregada.EscenaAct);
+          if(escenaAgregada.EscenaAct.TipoRequisito=='puntos'){
+            this.escenasActivasMostrar.push({Nombre: escenaAgregada.Escena.Nombre, IdEscenaAct: escenaAgregada.Escena.id
+            , TiempoLimite: escenaAgregada.EscenaAct.TiempoLimite, Requisito: escenaAgregada.EscenaAct.TipoRequisito, Orden:escenaAgregada.EscenaAct.orden, Puntosrequisito: escenaAgregada.EscenaAct.RequisitoPuntos });
+            this.dataSourceEscenas= new MatTableDataSource(this.escenasActivasMostrar);
+          }else{
+            this.escenasActivasMostrar.push({Nombre: escenaAgregada.Escena.Nombre, IdEscenaAct: escenaAgregada.Escena.id
+            , TiempoLimite: escenaAgregada.EscenaAct.TiempoLimite, Requisito: escenaAgregada.EscenaAct.TipoRequisito, Orden:escenaAgregada.EscenaAct.orden, Puntosrequisito: '0' });
+            this.dataSourceEscenas= new MatTableDataSource(this.escenasActivasMostrar);
+          }
+
+        }else{
+          Swal.fire("Nuevo orden","La escena añadida tiene conflictos con el orden existente, se cambiarán de orden las escenas acorde a lo seleccionado",'warning');
+          let index=this.escenasActivasRecibidas.findIndex(sc=>sc.orden==escenaAgregada.EscenaAct.orden);
+          this.escenaModificar= this.escenasActivasRecibidas[index];
+          this.escenaModificar.orden=this.numeroEscenasActivas;
+          this.escenasActivasRecibidas.splice(index,1,<EscenaActiva>escenaAgregada.EscenaAct);
+          this.escenasActivasRecibidas.push(this.escenaModificar);
+
+          if(escenaAgregada.EscenaAct.TipoRequisito=='puntos'){
+            let index2=this.escenasActivasMostrar.findIndex(sc=>sc.Orden==escenaAgregada.EscenaAct.orden);
+            this.escenaMostrarModificar = this.escenasActivasMostrar[index2];
+            this.escenaMostrarModificar.Orden=this.numeroEscenasActivas;
+            this.escenasActivasMostrar.splice(index2,1,this.escenaMostrarModificar);
+            this.escenasActivasMostrar.push({Nombre: escenaAgregada.Escena.Nombre, IdEscenaAct: escenaAgregada.Escena.id
+            , TiempoLimite: escenaAgregada.EscenaAct.TiempoLimite, Requisito: escenaAgregada.EscenaAct.TipoRequisito, Orden:escenaAgregada.EscenaAct.orden, Puntosrequisito: escenaAgregada.EscenaAct.RequisitoPuntos });  
+            this.escenasActivasMostrar.sort((a, b)=>a.Orden - b.Orden);
+            this.dataSourceEscenas= new MatTableDataSource(this.escenasActivasMostrar);
+          }else{
+            let index2=this.escenasActivasMostrar.findIndex(sc=>sc.Orden==escenaAgregada.EscenaAct.orden);
+            this.escenaMostrarModificar = this.escenasActivasMostrar[index2];
+            this.escenaMostrarModificar.Orden=this.numeroEscenasActivas;
+            this.escenasActivasMostrar.splice(index2,1,this.escenaMostrarModificar);
+            this.escenasActivasMostrar.push({Nombre: escenaAgregada.Escena.Nombre, IdEscenaAct: escenaAgregada.Escena.id
+            , TiempoLimite: escenaAgregada.EscenaAct.TiempoLimite, Requisito: escenaAgregada.EscenaAct.TipoRequisito, Orden:escenaAgregada.EscenaAct.orden, Puntosrequisito: '0' });
+            this.escenasActivasMostrar.sort((a, b)=>a.Orden - b.Orden);
+            this.dataSourceEscenas= new MatTableDataSource(this.escenasActivasMostrar);
+          }        
+          
+        }
+        this.tiemposEscenas+=escenaAgregada.EscenaAct.TiempoLimite;
+        this.tiempoRestante= this.tiempoLimiteEscaperoomNumber - this.tiemposEscenas;
+        this.tengoEscenasEscaperoom=true;
+
+        if(this.tiempoRestante<=0){
+          this.tengoTiempos=true;
+        }else{
+          this.tengoTiempos=false;
+        }
+
+      }
+     });
+  }
+
+  AbrirDialogoConfirmacionBorrarEscena(escenaActiva: EscenasActMostrar){
+    Swal.fire({
+      title: 'Eliminar',
+      text: "Las escenas asociadas a este escenario se eliminarán. Estas segura/o de que quieres eliminar la escena: "+escenaActiva.Nombre +"?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar'
+
+    }).then((result) => {
+      if (result.value) {
+        var ordenBuscar=escenaActiva.Orden;
+
+        this.escenasActivasRecibidas= this.escenasActivasRecibidas.filter(sc=> sc.orden!=escenaActiva.Orden);
+        this.escenasActivasMostrar = this.escenasActivasMostrar.filter(sc=> sc.Orden!=escenaActiva.Orden);
+        
+        for(let i=ordenBuscar-1; i<this.escenasActivasRecibidas.length; i++){
+          this.escenasActivasRecibidas[i].orden-=1;
+          this.escenasActivasMostrar[i].Orden-=1;
+        }
+        this.numeroEscenasActivas-=1;
+        this.tiemposEscenas-=escenaActiva.TiempoLimite;
+        this.tiempoRestante= this.tiempoLimiteEscaperoomNumber - this.tiemposEscenas;
+        if(this.tiempoRestante<=0){
+          this.tengoTiempos=true;
+        }else{
+          this.tengoTiempos=false;
+        }
+        if(this.escenasActivasRecibidas.length==0){
+          this.tengoEscenasEscaperoom=false;
+        }
+
+        this.dataSourceEscenas= new MatTableDataSource(this.escenasActivasMostrar);
+      }
+  });
   }
 
 }

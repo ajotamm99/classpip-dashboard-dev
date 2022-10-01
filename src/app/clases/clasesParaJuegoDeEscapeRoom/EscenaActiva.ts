@@ -9,7 +9,7 @@ export class EscenaActiva {
     TipoRequisito: string;
     RequisitoPuntos: number;
   
-    constructor(escenarioEscaperoomId?: number, escenaEscaperoomId?: number, juegoDeEscaperoomId?: number, orden?: number, tiempoLimite?:number, tipoRequisito?:string, requisitoPuntos?:number) {
+    constructor(escenarioEscaperoomId?: number, escenaEscaperoomId?: number, orden?: number, tiempoLimite?:number, tipoRequisito?:string, requisitoPuntos?:number, juegoDeEscaperoomId?: number) {
   
       this.escenarioEscaperoomId = escenarioEscaperoomId 
       this.escenaEscaperoomId = escenaEscaperoomId;

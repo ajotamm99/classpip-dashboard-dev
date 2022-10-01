@@ -19,7 +19,7 @@
         <div>
           <input #file id = "inputEscenaImagen" type="file" accept= 'image/*' (change)="ExaminarImagenEscena($event)" style="display:none">
           <button (click) = "ActivarInputImagenEscena()" type="button" class="btn Agregar">
-          Imagen de delante <i class="material-icons">add_photo_alternate</i>
+          Tilesheet <i class="material-icons">add_photo_alternate</i>
           </button>
           <br>
           <img style="margin-left: 15px;" class="imagenEscena" *ngIf="imagenEscenaCargada" mat-card-image [src]="imagenEscena">
@@ -49,4 +49,4 @@
 <mat-dialog-actions align= "end">
   <!-- <button mat-button [mat-dialog-close] class="btn Cerrar">Cerrar</button> routerLink= "editarColeccion" -->
     <button mat-button (click)= "Cerrar();" class="btn Cerrar">Cerrar</button>
-  </mat-dialog-actions>
+</mat-dialog-actions>
