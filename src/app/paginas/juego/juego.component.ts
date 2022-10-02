@@ -3505,7 +3505,7 @@ export class JuegoComponent implements OnInit {
         if(escenaActiva.Orden==escenaAgregada.Orden){
 
           if(escenaAgregada.Requisito=='puntos'){
-            this.escenasActivasMostrar.splice(this.escenasActivasMostrar.findIndex(sc=>{sc.Orden==escenaAgregada.Orden}),1,escenaAgregada);
+            this.escenasActivasMostrar.splice(this.escenasActivasMostrar.findIndex(sc=>sc.Orden==escenaAgregada.Orden),1,escenaAgregada);
             let index=this.escenasActivasRecibidas.findIndex(sc=>{sc.orden==escenaAgregada.Orden});
             this.escenaModificar= this.escenasActivasRecibidas[index];
             this.escenaModificar.TiempoLimite= escenaAgregada.TiempoLimite;
@@ -3514,7 +3514,7 @@ export class JuegoComponent implements OnInit {
             this.escenasActivasRecibidas.splice(index,1,this.escenaModificar);
             this.dataSourceEscenas= new MatTableDataSource(this.escenasActivasMostrar);
           }else{
-            this.escenasActivasMostrar.splice(this.escenasActivasMostrar.findIndex(sc=>{sc.Orden==escenaAgregada.Orden}),1,escenaAgregada);
+            this.escenasActivasMostrar.splice(this.escenasActivasMostrar.findIndex(sc=>sc.Orden==escenaAgregada.Orden),1,escenaAgregada);
             let index=this.escenasActivasRecibidas.findIndex(sc=>{sc.orden==escenaAgregada.Orden});
             this.escenaModificar= this.escenasActivasRecibidas[index];
             this.escenaModificar.TiempoLimite= escenaAgregada.TiempoLimite;            
@@ -3526,8 +3526,8 @@ export class JuegoComponent implements OnInit {
         }else{
           if(escenaAgregada.Requisito=='puntos'){
             //EscenasActRecibidas
-            let index=this.escenasActivasRecibidas.findIndex(sc=>{sc.orden==escenaActiva.Orden});
-            let index2=this.escenasActivasRecibidas.findIndex(sc=>{sc.orden==escenaAgregada.Orden});
+            let index=this.escenasActivasRecibidas.findIndex(sc=>sc.orden==escenaActiva.Orden);
+            let index2=this.escenasActivasRecibidas.findIndex(sc=>sc.orden==escenaAgregada.Orden);
 
             this.escenaModificar= this.escenasActivasRecibidas[index];
             this.escenaModificar.orden= escenaAgregada.Orden;
@@ -3542,8 +3542,8 @@ export class JuegoComponent implements OnInit {
             this.escenasActivasRecibidas.sort((a, b)=>a.orden - b.orden);
 
             //EscenasActMostrar
-            let indexMostrar=this.escenasActivasMostrar.findIndex(sc=>{sc.Orden==escenaActiva.Orden});
-            let indexMostrar2=this.escenasActivasMostrar.findIndex(sc=>{sc.Orden==escenaAgregada.Orden});
+            let indexMostrar=this.escenasActivasMostrar.findIndex(sc=>sc.Orden==escenaActiva.Orden);
+            let indexMostrar2=this.escenasActivasMostrar.findIndex(sc=>sc.Orden==escenaAgregada.Orden);
 
             this.escenaMostrarModificar= this.escenasActivasMostrar[indexMostrar];
             this.escenaMostrarModificar.Orden= escenaAgregada.Orden;
@@ -3560,8 +3560,8 @@ export class JuegoComponent implements OnInit {
 
             this.dataSourceEscenas= new MatTableDataSource(this.escenasActivasMostrar);
           }else{
-            let index=this.escenasActivasRecibidas.findIndex(sc=>{sc.orden==escenaActiva.Orden});
-            let index2=this.escenasActivasRecibidas.findIndex(sc=>{sc.orden==escenaAgregada.Orden});
+            let index=this.escenasActivasRecibidas.findIndex(sc=>sc.orden==escenaActiva.Orden);
+            let index2=this.escenasActivasRecibidas.findIndex(sc=>sc.orden==escenaAgregada.Orden);
 
             this.escenaModificar= this.escenasActivasRecibidas[index];
             this.escenaModificar.orden= escenaAgregada.Orden;
@@ -3575,8 +3575,8 @@ export class JuegoComponent implements OnInit {
             this.escenasActivasRecibidas.sort((a, b)=>a.orden - b.orden);
 
             //EscenasActMostrar
-            let indexMostrar=this.escenasActivasMostrar.findIndex(sc=>{sc.Orden==escenaActiva.Orden});
-            let indexMostrar2=this.escenasActivasMostrar.findIndex(sc=>{sc.Orden==escenaAgregada.Orden});
+            let indexMostrar=this.escenasActivasMostrar.findIndex(sc=>sc.Orden==escenaActiva.Orden);
+            let indexMostrar2=this.escenasActivasMostrar.findIndex(sc=>sc.Orden==escenaAgregada.Orden);
 
             this.escenaMostrarModificar= this.escenasActivasMostrar[indexMostrar];
             this.escenaMostrarModificar.Orden= escenaAgregada.Orden;
