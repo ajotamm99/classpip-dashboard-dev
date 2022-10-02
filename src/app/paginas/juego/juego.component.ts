@@ -486,7 +486,9 @@ export class JuegoComponent implements OnInit {
   escenasActivasRecibidas: EscenaActiva[]=[];
   escenasActivasMostrar: EscenasActMostrar[]=[];
   escenaModificar: EscenaActiva;
+  escenaModificar2: EscenaActiva;
   escenaMostrarModificar: EscenasActMostrar;
+  escenaMostrarModificar2: EscenasActMostrar;
   tengoEscenasEscaperoom: boolean;
   numeroEscenasActivas: number;
   dataSourceEscenas;  
@@ -3484,33 +3486,113 @@ export class JuegoComponent implements OnInit {
   });
   }
 
-  EditarEscenasActivas(EscenaActiva: EscenasActMostrar){ 
+  EditarEscenasActivas(escenaActiva: EscenasActMostrar){ 
 
     const dialogRef = this.dialog.open(EditarEscenasActivasEscaperoomComponent, {
       width: '900px',
       maxHeight: '600px',
       data:{
-        escena: EscenaActiva,
+        escena: escenaActiva,
         numero: this.numeroEscenasActivas,
         //idEscenario: this.escenasEscenarioRecibidas[this.escenasEscenarioRecibidas.findIndex(sc=>sc.id==+EscenaActiva.IdEscenaAct)].escenarioEscapeRoomId,
-        imagen: this.escenasEscenarioRecibidas[this.escenasEscenarioRecibidas.findIndex(sc=>sc.id==+EscenaActiva.IdEscenaAct)].Tilesheet
+        imagen: this.escenasEscenarioRecibidas[this.escenasEscenarioRecibidas.findIndex(sc=>sc.id==+escenaActiva.IdEscenaAct)].Tilesheet
       }
     });
 
      // RECUPERAREMOS LA NUEVA LISTA DE LOS CROMO Y VOLVEREMOS A BUSCAR LOS CROMOS QUE TIENE LA COLECCION
     dialogRef.afterClosed().subscribe(escenaAgregada => {
       if(escenaAgregada!=null){
-        if(EscenaActiva.Orden==escenaAgregada.Orden){
-          this.escenasActivasMostrar= this.escenasActivasMostrar.splice(this.escenasActivasMostrar.findIndex(sc=>{sc.Orden==escenaAgregada.Orden}),1,escenaAgregada);
-          //this.escenaModificar=
-          //this.escenasActivasRecibidas= this.;
-          this.dataSourceEscenas= new MatTableDataSource(this.escenasActivasMostrar);
-        }else{
-          this.escenasActivasMostrar= this.escenasActivasMostrar.splice(this.escenasActivasMostrar.findIndex(sc=>{sc.Orden==escenaAgregada.Orden}),1,escenaAgregada);
-          
+        if(escenaActiva.Orden==escenaAgregada.Orden){
 
+          if(escenaAgregada.Requisito=='puntos'){
+            this.escenasActivasMostrar.splice(this.escenasActivasMostrar.findIndex(sc=>{sc.Orden==escenaAgregada.Orden}),1,escenaAgregada);
+            let index=this.escenasActivasRecibidas.findIndex(sc=>{sc.orden==escenaAgregada.Orden});
+            this.escenaModificar= this.escenasActivasRecibidas[index];
+            this.escenaModificar.TiempoLimite= escenaAgregada.TiempoLimite;
+            this.escenaModificar.TipoRequisito=escenaAgregada.Requisito;
+            this.escenaModificar.RequisitoPuntos=escenaAgregada.Puntosrequisito;
+            this.escenasActivasRecibidas.splice(index,1,this.escenaModificar);
+            this.dataSourceEscenas= new MatTableDataSource(this.escenasActivasMostrar);
+          }else{
+            this.escenasActivasMostrar.splice(this.escenasActivasMostrar.findIndex(sc=>{sc.Orden==escenaAgregada.Orden}),1,escenaAgregada);
+            let index=this.escenasActivasRecibidas.findIndex(sc=>{sc.orden==escenaAgregada.Orden});
+            this.escenaModificar= this.escenasActivasRecibidas[index];
+            this.escenaModificar.TiempoLimite= escenaAgregada.TiempoLimite;            
+            this.escenaModificar.TipoRequisito=escenaAgregada.Requisito;
+            this.escenasActivasRecibidas.splice(index,1,this.escenaModificar);
+            this.dataSourceEscenas= new MatTableDataSource(this.escenasActivasMostrar);
+          }
           
-          this.dataSourceEscenas= new MatTableDataSource(this.escenasActivasMostrar);
+        }else{
+          if(escenaAgregada.Requisito=='puntos'){
+            //EscenasActRecibidas
+            let index=this.escenasActivasRecibidas.findIndex(sc=>{sc.orden==escenaActiva.Orden});
+            let index2=this.escenasActivasRecibidas.findIndex(sc=>{sc.orden==escenaAgregada.Orden});
+
+            this.escenaModificar= this.escenasActivasRecibidas[index];
+            this.escenaModificar.orden= escenaAgregada.Orden;
+            this.escenaModificar.TiempoLimite= escenaAgregada.TiempoLimite;
+            this.escenaModificar.TipoRequisito=escenaAgregada.Requisito;
+            this.escenaModificar.RequisitoPuntos=escenaAgregada.Puntosrequisito;            
+            this.escenasActivasRecibidas.splice(index,1,this.escenaModificar);
+
+            this.escenaModificar2 = this.escenasActivasRecibidas[index2];
+            this.escenaModificar2.orden= escenaActiva.Orden;            
+            this.escenasActivasRecibidas.splice(index2,1,this.escenaModificar2);
+            this.escenasActivasRecibidas.sort((a, b)=>a.orden - b.orden);
+
+            //EscenasActMostrar
+            let indexMostrar=this.escenasActivasMostrar.findIndex(sc=>{sc.Orden==escenaActiva.Orden});
+            let indexMostrar2=this.escenasActivasMostrar.findIndex(sc=>{sc.Orden==escenaAgregada.Orden});
+
+            this.escenaMostrarModificar= this.escenasActivasMostrar[indexMostrar];
+            this.escenaMostrarModificar.Orden= escenaAgregada.Orden;
+            this.escenaMostrarModificar.TiempoLimite= escenaAgregada.TiempoLimite;
+            this.escenaMostrarModificar.Requisito=escenaAgregada.Requisito;
+            this.escenaMostrarModificar.Puntosrequisito=escenaAgregada.Puntosrequisito;            
+            this.escenasActivasMostrar.splice(indexMostrar,1,this.escenaMostrarModificar);
+
+            this.escenaMostrarModificar2 = this.escenasActivasMostrar[indexMostrar2];
+            this.escenaMostrarModificar2.Orden= escenaActiva.Orden;            
+            this.escenasActivasMostrar.splice(indexMostrar2,1,this.escenaMostrarModificar2);
+            this.escenasActivasMostrar.sort((a, b)=>a.Orden - b.Orden);
+
+
+            this.dataSourceEscenas= new MatTableDataSource(this.escenasActivasMostrar);
+          }else{
+            let index=this.escenasActivasRecibidas.findIndex(sc=>{sc.orden==escenaActiva.Orden});
+            let index2=this.escenasActivasRecibidas.findIndex(sc=>{sc.orden==escenaAgregada.Orden});
+
+            this.escenaModificar= this.escenasActivasRecibidas[index];
+            this.escenaModificar.orden= escenaAgregada.Orden;
+            this.escenaModificar.TiempoLimite= escenaAgregada.TiempoLimite;
+            this.escenaModificar.TipoRequisito=escenaAgregada.Requisito;           
+            this.escenasActivasRecibidas.splice(index,1,this.escenaModificar);
+
+            this.escenaModificar2 = this.escenasActivasRecibidas[index2];
+            this.escenaModificar2.orden= escenaActiva.Orden;            
+            this.escenasActivasRecibidas.splice(index2,1,this.escenaModificar2);
+            this.escenasActivasRecibidas.sort((a, b)=>a.orden - b.orden);
+
+            //EscenasActMostrar
+            let indexMostrar=this.escenasActivasMostrar.findIndex(sc=>{sc.Orden==escenaActiva.Orden});
+            let indexMostrar2=this.escenasActivasMostrar.findIndex(sc=>{sc.Orden==escenaAgregada.Orden});
+
+            this.escenaMostrarModificar= this.escenasActivasMostrar[indexMostrar];
+            this.escenaMostrarModificar.Orden= escenaAgregada.Orden;
+            this.escenaMostrarModificar.TiempoLimite= escenaAgregada.TiempoLimite;
+            this.escenaMostrarModificar.Requisito=escenaAgregada.Requisito;            
+            this.escenasActivasMostrar.splice(indexMostrar,1,this.escenaMostrarModificar);
+
+            this.escenaMostrarModificar2 = this.escenasActivasMostrar[indexMostrar2];
+            this.escenaMostrarModificar2.Orden= escenaActiva.Orden;            
+            this.escenasActivasMostrar.splice(indexMostrar2,1,this.escenaMostrarModificar2);
+            this.escenasActivasMostrar.sort((a, b)=>a.Orden - b.Orden);
+ 
+
+            this.dataSourceEscenas= new MatTableDataSource(this.escenasActivasMostrar);
+          }
+          
         }
       }
     });
