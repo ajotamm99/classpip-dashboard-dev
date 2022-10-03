@@ -1,3 +1,84 @@
-<p>
-  asignar-objetos-escaperoom works!
-</p>
+<div align="center">
+  <mat-card class="panel">
+  
+    <form *ngIf="objetosDeEscenario">
+      <div class="enColumna">
+        <div class="enFila">
+          <div style="width:60% ;">
+            <div class = "filter">
+              <mat-form-field>
+                <input matInput (keyup)="applyFilterObjetos($event.target.value)" placeholder="Filtro para buscar objetos añadidos...">
+                <i class="material-icons" matSuffix>search</i>
+              </mat-form-field>
+            </div>
+            <table align="center" mat-table [dataSource]="dataSourceObjetos" class="example-container mat-elevation-z8">
+  
+          <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla">
+            </th>
+      
+            <td mat-cell *matCellDef="let row;">
+              <mat-checkbox
+                      (click)="$event.stopPropagation()"
+                      (change)="Marcar (row) "
+                      [checked]="selection.isSelected(row)">
+              </mat-checkbox>
+            </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="Nombre">
+            <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla" style="text-align: left !important;"> Nombre </th>
+            <td mat-cell *matCellDef="let objeto"> {{objeto.Nombre}} </td>
+          </ng-container>
+  
+          
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+              (click)="Marcar(row)">
+          </tr>
+  
+            </table>
+          </div>
+          <div *ngIf="tengoObjeto" style="width:30% ;">
+            <span *ngIf="tengoObjeto" style="font-weight: bold;color:black;">Nombre: {{objetoAgregado.Nombre}}</span>
+            <img *ngIf="tengoObjeto" style="margin-left: 15px;" class="imagenObjeto" mat-card-image [src]="imagenObjeto">
+          </div>
+        </div>
+        <br>
+        <br>
+        <div class="enColumna">
+          <span style="font-weight: bold;">Orden: </span>
+          <input style="background-color: transparent" type="number" name="nombre" placeholder="Escribe el orden de la escena" (change) = "TengoOrdenEscena()" requiered [(ngModel)]="ordenEscena" [ngModelOptions]="{standalone: true}">
+          <br>
+          <br>
+          <span style="font-weight: bold;">Tiempo Límite: </span>
+          <input style="background-color: transparent" type="text" name="nombre" placeholder="Escribe el tiempo en minutos(0 si no tiene)" (keyup) = "TengoTiempoLimiteEscena()" requiered [(ngModel)]="TiempoLimiteEscena" [ngModelOptions]="{standalone: true}">
+          <br>
+          <br>   
+          <span style="font-weight: bold;">Tipo de requisito: </span>
+          <mat-select name="Types" placeholder="Selecciona el tipo de requisito de Escena" (selectionChange)="AsignarTipo()" [(ngModel)]="TipoRequisito" [ngModelOptions]="{standalone: true}" required>
+            <mat-option *ngFor="let type of tipos" [value]="type.id" matTooltip={{type.descripcion}}>
+              {{type.nombre}}
+            </mat-option>
+          </mat-select>
+          <br>
+          <br>
+          <div *ngIf="tengoTipoPuntos">
+            <span style="font-weight: bold;">Requisito de puntos: </span>
+            <input style="background-color: transparent" type="text" name="puntos" placeholder="Escribe el requisito de puntos para completar la escena" (keyup) = "TengoPuntosEscena()" requiered [(ngModel)]="RequisitoPuntosEscena" [ngModelOptions]="{standalone: true}">
+          </div>
+        </div>
+      </div>
+    </form>
+  
+    <div  *ngIf="tengoObjeto" class = "enColumna" align="center">
+      <button style = "width: 20%" (click)="AsignarObjeto()" [disabled]="!tengoObjeto" type="button" class="btn Aceptar">Asignar objeto</button>
+    </div>
+  <br>
+  
+    <mat-dialog-actions align= "center">
+      <!-- <button mat-button [mat-dialog-close] class="btn Cerrar">Cerrar</button> routerLink= "editarColeccion" -->
+        <button mat-button (click)= "Cerrar();" class="btn Cerrar">Cerrar</button>
+    </mat-dialog-actions>
+  </mat-card>
+  </div>

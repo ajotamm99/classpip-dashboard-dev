@@ -581,7 +581,8 @@ import { EditarPreguntasActivasEscaperoomComponent } from './paginas/juego/Dialo
     InformacionRespuestasJuegoDeCuestionarioDialogComponent,
     RespuestasAlumnoJuegoDeCuestionarioComponent,
     AsignarFamiliaImagenesPerfilComponent, EvaluacionDialogoComponent, EvaluacionBorrarDialogoComponent, AgregarEscenaDialogComponent, EditarEscenaDialogComponent,
-    EditarObjetoDialogComponent, EditarEnigmasDialogComponent, EditarSkinDialogComponent, MostrarObjetosPublicosComponent, MostrarSkinsPublicasComponent, MostrarEnigmasPublicosComponent, AsignarEscenasEscaperoomComponent, EditarEscenasActivasEscaperoomComponent
+    EditarObjetoDialogComponent, EditarEnigmasDialogComponent, EditarSkinDialogComponent, MostrarObjetosPublicosComponent, MostrarSkinsPublicasComponent, MostrarEnigmasPublicosComponent, AsignarEscenasEscaperoomComponent, EditarEscenasActivasEscaperoomComponent,
+    AsignarObjetosEscaperoomComponent,EditarObjetosActivosEscaperoomComponent, AsignarPreguntasEscaperoomComponent,EditarPreguntasActivasEscaperoomComponent
   ],
   bootstrap: [AppComponent],
   providers: [

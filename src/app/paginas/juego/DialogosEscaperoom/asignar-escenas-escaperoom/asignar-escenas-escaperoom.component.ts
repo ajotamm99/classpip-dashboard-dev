@@ -38,7 +38,7 @@ export class AsignarEscenasEscaperoomComponent implements OnInit {
     private sesion: SesionService,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
-    selection = new SelectionModel<EscenarioEscaperoom>(true, []);
+    selection = new SelectionModel<EscenaEscaperoom>(true, []);
 
     tipos: tipoRequisito[]=[
       {nombre: "Puntos", descripcion:"Selecciona este si quieres que se requieran puntos para superar la escena", id: "puntos"},

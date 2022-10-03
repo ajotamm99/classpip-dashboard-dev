@@ -1,3 +1,4 @@
+import { AsignarObjetosEscaperoomComponent } from './DialogosEscaperoom/asignar-objetos-escaperoom/asignar-objetos-escaperoom.component';
 import { AsignarEscenasEscaperoomComponent } from './DialogosEscaperoom/asignar-escenas-escaperoom/asignar-escenas-escaperoom.component';
 import { EscenaActiva } from './../../clases/clasesParaJuegoDeEscapeRoom/EscenaActiva';
 import { PreguntaActiva } from './../../clases/clasesParaJuegoDeEscapeRoom/PreguntaActiva';
@@ -93,8 +94,10 @@ export interface EscenasActMostrar {
 }
 
 export interface ObjetoActMostrar {
+  idTemporal:number;
   Nombre: string;
   IdObjetoEscenaAct: string;
+  OrdenEscenaAct:number;
   Tipo: string;
   PistaString?: string;
   Lugar: string;
@@ -108,6 +111,13 @@ export interface PreguntaActMostrar {
   Pregunta: string;
   PuntosSumar: string;
   PuntosRestar: number;
+}
+
+export interface RequisitosEscenas {
+  OrdenEscena?: number;
+  Requisito: string;
+  PuntosRequisito?: number;
+  Cumplidos: boolean;
 }
 
 @Component({
@@ -498,9 +508,16 @@ export class JuegoComponent implements OnInit {
   displayedColumnsEscenas: string[] = ['Orden','Nombre', 'Tiempo Limite', 'Requisito', 'Iconos'];
 
   objetosEscenasRecibidas: ObjetoActivo[]=[];
+  objetosEscenasMostrar: ObjetoActMostrar[]=[];
   tengoObjetosActivos:  boolean;
-  dataSourceObjetos;  
+  escenaObjetoSeleccionada: EscenasActMostrar;
+  escenaSeleccionada: boolean;
+  tengoObjetosEscena: boolean;
+  tengoRequisitosObjetos: boolean;
+  requisitosEscenas: RequisitosEscenas[]=[];
+  dataSourceObjetosEscena;  
   displayedColumnsObjetos: string[] = ['Nombre', 'Tipo', 'Lugar', 'Es requisito', 'Iconos'];
+  displayedColumnsEscenasObjetos: string[] = ['select','Orden','Nombre', 'Tiempo Limite', 'Requisito'];
 
   preguntasObjetosRecibidas: PreguntaActiva[]=[];
   tengoPreguntasObjetos: boolean;
@@ -656,6 +673,9 @@ export class JuegoComponent implements OnInit {
     this.tiemposEscenas=0;
     this.tengoTiempos=false;
     this.tiempoRestante=1;
+    this.escenaSeleccionada=false;
+    this.tengoObjetosEscena=false;
+    this.tengoRequisitosObjetos=false;
 
   }
 
@@ -3450,7 +3470,7 @@ export class JuegoComponent implements OnInit {
   AbrirDialogoConfirmacionBorrarEscena(escenaActiva: EscenasActMostrar){
     Swal.fire({
       title: 'Eliminar',
-      text: "Las escenas asociadas a este escenario se eliminarán. Estas segura/o de que quieres eliminar la escena: "+escenaActiva.Nombre +"?",
+      text: "Estas segura/o de que quieres eliminar la escena activa: "+escenaActiva.Nombre +"?",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -3616,24 +3636,63 @@ export class JuegoComponent implements OnInit {
               
 
           }else{
-            //EscenasActMostrar
-            let indexMostrar=this.escenasActivasMostrar.findIndex(sc=>sc.Orden==escenaActiva.Orden);
-            let escenaMostrarModificar= this.escenasActivasMostrar[indexMostrar];    
-            escenaMostrarModificar.Orden= ordenAgregada;
-            escenaMostrarModificar.TiempoLimite= escenaAgregada.TiempoLimite;
-            escenaMostrarModificar.Requisito=escenaAgregada.Requisito;         
-            this.escenasActivasMostrar[indexMostrar]=escenaMostrarModificar;
+            if(ordenAgregada<ordenEscenaActiva){
+              let indexMostrar=this.escenasActivasMostrar.findIndex(sc=>sc.Orden==escenaActiva.Orden);
+              let escenaMostrarModificar= this.escenasActivasMostrar[indexMostrar];    
+              escenaMostrarModificar.Orden= ordenAgregada;
+              escenaMostrarModificar.TiempoLimite= escenaAgregada.TiempoLimite;
+              escenaMostrarModificar.Requisito=escenaAgregada.Requisito;         
+              this.escenasActivasMostrar[indexMostrar]=escenaMostrarModificar;
+              
+              let indexMostrar2=this.escenasActivasMostrar.findIndex(sc=>sc.Orden==escenaAgregada.Orden);        
+              let escenaMostrarModificar2 = this.escenasActivasMostrar[indexMostrar2];
+              escenaMostrarModificar2.Orden= ordenEscenaActiva;            
+              this.escenasActivasMostrar[indexMostrar2]=escenaMostrarModificar2;
+              this.escenasActivasMostrar.sort((a, b)=>a.Orden - b.Orden);
             
+              console.log(this.escenasActivasMostrar);
+              this.dataSourceEscenas= new MatTableDataSource(this.escenasActivasMostrar);
+          
+              //EscenasActRecibidas
+              let index=this.escenasActivasRecibidas.findIndex(sc=>sc.orden==ordenEscenaActiva);
+              this.escenaModificar= this.escenasActivasRecibidas[index]; 
+              this.escenaModificar.orden= ordenAgregada;
+              this.escenaModificar.TiempoLimite= escenaAgregada.TiempoLimite;
+              this.escenaModificar.TipoRequisito=escenaAgregada.Requisito;          
+              this.escenasActivasRecibidas[index]=this.escenaModificar;
+
+              let index2=this.escenasActivasRecibidas.findIndex(sc=>sc.orden==ordenAgregada);
+              this.escenaModificar2 = this.escenasActivasRecibidas[index2];
+              this.escenaModificar2.orden= ordenEscenaActiva;         
+              this.escenasActivasRecibidas[index2]=this.escenaModificar2;
+              this.escenasActivasRecibidas.sort((a, b)=>a.orden - b.orden);
+              console.log(this.escenasActivasRecibidas);
+           }else{
+                          
             let indexMostrar2=this.escenasActivasMostrar.findIndex(sc=>sc.Orden==escenaAgregada.Orden);        
             let escenaMostrarModificar2 = this.escenasActivasMostrar[indexMostrar2];
             escenaMostrarModificar2.Orden= ordenEscenaActiva;            
             this.escenasActivasMostrar[indexMostrar2]=escenaMostrarModificar2;
+
+            let indexMostrar=this.escenasActivasMostrar.findIndex(sc=>sc.Orden==escenaActiva.Orden);
+            let escenaMostrarModificar= this.escenasActivasMostrar[indexMostrar];    
+            escenaMostrarModificar.Orden= ordenAgregada;
+            escenaMostrarModificar.TiempoLimite= escenaAgregada.TiempoLimite;
+            escenaMostrarModificar.Requisito=escenaAgregada.Requisito;          
+            this.escenasActivasMostrar[indexMostrar]=escenaMostrarModificar;
+            
             this.escenasActivasMostrar.sort((a, b)=>a.Orden - b.Orden);
 
+          
             console.log(this.escenasActivasMostrar);
             this.dataSourceEscenas= new MatTableDataSource(this.escenasActivasMostrar);
-
+        
             //EscenasActRecibidas
+            let index2=this.escenasActivasRecibidas.findIndex(sc=>sc.orden==ordenAgregada);
+            this.escenaModificar2 = this.escenasActivasRecibidas[index2];
+            this.escenaModificar2.orden= ordenEscenaActiva;         
+            this.escenasActivasRecibidas[index2]=this.escenaModificar2;
+
             let index=this.escenasActivasRecibidas.findIndex(sc=>sc.orden==ordenEscenaActiva);
             this.escenaModificar= this.escenasActivasRecibidas[index]; 
             this.escenaModificar.orden= ordenAgregada;
@@ -3641,13 +3700,9 @@ export class JuegoComponent implements OnInit {
             this.escenaModificar.TipoRequisito=escenaAgregada.Requisito;          
             this.escenasActivasRecibidas[index]=this.escenaModificar;
 
-            let index2=this.escenasActivasRecibidas.findIndex(sc=>sc.orden==ordenAgregada);
-            this.escenaModificar2 = this.escenasActivasRecibidas[index2];
-            this.escenaModificar2.orden= ordenEscenaActiva;         
-            this.escenasActivasRecibidas[index2]=this.escenaModificar2;
-            this.escenasActivasRecibidas.sort((a, b)=>a.orden - b.orden);
-            console.log(this.escenasActivasRecibidas);
 
+            this.escenasActivasRecibidas.sort((a, b)=>a.orden - b.orden);
+           }
           }
           
         }
@@ -3662,4 +3717,131 @@ export class JuegoComponent implements OnInit {
       }
     });
   }
+
+  CrearRequisitos(){
+    for(let i=0; i<this.escenasActivasMostrar.length; i++){
+      if(this.escenasActivasMostrar[i].Requisito=='puntos'){        
+        this.requisitosEscenas.push({Requisito: this.escenasActivasMostrar[i].Requisito, OrdenEscena: this.escenasActivasMostrar[i].Orden, PuntosRequisito: +this.escenasActivasMostrar[i].Puntosrequisito, Cumplidos:false })
+      }else{
+        this.requisitosEscenas.push({Requisito: this.escenasActivasMostrar[i].Requisito, OrdenEscena: this.escenasActivasMostrar[i].Orden, Cumplidos: false })
+      }
+    }
+  }
+
+  applyFilterObjetosEscena(filterValue: string) {
+    this.dataSourceObjetosEscena.filter = filterValue.trim().toLowerCase();
+  }
+
+  MarcarEscenaObjeto(row) {
+    if (this.selection.isSelected(row)) {
+      this.selection.deselect(row);      
+      this.escenaSeleccionada=false;
+      this.escenaObjetoSeleccionada=undefined;
+    } else {
+      this.selection.clear();
+      this.selection.select(row);
+      this.dataSourceEscenas.data.forEach ( row => {
+        if (this.selection.isSelected(row)) {
+          console.log ('hemos elegido ', row);
+          this.escenaObjetoSeleccionada = row;
+          console.log(row);          
+          this.escenaSeleccionada=true;
+          this.FiltrarObjetosEscena(row);
+        }
+      });
+    }
+  }
+
+  FiltrarObjetosEscena(escena: EscenasActMostrar){
+    let objetosEscena=this.objetosEscenasMostrar.filter(obj=> obj.IdObjetoEscenaAct ==escena.IdEscenaAct);
+    if (objetosEscena!=undefined){
+      this.dataSourceObjetosEscena= new MatTableDataSource(objetosEscena);
+      this.tengoObjetosEscena=true;
+    }else{
+      this.tengoObjetosEscena=false;
+    }
+  }
+
+  AbrirDialogoAgregarObjeto(){
+    const dialogRef = this.dialog.open(AsignarObjetosEscaperoomComponent, {
+      width: '900px',
+      maxHeight: '600px',
+      data:{
+        escena: this.escenaObjetoSeleccionada
+      }
+    });
+
+     // RECUPERAREMOS LA NUEVA LISTA DE LOS CROMO Y VOLVEREMOS A BUSCAR LOS CROMOS QUE TIENE LA COLECCION
+    dialogRef.afterClosed().subscribe(objetoAgregado => {
+      if(objetoAgregado.EscenaAct!=null && objetoAgregado.EscenaAct!=undefined){
+        // tslint:disable-next-line:prefer-for-of
+          this.objetosEscenasMostrar.push(objetoAgregado);
+          this.dataSourceObjetosEscena= new MatTableDataSource(this.objetosEscenasMostrar);
+          this.ConfirmarRequisitos();          
+      }
+     });
+
+  }
+
+  EditarObjetoActivo(){
+
+  }
+
+  AbrirDialogoConfirmacionBorrarObjeto(objetoActivo: ObjetoActMostrar){
+    Swal.fire({
+      title: 'Eliminar',
+      text: "Estas segura/o de que quieres eliminar el objeto activo: "+objetoActivo.Nombre +"?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar'
+
+    }).then((result) => {
+      if (result.value) {
+        this.objetosEscenasMostrar = this.objetosEscenasMostrar.filter(sc=> sc==objetoActivo);
+        this.dataSourceObjetosEscena= new MatTableDataSource(this.objetosEscenasMostrar);
+        if(this.objetosEscenasMostrar.length==0){
+          this.tengoObjetosEscena=false;
+        }
+        this.ConfirmarRequisitos();
+      }
+  });
+
+  }
+
+  ConfirmarRequisitos(){    
+    var contObj=0;    
+    var contObjCumplido=0;
+    for(let i=0; i<this.requisitosEscenas.length;i++){
+      if(this.requisitosEscenas[i].Requisito!='puntos'){
+        let objetosEscena = this.objetosEscenasMostrar.filter(obj=> obj.OrdenEscenaAct==this.requisitosEscenas[i].OrdenEscena)
+        var pass=false;
+        contObj+=1;
+        for(let b=0; b<objetosEscena.length && !pass; b++){
+          if(objetosEscena[b].EsRequisito){
+            pass=true;
+            this.requisitosEscenas[i].Cumplidos=true;
+            contObjCumplido+=1;
+          }
+          if (b==objetosEscena.length-1 && !false){            
+            this.requisitosEscenas[i].Cumplidos=false;
+          }
+        }
+      }
+      if(contObj==contObjCumplido){
+        this.tengoRequisitosObjetos=true;
+      }else{
+        this.tengoRequisitosObjetos=false;
+      }
+
+    }
+  }
+
+  CrearObjetosActivos(){
+
+  }
+  
+
 }
