@@ -62,7 +62,6 @@ export class EditarObjetosActivosEscaperoomComponent implements OnInit {
     changed: boolean;
 
   ngOnInit() {
-
     this.tengoObjeto=false;
     this.changed=false;
     this.escenaDelObjeto=this.data.escena;
