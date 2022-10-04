@@ -78,6 +78,9 @@ export class AsignarObjetosEscaperoomComponent implements OnInit {
     this.tengoPregunta=false;
     this.tengoRequisito=false;
     this.objetoMostrar=this.data.objetos;
+    if (this.data.objetos!=null && this.data.objetos!=undefined){
+      this.tengoObjetosDeEscena=true;
+    }
 
   }
 
