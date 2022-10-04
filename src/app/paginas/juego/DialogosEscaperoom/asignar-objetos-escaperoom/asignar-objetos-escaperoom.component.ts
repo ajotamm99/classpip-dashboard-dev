@@ -10,6 +10,7 @@ import { OpcionSeleccionada, EscenasActMostrar } from 'src/app/paginas/juego/jue
 import { AgregarCromoDialogComponent } from 'src/app/paginas/mis-colecciones/agregar-cromo-dialog/agregar-cromo-dialog.component';
 import { PeticionesAPIService, SesionService } from 'src/app/servicios';
 import Swal from 'sweetalert2';
+import { Location } from '@angular/common';
 
 import * as URL from '../../../../URLs/urls';
 
@@ -17,11 +18,7 @@ import 'rxjs';
 import { SelectionModel } from '@angular/cdk/collections';
 import { DialogoConfirmacionComponent } from 'src/app/paginas/COMPARTIDO/dialogo-confirmacion/dialogo-confirmacion.component';
 
-export interface tipoRequisito {
-  nombre: string,
-  descripcion: string,
-  id: string
-}
+
 
 @Component({
   selector: 'app-asignar-objetos-escaperoom',
@@ -39,13 +36,14 @@ export class AsignarObjetosEscaperoomComponent implements OnInit {
     private sesion: SesionService,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
-    selection = new SelectionModel<ObjetoEscaperoom>(true, []);
+    opciones = this.formBuilder.group({
+      Pista: true,
+      Pregunta: false,
+      Movil: false,
+      Requisito: false,
+    });
 
-    tipos: tipoRequisito[]=[
-      {nombre: "Puntos", descripcion:"Selecciona este si quieres que se requieran puntos para superar la escena", id: "puntos"},
-      {nombre: "Objeto", descripcion:"Selecciona este si quieres que se requieran objetos para superar la escena", id: "objeto"}
-    ];
-    
+    selection = new SelectionModel<ObjetoEscaperoom>(true, []);    
 
     objetosMostrar: ObjetoEscaperoom[]=[];
     escenaDelObjeto: EscenasActMostrar;
@@ -54,9 +52,18 @@ export class AsignarObjetosEscaperoomComponent implements OnInit {
     dataSourceObjetos;
     imagenObjeto: string;
 
-
+    tengoObjetosDeEscena: boolean;
     tengoObjeto: boolean;
+    tengoPista:boolean;
+    pistaString: string;
+    tengoPregunta: boolean;
+    tengoRequisito: boolean;
+    tengoMovil:boolean;
+    lugarObjeto:string;
+
     changed: boolean;
+
+    profesorId:number;
 
     
     displayedColumns: string[] = ['select', 'Nombre'];
@@ -66,6 +73,11 @@ export class AsignarObjetosEscaperoomComponent implements OnInit {
     this.tengoObjeto=false;
     this.changed=false;
     this.escenaDelObjeto=this.data.escena;
+    this.tengoMovil=false;
+    this.tengoPista=false;
+    this.tengoPregunta=false;
+    this.tengoRequisito=false;
+    this.objetoMostrar=this.data.objetos;
 
   }
 
@@ -74,7 +86,7 @@ export class AsignarObjetosEscaperoomComponent implements OnInit {
     if (this.selection.isSelected(row)) {
       this.selection.deselect(row);
       this.tengoObjeto=false;
-      this.objetoAgregado=undefined;
+      this.objetoMostrar=undefined;
       this.imagenObjeto=undefined;
       //this.escenaActiva=undefined;
       this.changed=false;
@@ -93,26 +105,39 @@ export class AsignarObjetosEscaperoomComponent implements OnInit {
     }
   }
 
-  AsignarEscena(){
+  AsignarObjeto(){
+    if(this.tengoPista){
+      if(this.pistaString!=null && this.pistaString!=''){
+        this.selection.clear();
+        this.changed=true;
+        this.tengoObjeto=false;
+        this.objetoAgregado= ({IdObjetoAct:this.objetoMostrar.id , Nombre:this.objetoMostrar.Nombre, IdObjetoEscenaAct:this.escenaDelObjeto.IdEscenaAct, OrdenEscenaAct: this.escenaDelObjeto.Orden, Pregunta:this.tengoPregunta, Pista: this.tengoPista, Movil:this.tengoMovil, PistaString:this.pistaString, EsRequisito: this.tengoRequisito});
+        console.log(this.objetoAgregado);
+        Swal.fire("Escena añadida", "La escena se ha añadido con éxito", 'success');
+      }else{
+        Swal.fire("Error", "No has insertado ninguna pista", 'error');
+      }
+
+    }else{
+      this.selection.clear();
+      this.changed=true;
+      this.tengoObjeto=false;
+      this.objetoAgregado= ({IdObjetoAct:this.objetoMostrar.id, Nombre:this.objetoMostrar.Nombre, IdObjetoEscenaAct:this.escenaDelObjeto.IdEscenaAct, OrdenEscenaAct: this.escenaDelObjeto.Orden, Pregunta:this.tengoPregunta, Pista: this.tengoPista, Movil:this.tengoMovil, EsRequisito: this.tengoRequisito});
+      console.log(this.objetoAgregado);
+      Swal.fire("Escena añadida", "La escena se ha añadido con éxito", 'success');
+    }
 
     
   }
 
-  TengoPistaObjeto(){
-
+  TengoRequisito(){
+    if(this.tengoRequisito){
+      this.tengoMovil=true;
+    }else{
+      this.tengoMovil=false;
+    }
   }
 
-  TengoPreguntaObjeto(){
-
-  }
-
-  TengoMovilObjeto(){
-
-  }
-
-  EsRequisito(){
-
-  }
 
   Cerrar(): void {
     if (this.tengoObjeto) {

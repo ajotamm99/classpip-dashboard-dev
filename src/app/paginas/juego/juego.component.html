@@ -2530,7 +2530,10 @@
                 <ng-template matStepLabel>
                   <div>Objetos</div>
                 </ng-template>
-
+                <div align="center">
+                  <span *ngIf="!tengoRequisitosObjetos" style="font-weight: bold;color:red;"> No se cumplen los requisitos en todas las escenas </span>
+                
+                </div>
                 <form style = "width: 100%"  *ngIf="tengoEscenasEscaperoom;else Aviso_no_escenas">
 
                   <div class = "filter">
@@ -2592,7 +2595,7 @@
 
                     <div class = "filter">
                       <mat-form-field>
-                        <input matInput (keyup)="applyFilterObjetosEscena($event.target.value)" placeholder="Filtro para buscar escenas añadidas...">
+                        <input matInput (keyup)="applyFilterObjetosEscena($event.target.value)" placeholder="Filtro para buscar objetos añadidos...">
                         <i class="material-icons" matSuffix>search</i>
                       </mat-form-field>
                     </div>
@@ -2603,19 +2606,42 @@
                         <td mat-cell *matCellDef="let objeto"> {{objeto.Nombre}} </td>
                       </ng-container>
 
-                      <ng-container matColumnDef="Tipo">
-                        <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla"> Tipo </th>
-                        <td mat-cell *matCellDef="let objeto"> {{objeto.Nombre}} </td>
+                      <ng-container matColumnDef="Pista">
+                        <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla"> Pista </th>
+                        <td mat-cell *matCellDef="let objeto" align="center"> 
+                          <span *ngIf="objeto.Pista"> {{objeto.PistaString}}</span> 
+                          <i *ngIf="!objeto.Pista" class="material-icons red md-36">clear</i> 
+                        </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="Pregunta">
+                        <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla"> Pregunta </th>
+                        <td mat-cell *matCellDef="let objeto" align="center">
+                           <i *ngIf="objeto.Pregunta" class="material-icons green md-36">done</i> 
+                           <i *ngIf="!objeto.Pregunta" class="material-icons red md-36">clear</i> 
+                          </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="Movil">
+                        <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla"> Movil </th>
+                        <td mat-cell *matCellDef="let objeto" align="center">
+                          <i *ngIf="objeto.Movil" class="material-icons green md-36">done</i> 
+                          <i *ngIf="!objeto.Movil" class="material-icons red md-36">clear</i> 
+                        </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="EsRequisito">
+                        <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla"> Es Requisito </th>
+                        <td mat-cell *matCellDef="let objeto" align="center"> 
+                          
+                          <i *ngIf="objeto.EsRequisito" class="material-icons green md-36">done</i> 
+                          <i *ngIf="!objeto.EsRequisito" class="material-icons red md-36">clear</i> 
+                        </td>
                       </ng-container>
 
                       <ng-container matColumnDef="Lugar">
                         <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla"> Lugar </th>
-                        <td mat-cell *matCellDef="let objeto"> {{objeto.Lugar}} minutos </td>
-                      </ng-container>
-
-                      <ng-container matColumnDef="Es Requisito">
-                        <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla"> Es Requisito </th>
-                        <td mat-cell *matCellDef="let objeto"> {{objeto.Requisito}} </td>
+                        <td mat-cell *matCellDef="let objeto"> {{objeto.Lugar}} </td>
                       </ng-container>
           
                       <ng-container matColumnDef="Iconos">
@@ -2640,21 +2666,21 @@
                   <div class="contenedor">
                     <ng-template  #Aviso_no_objetos><div class="texto">No tienes objetos todavía</div></ng-template>
                   </div>
+                  <br>
+                  <br>
+                  <div align="center">
+                    <button type="button" class="btn Agregar" (click)="AbrirDialogoAgregarObjeto()"
+                      style="width: auto;">Añadir Objeto<i class="material-icons">
+                        post_add </i></button>
+                  </div>
+                </div>
 
-                </div>
-                <br>
-                <br>
-                <div align="center">
-                  <button type="button" class="btn Agregar" (click)="AbrirDialogoAgregarObjeto()"
-                    style="width: auto;">Añadir Objeto<i class="material-icons">
-                      post_add </i></button>
-                </div>
 
                 <br>
                 <br>
                 <div class="btnCambiarStep">
                   <button type="button" class="btn Back" matStepperPrevious>Atrás</button>
-                  <button [disabled]="!tengoRequisitos" type="button" class="btn Next"
+                  <button [disabled]="!tengoRequisitosObjetos" type="button" class="btn Next"
                     matStepperNext>Siguiente</button>
                 </div>
               </mat-step>

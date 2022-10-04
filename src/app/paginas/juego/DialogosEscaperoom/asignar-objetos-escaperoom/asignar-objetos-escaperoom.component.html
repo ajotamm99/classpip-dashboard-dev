@@ -1,7 +1,7 @@
 <div align="center">
   <mat-card class="panel">
   
-    <form *ngIf="objetosDeEscenario">
+    <form *ngIf="tengoObjetosDeEscena">
       <div class="enColumna">
         <div class="enFila">
           <div style="width:60% ;">
@@ -40,33 +40,33 @@
             </table>
           </div>
           <div *ngIf="tengoObjeto" style="width:30% ;">
-            <span *ngIf="tengoObjeto" style="font-weight: bold;color:black;">Nombre: {{objetoAgregado.Nombre}}</span>
+            <span *ngIf="tengoObjeto" style="font-weight: bold;color:black;">Nombre: {{objetoMostrar.Nombre}}</span>
             <img *ngIf="tengoObjeto" style="margin-left: 15px;" class="imagenObjeto" mat-card-image [src]="imagenObjeto">
           </div>
         </div>
         <br>
         <br>
         <div class="enColumna">
-          <span style="font-weight: bold;">Orden: </span>
-          <input style="background-color: transparent" type="number" name="nombre" placeholder="Escribe el orden de la escena" (change) = "TengoOrdenEscena()" requiered [(ngModel)]="ordenEscena" [ngModelOptions]="{standalone: true}">
+          <section class="example-section">
+            <h4>Selecciona las opciones del objeto</h4>
+            <p><mat-checkbox [(ngModel)]="tengoPista" [ngModelOptions]="{standalone: true}">¿Contiene una pista?</mat-checkbox></p>
+            <textarea *ngIf="tengoPista" style="background-color: transparent" type="text" name="nombre" placeholder="Escribe la pista" requiered [(ngModel)]="pistaString" [ngModelOptions]="{standalone: true}"></textarea>
+
+            <p><mat-checkbox [(ngModel)]="tengoPregunta" [ngModelOptions]="{standalone: true}">¿Tiene una pregunta?</mat-checkbox></p>
+            <p><mat-checkbox [(ngModel)]="tengoMovil" [ngModelOptions]="{standalone: true}">¿Se puede mover?</mat-checkbox></p>
+            <p><mat-checkbox (change)="TengoRequisito()" [(ngModel)]="tengoRequisito" [ngModelOptions]="{standalone: true}">¿Es requisito de la escena?</mat-checkbox></p>
+          
+          </section>
           <br>
           <br>
-          <span style="font-weight: bold;">Tiempo Límite: </span>
-          <input style="background-color: transparent" type="text" name="nombre" placeholder="Escribe el tiempo en minutos(0 si no tiene)" (keyup) = "TengoTiempoLimiteEscena()" requiered [(ngModel)]="TiempoLimiteEscena" [ngModelOptions]="{standalone: true}">
-          <br>
-          <br>   
-          <span style="font-weight: bold;">Tipo de requisito: </span>
-          <mat-select name="Types" placeholder="Selecciona el tipo de requisito de Escena" (selectionChange)="AsignarTipo()" [(ngModel)]="TipoRequisito" [ngModelOptions]="{standalone: true}" required>
-            <mat-option *ngFor="let type of tipos" [value]="type.id" matTooltip={{type.descripcion}}>
-              {{type.nombre}}
+          <!-- Lugar Del Objeto en la escena
+          <span style="font-weight: bold;">Lugar del Objeto: </span>
+          <mat-select name="Lugares" placeholder="Selecciona el lugar del objeto en la escena" (selectionChange)="AsignarLugar()" [(ngModel)]="LugarObjeto" [ngModelOptions]="{standalone: true}" required>
+            <mat-option *ngFor="let lugar of Lugares" [value]="lugar.id" matTooltip={{lugar.descripcion}}>
+              {{lugar.nombre}}
             </mat-option>
           </mat-select>
-          <br>
-          <br>
-          <div *ngIf="tengoTipoPuntos">
-            <span style="font-weight: bold;">Requisito de puntos: </span>
-            <input style="background-color: transparent" type="text" name="puntos" placeholder="Escribe el requisito de puntos para completar la escena" (keyup) = "TengoPuntosEscena()" requiered [(ngModel)]="RequisitoPuntosEscena" [ngModelOptions]="{standalone: true}">
-          </div>
+          -->
         </div>
       </div>
     </form>

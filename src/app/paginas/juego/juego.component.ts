@@ -1,3 +1,5 @@
+import { ObjetoEscaperoom } from './../../clases/clasesParaJuegoDeEscapeRoom/ObjetoEscaperoom';
+import { EditarObjetosActivosEscaperoomComponent } from './DialogosEscaperoom/editar-objetos-activos-escaperoom/editar-objetos-activos-escaperoom.component';
 import { AsignarObjetosEscaperoomComponent } from './DialogosEscaperoom/asignar-objetos-escaperoom/asignar-objetos-escaperoom.component';
 import { AsignarEscenasEscaperoomComponent } from './DialogosEscaperoom/asignar-escenas-escaperoom/asignar-escenas-escaperoom.component';
 import { EscenaActiva } from './../../clases/clasesParaJuegoDeEscapeRoom/EscenaActiva';
@@ -94,13 +96,15 @@ export interface EscenasActMostrar {
 }
 
 export interface ObjetoActMostrar {
-  idTemporal:number;
+  IdObjetoAct:number;
   Nombre: string;
   IdObjetoEscenaAct: string;
   OrdenEscenaAct:number;
-  Tipo: string;
+  Movil: boolean;
+  Pregunta: boolean;
+  Pista: boolean;
   PistaString?: string;
-  Lugar: string;
+  Lugar?: string;
   EsRequisito: boolean;
 }
 
@@ -509,6 +513,7 @@ export class JuegoComponent implements OnInit {
 
   objetosEscenasRecibidas: ObjetoActivo[]=[];
   objetosEscenasMostrar: ObjetoActMostrar[]=[];
+  objetosEscaperoom: ObjetoEscaperoom[]=[];
   tengoObjetosActivos:  boolean;
   escenaObjetoSeleccionada: EscenasActMostrar;
   escenaSeleccionada: boolean;
@@ -516,13 +521,15 @@ export class JuegoComponent implements OnInit {
   tengoRequisitosObjetos: boolean;
   requisitosEscenas: RequisitosEscenas[]=[];
   dataSourceObjetosEscena;  
-  displayedColumnsObjetos: string[] = ['Nombre', 'Tipo', 'Lugar', 'Es requisito', 'Iconos'];
+  displayedColumnsObjetos: string[] = ['Nombre', 'Pista', 'Pregunta', 'Movil','EsRequisito','Lugar', 'Iconos'];
   displayedColumnsEscenasObjetos: string[] = ['select','Orden','Nombre', 'Tiempo Limite', 'Requisito'];
 
   preguntasObjetosRecibidas: PreguntaActiva[]=[];
   tengoPreguntasObjetos: boolean;
   dataSourcePreguntas;
   displayedColumnsPreguntasActivas: string[] = ['Nombre', 'Puntos Sumar', 'Puntos Restar', 'Iconos'];
+  objetosPublicos: ObjetoEscaperoom[];
+  objetosMostrar: ObjetoEscaperoom[];
   
 
 
@@ -3726,6 +3733,67 @@ export class JuegoComponent implements OnInit {
         this.requisitosEscenas.push({Requisito: this.escenasActivasMostrar[i].Requisito, OrdenEscena: this.escenasActivasMostrar[i].Orden, Cumplidos: false })
       }
     }
+    this.DameObjetosPublicosYDelProfesor();
+  }
+
+  DameObjetosPublicosYDelProfesor(){
+    var promisee= new Promise((resolve,reject)=>{
+      this.peticionesAPI.DameObjetosEscaperoomDelProfesor(this.profesorId)
+      .subscribe ( res => {
+        if (res[0] !== undefined) {
+          this.objetosMostrar = <ObjetoEscaperoom[]>res;
+          this.peticionesAPI.DameObjetosEscaperoomPublicos()
+          .subscribe ( res => {
+            if (res[0] !== undefined) {
+              this.objetosPublicos = <ObjetoEscaperoom[]>res;
+              resolve('');
+            } else {
+              Swal.fire('Alerta', 'Aun no tiene ningun escenario', 'warning');
+            }
+          },error=>{
+            
+          });
+        } else {
+          Swal.fire('Alerta', 'Aun no tiene ningun escenario', 'warning');
+        }
+      },error=>{
+        this.peticionesAPI.DameObjetosEscaperoomPublicos()
+        .subscribe ( res => {
+          if (res[0] !== undefined) {
+            this.objetosPublicos = <ObjetoEscaperoom[]>res;
+            
+            resolve('');
+          } else {
+            Swal.fire('Alerta', 'Aun no tiene ningun escenario', 'warning');
+          }
+        },error=>{
+          reject('');
+        });
+      });
+      
+    })
+    promisee.then(()=>{
+      console.log("tengo objetos", this.objetosMostrar, this.objetosPublicos);
+      this.FiltrarObjetos();
+    })
+
+  }
+
+  FiltrarObjetos(){
+    if(this.objetosMostrar!=undefined && this.objetosPublicos!=undefined){
+      for(let i=0; i<this.objetosPublicos.length; i++){
+        var found=false;
+        for(let b=0; b<this.objetosMostrar.length && !found; b++){
+          if(this.objetosPublicos[i].id==this.objetosMostrar[b].id){
+            found=true;
+          }
+          if(!found && b==this.objetosMostrar.length-1){
+            this.objetosMostrar.push(this.objetosPublicos[i]);
+          }
+        }
+      }
+    }
+
   }
 
   applyFilterObjetosEscena(filterValue: string) {
@@ -3754,7 +3822,7 @@ export class JuegoComponent implements OnInit {
 
   FiltrarObjetosEscena(escena: EscenasActMostrar){
     let objetosEscena=this.objetosEscenasMostrar.filter(obj=> obj.IdObjetoEscenaAct ==escena.IdEscenaAct);
-    if (objetosEscena!=undefined){
+    if (objetosEscena.length>0){
       this.dataSourceObjetosEscena= new MatTableDataSource(objetosEscena);
       this.tengoObjetosEscena=true;
     }else{
@@ -3767,23 +3835,44 @@ export class JuegoComponent implements OnInit {
       width: '900px',
       maxHeight: '600px',
       data:{
-        escena: this.escenaObjetoSeleccionada
+        escena: this.escenaObjetoSeleccionada,
+        objetos: this.objetosMostrar
       }
     });
 
-     // RECUPERAREMOS LA NUEVA LISTA DE LOS CROMO Y VOLVEREMOS A BUSCAR LOS CROMOS QUE TIENE LA COLECCION
+    // RECUPERAREMOS LA NUEVA LISTA DE LOS CROMO Y VOLVEREMOS A BUSCAR LOS CROMOS QUE TIENE LA COLECCION
     dialogRef.afterClosed().subscribe(objetoAgregado => {
-      if(objetoAgregado.EscenaAct!=null && objetoAgregado.EscenaAct!=undefined){
-        // tslint:disable-next-line:prefer-for-of
-          this.objetosEscenasMostrar.push(objetoAgregado);
-          this.dataSourceObjetosEscena= new MatTableDataSource(this.objetosEscenasMostrar);
-          this.ConfirmarRequisitos();          
+      if(objetoAgregado!=null && objetoAgregado!=undefined){
+        console.log(objetoAgregado);
+        this.objetosEscenasMostrar.push(objetoAgregado);
+        this.tengoObjetosEscena=true;
+        this.FiltrarObjetosEscena(this.escenaObjetoSeleccionada);
+        this.ConfirmarRequisitos();          
       }
      });
-
   }
 
-  EditarObjetoActivo(){
+  EditarObjetoActivo(objetoActivo: ObjetoActMostrar){
+    const dialogRef = this.dialog.open(EditarObjetosActivosEscaperoomComponent, {
+      width: '900px',
+      maxHeight: '600px',
+      data:{
+        escena: this.escenaObjetoSeleccionada,
+        objeto: objetoActivo,
+        imagen: this.objetosMostrar.find(obj=>obj.id==objetoActivo.IdObjetoAct).Imagen
+      }
+    });
+
+    // RECUPERAREMOS LA NUEVA LISTA DE LOS CROMO Y VOLVEREMOS A BUSCAR LOS CROMOS QUE TIENE LA COLECCION
+    dialogRef.afterClosed().subscribe(objetoAgregado => {
+      if(objetoAgregado!=null && objetoAgregado!=undefined){
+        console.log(objetoAgregado);
+        this.objetosEscenasMostrar.push(objetoAgregado);
+        this.tengoObjetosEscena=true;
+        this.FiltrarObjetosEscena(this.escenaObjetoSeleccionada);
+        this.ConfirmarRequisitos();          
+      }
+     });
 
   }
 
@@ -3797,11 +3886,10 @@ export class JuegoComponent implements OnInit {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Aceptar',
       cancelButtonText: 'Cancelar'
-
     }).then((result) => {
       if (result.value) {
-        this.objetosEscenasMostrar = this.objetosEscenasMostrar.filter(sc=> sc==objetoActivo);
-        this.dataSourceObjetosEscena= new MatTableDataSource(this.objetosEscenasMostrar);
+        this.objetosEscenasMostrar = this.objetosEscenasMostrar.filter(sc=> sc!=objetoActivo);        
+        this.FiltrarObjetosEscena(this.escenaObjetoSeleccionada);
         if(this.objetosEscenasMostrar.length==0){
           this.tengoObjetosEscena=false;
         }
@@ -3811,7 +3899,8 @@ export class JuegoComponent implements OnInit {
 
   }
 
-  ConfirmarRequisitos(){    
+  ConfirmarRequisitos(){
+    console.log(this.objetosEscenasMostrar,this.requisitosEscenas);    
     var contObj=0;    
     var contObjCumplido=0;
     for(let i=0; i<this.requisitosEscenas.length;i++){
@@ -3825,7 +3914,7 @@ export class JuegoComponent implements OnInit {
             this.requisitosEscenas[i].Cumplidos=true;
             contObjCumplido+=1;
           }
-          if (b==objetosEscena.length-1 && !false){            
+          if (b==objetosEscena.length-1 && !pass){            
             this.requisitosEscenas[i].Cumplidos=false;
           }
         }
@@ -3842,6 +3931,6 @@ export class JuegoComponent implements OnInit {
   CrearObjetosActivos(){
 
   }
-  
+
 
 }
