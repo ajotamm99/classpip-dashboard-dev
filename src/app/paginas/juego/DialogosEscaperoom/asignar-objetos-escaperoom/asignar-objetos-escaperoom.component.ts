@@ -77,9 +77,10 @@ export class AsignarObjetosEscaperoomComponent implements OnInit {
     this.tengoPista=false;
     this.tengoPregunta=false;
     this.tengoRequisito=false;
-    this.objetoMostrar=this.data.objetos;
+    this.objetosMostrar=this.data.objetos;
     if (this.data.objetos!=null && this.data.objetos!=undefined){
       this.tengoObjetosDeEscena=true;
+      this.dataSourceObjetos=new MatTableDataSource(this.objetosMostrar);
     }
 
   }
