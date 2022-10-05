@@ -26,6 +26,7 @@ export interface tipoRequisito {
   styleUrls: ['./editar-escenas-activas-escaperoom.component.scss']
 })
 export class EditarEscenasActivasEscaperoomComponent implements OnInit {
+  
 
   constructor(              
     
@@ -60,6 +61,7 @@ export class EditarEscenasActivasEscaperoomComponent implements OnInit {
 
     numeroEscenas:number;
     ordenEscena: string;
+    ordenReserva: string;
     orden: number;
     tengoOrdenEscenas: boolean;
 
@@ -74,7 +76,8 @@ export class EditarEscenasActivasEscaperoomComponent implements OnInit {
 
     this.imagenEscena=URL.ImagenesEscenas+this.data.imagen;
     this.escenaNombre= this.data.escena.Nombre;
-    this.ordenEscena= (this.data.escena.Orden).toString();    
+    this.ordenEscena= (this.data.escena.Orden).toString(); 
+    this.ordenReserva=  (this.data.escena.Orden).toString(); 
     this.orden=(this.data.escena.Orden);           
     this.tengoOrdenEscenas=true;
 
@@ -153,6 +156,7 @@ export class EditarEscenasActivasEscaperoomComponent implements OnInit {
     console.log(this.tengoOrdenEscenas);
     if(!isNaN(+this.ordenEscena)){      
       if(+this.ordenEscena>(this.numeroEscenas) || +this.ordenEscena<=0){
+        this.ordenEscena=this.ordenReserva;
         this.tengoOrdenEscenas=false;
         this.orden=undefined;
         this.cambios=false;

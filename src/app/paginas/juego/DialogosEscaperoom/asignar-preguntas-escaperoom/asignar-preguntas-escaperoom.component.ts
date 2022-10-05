@@ -5,7 +5,7 @@ import { EscenaActiva } from './../../../../clases/clasesParaJuegoDeEscapeRoom/E
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatTableDataSource, MatDialog } from '@angular/material';
-import { Cromo, EscenaEscaperoom, EscenarioEscaperoom } from 'src/app/clases';
+import { Cromo, EscenaEscaperoom, EscenarioEscaperoom, Pregunta } from 'src/app/clases';
 import { OpcionSeleccionada, EscenasActMostrar } from 'src/app/paginas/juego/juego.component';
 import { AgregarCromoDialogComponent } from 'src/app/paginas/mis-colecciones/agregar-cromo-dialog/agregar-cromo-dialog.component';
 import { PeticionesAPIService, SesionService } from 'src/app/servicios';
@@ -44,7 +44,7 @@ export class AsignarPreguntasEscaperoomComponent implements OnInit {
       Requisito: false,
     });
 
-    selection = new SelectionModel<ObjetoEscaperoom>(true, []);    
+    selection = new SelectionModel<Pregunta>(true, []);    
 
     objetosMostrar: ObjetoEscaperoom[]=[];
     escenaDelObjeto: EscenasActMostrar;

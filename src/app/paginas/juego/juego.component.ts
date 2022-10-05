@@ -4116,10 +4116,12 @@ export class JuegoComponent implements OnInit {
     });
 
     // RECUPERAREMOS LA NUEVA LISTA DE LOS CROMO Y VOLVEREMOS A BUSCAR LOS CROMOS QUE TIENE LA COLECCION
-    dialogRef.afterClosed().subscribe(objetoAgregado => {
-      if(objetoAgregado!=null && objetoAgregado!=undefined){
-        
-
+    dialogRef.afterClosed().subscribe(preguntaAgregada => {
+      if(preguntaAgregada!=null && preguntaAgregada!=undefined){
+        this.requisitosEscenasPuntos[this.requisitosEscenasPuntos.findIndex(req=> req.OrdenEscena == ordenEscena)].PuntosActuales+=(preguntaAgregada.Sumar-puntosSumar);
+        this.dataSourceRequisitosEscenasPuntos= new MatTableDataSource(this.requisitosEscenasPuntos);
+        this.objetosMostrarConPreguntas.splice(this.objetosMostrarConPreguntas.indexOf(objeto),1,preguntaAgregada)
+        this.ConfirmarRequisitosPuntosPreguntas();
       }
      });
 

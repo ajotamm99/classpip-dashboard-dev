@@ -162,6 +162,7 @@ export class AsignarEscenasEscaperoomComponent implements OnInit {
     console.log(this.tengoOrdenEscenas);
     if(!isNaN(+this.ordenEscena)){
       if(+this.ordenEscena>(this.numeroEscenas+1) || +this.ordenEscena<=0){
+        this.ordenEscena= (this.numeroEscenas+1).toString();
         this.tengoOrdenEscenas=false;
         this.orden=undefined;
         Swal.fire("Error", "No puede tener una posición superior al número de escenas totales o ser menor o igual a 0",'error');

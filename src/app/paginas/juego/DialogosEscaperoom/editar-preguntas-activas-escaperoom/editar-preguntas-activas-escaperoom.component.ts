@@ -1,11 +1,11 @@
-import { ObjetoActMostrar } from './../../juego.component';
+import { ObjetoActMostrar, ObjetoPreguntaActMostrar } from './../../juego.component';
 import { ObjetoEscaperoom } from './../../../../clases/clasesParaJuegoDeEscapeRoom/ObjetoEscaperoom';
 import { EscenaActiva } from './../../../../clases/clasesParaJuegoDeEscapeRoom/EscenaActiva';
 
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatTableDataSource, MatDialog } from '@angular/material';
-import { Cromo, EscenaEscaperoom, EscenarioEscaperoom } from 'src/app/clases';
+import { Cromo, EscenaEscaperoom, EscenarioEscaperoom, Pregunta } from 'src/app/clases';
 import { OpcionSeleccionada, EscenasActMostrar } from 'src/app/paginas/juego/juego.component';
 import { AgregarCromoDialogComponent } from 'src/app/paginas/mis-colecciones/agregar-cromo-dialog/agregar-cromo-dialog.component';
 import { PeticionesAPIService, SesionService } from 'src/app/servicios';
@@ -37,92 +37,96 @@ export class EditarPreguntasActivasEscaperoomComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
 
-    selection = new SelectionModel<ObjetoEscaperoom>(true, []);
+    selection = new SelectionModel<Pregunta>(true, []);
 
     
+    preguntasProfesor: Pregunta[]=[];
+    tengoPreguntas: boolean;
+    dataSourcePreguntas;
+    displayedColumnsPreguntas:string[]=['Titulo', 'Tipo', 'Pregunta','Tematica', 'Iconos'];
+    objetoPregunta: ObjetoPreguntaActMostrar;
+    objetoPreguntaAgregado: ObjetoPreguntaActMostrar;
+    preguntaSeleccionada: Pregunta;
+    tengoPreguntaSeleccionada: boolean;
 
-    objetosMostrar: ObjetoEscaperoom[]=[];
-    objetosPublicos: ObjetoEscaperoom[]=[];
-    objetoEditar: ObjetoActMostrar;
-    nombreObjeto: string;
-    escenaDelObjeto: EscenasActMostrar;
-    objetoMostrar: ObjetoEscaperoom;
-    objetoAgregado: ObjetoActMostrar;
-    dataSourceObjetos;
-    imagenObjeto: string;
-
-    tengoObjetosDeEscena: boolean;
-    tengoObjeto: boolean;
-    tengoPista:boolean;
-    pistaString: string;
-    tengoPregunta: boolean;
-    tengoRequisito: boolean;
-    tengoMovil:boolean;
-    lugarObjeto:string;
-    idObjeto:number;
+    tengoObjetoPregunta: boolean;
+    PuntosSumar: number;
+    PuntosSumarReserva: number;
+    tengoPuntosSumar: boolean;
+    PuntosRestar: number;
+    PuntosRestarReserva: number;
+    tengoPuntosRestar: boolean;
 
     changed: boolean;
 
   ngOnInit() {
-    this.tengoObjeto=false;
+    this.tengoObjetoPregunta=false;
     this.changed=false;
-    this.escenaDelObjeto=this.data.escena;
-    this.nombreObjeto=this.data.objeto.Nombre;
-    this.objetoEditar=this.data.objeto;
-    this.tengoMovil=this.data.objeto.Movil;
-    this.tengoPista=this.data.objeto.Pista;
-    this.idObjeto=this.data.objeto.IdObjetoAct;
-    this.tengoPregunta=this.data.objeto.Pregunta;
-    if(this.data.escena.Requisito=='puntos'){
-      this.tengoEscenaRequisitoPuntos=true;
-    }else if(this.data.escena.Requisito=='objeto'){
-      this.tengoEscenaRequisitoPuntos=false;
+    this.objetoPregunta=this.data.objeto;
+    this.preguntasProfesor= this.data.preguntas;
+    if (this.data.preguntas!=undefined){
+      this.tengoPreguntas=true;
+      this.dataSourcePreguntas= new MatTableDataSource(this.preguntasProfesor);
+    }else{
+      this.tengoPreguntas=false;
     }
-    if(this.data.objeto.Pista){
-      this.pistaString=this.data.objeto.PistaString;
-    }
-    this.tengoRequisito=this.data.objeto.EsRequisito;
-    this.imagenObjeto= URL.ImagenesObjetos + this.data.imagen;
-
+    this.PuntosSumar=this.data.objeto.Sumar;
+    this.PuntosSumarReserva=this.data.objeto.Sumar;
+    this.PuntosRestar= this.data.objeto.Restar;
+    this.PuntosRestarReserva=this.data.objeto.Restar;
+    this.tengoPuntosSumar=false;
+    this.tengoPuntosRestar=false;
+    this.tengoPreguntaSeleccionada=false;
   }
 
 
   EditarObjeto(){
-    if(this.tengoPista){
-      if(this.pistaString!=null && this.pistaString!=''){
-        this.selection.clear();
-        this.changed=true;
-        this.tengoObjeto=false;
-        this.objetoAgregado= ({IdObjetoAct:this.idObjeto, Nombre:this.nombreObjeto, IdObjetoEscenaAct:this.escenaDelObjeto.IdEscenaAct, OrdenEscenaAct: this.escenaDelObjeto.Orden, Pregunta:this.tengoPregunta, Pista: this.tengoPista, Movil:this.tengoMovil, PistaString:this.pistaString, EsRequisito: this.tengoRequisito});
-        console.log(this.objetoAgregado);
-        Swal.fire("Escena añadida", "La escena se ha añadido con éxito", 'success');
-      }else{
-        Swal.fire("Error", "No has insertado ninguna pista", 'error');
-      }
 
-    }else{
       this.selection.clear();
       this.changed=true;
-      this.tengoObjeto=false;
-      this.objetoAgregado= ({IdObjetoAct:this.idObjeto,Nombre:this.nombreObjeto, IdObjetoEscenaAct:this.escenaDelObjeto.IdEscenaAct, OrdenEscenaAct: this.escenaDelObjeto.Orden, Pregunta:this.tengoPregunta, Pista: this.tengoPista, Movil:this.tengoMovil, EsRequisito: this.tengoRequisito});
-      console.log(this.objetoAgregado);
+      this.tengoObjetoPregunta=false;
+      //this.objetoPreguntaAgregado= ({IdObjetoAct:this.idObjeto,Nombre:this.nombreObjeto, IdObjetoEscenaAct:this.escenaDelObjeto.IdEscenaAct, OrdenEscenaAct: this.escenaDelObjeto.Orden, Pregunta:this.tengoPregunta, Pista: this.tengoPista, Movil:this.tengoMovil, EsRequisito: this.tengoRequisito});
+      console.log(this.objetoPreguntaAgregado);
       Swal.fire("Escena añadida", "La escena se ha añadido con éxito", 'success');
-    }
-
-    
   }
 
-  TengoRequisito(){
-    if(this.tengoRequisito){
-      this.tengoMovil=true;
+  TengoPuntosSumar(){
+    if(!isNaN(+this.PuntosSumar)){      
+      if(+this.PuntosSumar<=0){
+        this.PuntosSumar=this.PuntosSumarReserva;
+        this.tengoPuntosSumar=false;
+        this.tengoObjetoPregunta=false;
+        Swal.fire("Error", "No puede tener una posición superior al número de escenas totales o ser menor o igual a 0",'error');
+      }else{     
+        this.tengoObjetoPregunta=true;   
+      }
     }else{
-      this.tengoMovil=false;
+      this.tengoObjetoPregunta=false;      
+      this.tengoPuntosSumar=false;
+      this.PuntosSumar=this.PuntosSumarReserva;
+    }
+  }
+
+  TengoPuntosRestar(){
+    if(!isNaN(+this.PuntosRestar)){      
+      if(+this.PuntosRestar<=0){
+        this.PuntosRestar=this.PuntosRestarReserva;
+        this.tengoPuntosRestar=false;
+        this.tengoObjetoPregunta=false;
+        Swal.fire("Error", "No puede tener una posición superior al número de escenas totales o ser menor o igual a 0",'error');
+      }else{     
+        this.tengoObjetoPregunta=true;   
+      }
+    }else{
+      this.tengoObjetoPregunta=false;      
+      this.tengoPuntosRestar=false;
+      this.PuntosRestar=this.PuntosRestarReserva;
     }
   }
 
 
   Cerrar(): void {
-    if (this.tengoObjeto) {
+    if (this.tengoObjetoPregunta) {
       const dialogRef = this.dialog.open(DialogoConfirmacionComponent, {
         height: '150px',
         data: {
@@ -137,7 +141,7 @@ export class EditarPreguntasActivasEscaperoomComponent implements OnInit {
       });
     } else {
       if(this.changed){
-        this.dialogRef.close(this.objetoAgregado);
+        this.dialogRef.close(this.objetoPreguntaAgregado);
       }else{
         this.dialogRef.close(null);
       }
