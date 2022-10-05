@@ -2530,10 +2530,12 @@
                 <ng-template matStepLabel>
                   <div>Objetos</div>
                 </ng-template>
-                <div align="center">
-                  <span *ngIf="!tengoRequisitosObjetos" style="font-weight: bold;color:red;"> No se cumplen los requisitos en todas las escenas </span>
-                
-                </div>
+
+                <br>
+                  <div align="center">
+                    <h4>Marca una escena para añadir sus objetos</h4>
+                  </div>
+                <br>
                 <form style = "width: 100%"  *ngIf="tengoEscenasEscaperoom;else Aviso_no_escenas">
 
                   <div class = "filter">
@@ -2608,7 +2610,10 @@
 
                       <ng-container matColumnDef="Pista">
                         <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla"> Pista </th>
-                        <td mat-cell *matCellDef="let objeto" align="center"> 
+                        <td style=" max-width: 100px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;" mat-cell *matCellDef="let objeto" align="center"> 
                           <span *ngIf="objeto.Pista"> {{objeto.PistaString}}</span> 
                           <i *ngIf="!objeto.Pista" class="material-icons red md-36">clear</i> 
                         </td>
@@ -2678,9 +2683,90 @@
 
                 <br>
                 <br>
+                <div align="center">
+                  <span *ngIf="!tengoRequisitosObjetos" style="font-weight: bold;color:red;"> No se cumplen los requisitos en todas las escenas </span>                
+                </div>
+                <br>
                 <div class="btnCambiarStep">
                   <button type="button" class="btn Back" matStepperPrevious>Atrás</button>
                   <button [disabled]="!tengoRequisitosObjetos" type="button" class="btn Next"
+                    matStepperNext>Siguiente</button>
+                </div>
+              </mat-step>
+
+
+              <!--Añadir Preguntas-->
+              <mat-step>
+                <ng-template matStepLabel>
+                  <div>Preguntas</div>
+                </ng-template>
+                <div align="center">
+                  <span *ngIf="!tengoRequisitosPreguntas" style="font-weight: bold;color:red;"> Hacen falta {{tiempoRestante}} minutos para cumplir con el tiempo límite del escenario ( {{tiempoLimiteEscaperoom}} )</span>
+                </div>
+                <br>
+                <form style = "width: 100%"  *ngIf="tengoEscenasEscaperoom;else Aviso_no_escenas">
+
+                  <div class = "filter">
+                    <mat-form-field>
+                      <input matInput (keyup)="applyFilterEscenas($event.target.value)" placeholder="Filtro para buscar escenas añadidas...">
+                      <i class="material-icons" matSuffix>search</i>
+                    </mat-form-field>
+                  </div>
+                  <table style = "width: 80%" align= "center" mat-table [dataSource]="dataSourceEscenas" class="mat-elevation-z8">
+        
+                    <ng-container matColumnDef="Orden">
+                      <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla"> Orden </th>
+                      <td mat-cell *matCellDef="let escena"> {{escena.Orden}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Nombre">
+                      <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla"> Nombre </th>
+                      <td mat-cell *matCellDef="let escena"> {{escena.Nombre}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Tiempo Limite">
+                      <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla"> Tiempo Limite </th>
+                      <td mat-cell *matCellDef="let escena"> {{escena.TiempoLimite}} minutos </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Requisito">
+                      <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla"> Requisito </th>
+                      <td mat-cell *matCellDef="let escena"> {{escena.Requisito}}<span *ngIf="escena.Requisito=='puntos'"> : {{escena.Puntosrequisito}}</span> </td>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="Iconos">
+                        <th  mat-header-cell *matHeaderCellDef class="tituloColumnaTabla"></th>
+                        <td  mat-cell *matCellDef="let escena">
+                          <div align="right">
+                            <button  (click) = "EditarEscenasActivas(escena)" mat-icon-button matTooltip="Ver la escena">
+                              <i class="material-icons green md-36">edit</i>
+                            </button>
+                            <button (click) = "AbrirDialogoConfirmacionBorrarEscena(escena)" mat-icon-button matTooltip="Eliminar la escena">
+                              <i class="material-icons red md-36">delete</i>
+                            </button>
+                          </div>
+                      </td>
+                    </ng-container>
+        
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsEscenas"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumnsEscenas;">
+                    </tr>
+                  </table>
+                </form>
+                <div class="contenedor">
+                  <ng-template  #Aviso_no_escenas><div class="texto">No tienes escenas todavía</div></ng-template>
+                </div>
+                <br>
+                <div align="center">
+                  <button type="button" class="btn Agregar" (click)="AbrirDialogoAgregarEscena()"
+                    style="width: auto;">Añadir Escena<i class="material-icons">
+                      post_add </i></button>
+                </div>
+                <br>
+                <br>
+                <div class="btnCambiarStep">
+                  <button type="button" class="btn Back" matStepperPrevious>Atrás</button>
+                  <button [disabled]="!tengoTiempos" type="button" class="btn Next" (click)="CrearRequisitos()"
                     matStepperNext>Siguiente</button>
                 </div>
               </mat-step>

@@ -26,6 +26,7 @@ import { DialogoConfirmacionComponent } from 'src/app/paginas/COMPARTIDO/dialogo
   styleUrls: ['./asignar-objetos-escaperoom.component.scss']
 })
 export class AsignarObjetosEscaperoomComponent implements OnInit {
+  tengoEscenaRequisitoPuntos: boolean;
 
   constructor(              
     
@@ -73,6 +74,14 @@ export class AsignarObjetosEscaperoomComponent implements OnInit {
     this.tengoObjeto=false;
     this.changed=false;
     this.escenaDelObjeto=this.data.escena;
+    if(this.data.escena.Requisito=='puntos'){
+      this.tengoEscenaRequisitoPuntos=true;
+      console.log("es puntos");
+    }else if(this.data.escena.Requisito=='objeto'){
+      this.tengoEscenaRequisitoPuntos=false;
+      console.log("es objeto");
+    }
+    console.log(this.data.escena);
     this.tengoMovil=false;
     this.tengoPista=false;
     this.tengoPregunta=false;

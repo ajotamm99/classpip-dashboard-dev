@@ -530,6 +530,7 @@ export class JuegoComponent implements OnInit {
   displayedColumnsPreguntasActivas: string[] = ['Nombre', 'Puntos Sumar', 'Puntos Restar', 'Iconos'];
   objetosPublicos: ObjetoEscaperoom[];
   objetosMostrar: ObjetoEscaperoom[];
+  tengoRequisitosObjetosConPuntos: boolean;
   
 
 
@@ -683,6 +684,7 @@ export class JuegoComponent implements OnInit {
     this.escenaSeleccionada=false;
     this.tengoObjetosEscena=false;
     this.tengoRequisitosObjetos=false;
+    this.tengoRequisitosObjetosConPuntos=false;
 
   }
 
@@ -3853,7 +3855,7 @@ export class JuegoComponent implements OnInit {
         this.objetosEscenasMostrar.push(objetoAgregado);
         this.tengoObjetosEscena=true;
         this.FiltrarObjetosEscena(this.escenaObjetoSeleccionada);
-        this.ConfirmarRequisitos();          
+        this.ConfirmarRequisitosObjetos();          
       }
      });
   }
@@ -3872,11 +3874,13 @@ export class JuegoComponent implements OnInit {
     // RECUPERAREMOS LA NUEVA LISTA DE LOS CROMO Y VOLVEREMOS A BUSCAR LOS CROMOS QUE TIENE LA COLECCION
     dialogRef.afterClosed().subscribe(objetoAgregado => {
       if(objetoAgregado!=null && objetoAgregado!=undefined){
+        
         console.log(objetoAgregado);
+        this.objetosEscenasMostrar=this.objetosEscenasMostrar.filter(obj=>obj!=objetoActivo);
         this.objetosEscenasMostrar.push(objetoAgregado);
         this.tengoObjetosEscena=true;
         this.FiltrarObjetosEscena(this.escenaObjetoSeleccionada);
-        this.ConfirmarRequisitos();          
+        this.ConfirmarRequisitosObjetos();          
       }
      });
 
@@ -3899,13 +3903,13 @@ export class JuegoComponent implements OnInit {
         if(this.objetosEscenasMostrar.length==0){
           this.tengoObjetosEscena=false;
         }
-        this.ConfirmarRequisitos();
+        this.ConfirmarRequisitosObjetos();
       }
   });
 
   }
 
-  ConfirmarRequisitos(){
+  ConfirmarRequisitosObjetos(){
     console.log(this.objetosEscenasMostrar,this.requisitosEscenas);    
     var contObj=0;    
     var contObjCumplido=0;
@@ -3925,12 +3929,32 @@ export class JuegoComponent implements OnInit {
           }
         }
       }
-      if(contObj==contObjCumplido){
+      if(contObj==contObjCumplido && i==this.requisitosEscenas.length-1){
         this.tengoRequisitosObjetos=true;
       }else{
         this.tengoRequisitosObjetos=false;
       }
 
+    }
+  }
+
+  ConfirmarHayObjetosPuntos(){
+    console.log(this.objetosEscenasMostrar,this.requisitosEscenas);    
+    var contEscen=0;    
+    var contEscCumplido=0;
+    for(let i=0; i<this.requisitosEscenas.length;i++){
+      if(this.requisitosEscenas[i].Requisito=='puntos'){
+        contEscen+=1;
+        let objetosEscena = this.objetosEscenasMostrar.filter(obj=> obj.OrdenEscenaAct==this.requisitosEscenas[i].OrdenEscena && obj.Pregunta==true);
+        if(objetosEscena!=null && objetosEscena!=undefined && objetosEscena.length>0){
+          contEscCumplido+=1;
+        }        
+      }
+      if(contEscCumplido==contEscen && i==this.requisitosEscenas.length-1){
+        this.tengoRequisitosObjetosConPuntos=true;
+      }else{
+        this.tengoRequisitosObjetosConPuntos=false;
+      }
     }
   }
 

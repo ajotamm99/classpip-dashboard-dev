@@ -9,14 +9,16 @@
         <br>
         <div class="enColumna">
           <section class="example-section">
-            <h4>Selecciona las opciones del objeto</h4>
-            <p><mat-checkbox [(ngModel)]="tengoPista" [ngModelOptions]="{standalone: true}">¿Contiene una pista?</mat-checkbox></p>
-            <textarea *ngIf="tengoPista" style="background-color: transparent" type="text" name="nombre" placeholder="Escribe la pista" requiered [(ngModel)]="pistaString" [ngModelOptions]="{standalone: true}"></textarea>
+            <h4>Edita las opciones del objeto:</h4>
+            <br>
+            <p><mat-checkbox [(ngModel)]="tengoPista" [ngModelOptions]="{standalone: true}" (change)="tengoObjeto=true">¿Contiene una pista?</mat-checkbox></p>
+            <textarea *ngIf="tengoPista" style="background-color: transparent" type="text" name="nombre" placeholder="Escribe la pista" requiered [(ngModel)]="pistaString" [ngModelOptions]="{standalone: true}" (change)="tengoObjeto=true"></textarea>
 
-            <p><mat-checkbox [(ngModel)]="tengoPregunta" [ngModelOptions]="{standalone: true}">¿Tiene una pregunta?</mat-checkbox></p>
-            <p><mat-checkbox [(ngModel)]="tengoMovil" [ngModelOptions]="{standalone: true}">¿Se puede mover?</mat-checkbox></p>
-            <p><mat-checkbox (change)="TengoRequisito()" [(ngModel)]="tengoRequisito" [ngModelOptions]="{standalone: true}">¿Es requisito de la escena?</mat-checkbox></p>
-          
+            <p><mat-checkbox [(ngModel)]="tengoPregunta" [ngModelOptions]="{standalone: true}" (change)="tengoObjeto=true">¿Tiene una pregunta?</mat-checkbox></p>
+            <p><mat-checkbox [(ngModel)]="tengoMovil" [ngModelOptions]="{standalone: true}" (change)="tengoObjeto=true">¿Se puede mover?</mat-checkbox></p>
+            
+            <p><mat-checkbox (change)="TengoRequisito()" [disabled]="tengoEscenaRequisitoPuntos" [(ngModel)]="tengoRequisito" [ngModelOptions]="{standalone: true}" (change)="tengoObjeto=true">¿Es requisito de la escena?</mat-checkbox></p>
+
           </section>
           <br>
           <br>
@@ -33,7 +35,7 @@
     </form>
   
     <div  *ngIf="tengoObjeto" class = "enColumna" align="center">
-      <button style = "width: 20%" (click)="EditarObjeto()" [disabled]="!tengoObjeto" type="button" class="btn Aceptar">Asignar objeto</button>
+      <button style = "width: 20%" (click)="EditarObjeto()" [disabled]="!tengoObjeto" type="button" class="btn Aceptar">Editar objeto</button>
     </div>
   <br>
   

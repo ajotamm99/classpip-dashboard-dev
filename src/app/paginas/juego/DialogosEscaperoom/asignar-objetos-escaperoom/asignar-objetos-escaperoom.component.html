@@ -5,7 +5,7 @@
       <div class="enColumna">
         <div class="enFila">
           <div style="width:60% ;">
-            <div class = "filter">
+            <div class = "filter2">
               <mat-form-field>
                 <input matInput (keyup)="applyFilterObjetos($event.target.value)" placeholder="Filtro para buscar objetos añadidos...">
                 <i class="material-icons" matSuffix>search</i>
@@ -48,14 +48,16 @@
         <br>
         <div class="enColumna">
           <section class="example-section">
-            <h4>Selecciona las opciones del objeto</h4>
+            <h4>Selecciona las opciones del objeto:</h4>
+            <br>
             <p><mat-checkbox [(ngModel)]="tengoPista" [ngModelOptions]="{standalone: true}">¿Contiene una pista?</mat-checkbox></p>
             <textarea *ngIf="tengoPista" style="background-color: transparent" type="text" name="nombre" placeholder="Escribe la pista" requiered [(ngModel)]="pistaString" [ngModelOptions]="{standalone: true}"></textarea>
 
             <p><mat-checkbox [(ngModel)]="tengoPregunta" [ngModelOptions]="{standalone: true}">¿Tiene una pregunta?</mat-checkbox></p>
             <p><mat-checkbox [(ngModel)]="tengoMovil" [ngModelOptions]="{standalone: true}">¿Se puede mover?</mat-checkbox></p>
-            <p><mat-checkbox (change)="TengoRequisito()" [(ngModel)]="tengoRequisito" [ngModelOptions]="{standalone: true}">¿Es requisito de la escena?</mat-checkbox></p>
-          
+            
+            <p><mat-checkbox [disabled]="tengoEscenaRequisitoPuntos" (change)="TengoRequisito()" [(ngModel)]="tengoRequisito" [ngModelOptions]="{standalone: true}">¿Es requisito de la escena?</mat-checkbox></p>
+           
           </section>
           <br>
           <br>

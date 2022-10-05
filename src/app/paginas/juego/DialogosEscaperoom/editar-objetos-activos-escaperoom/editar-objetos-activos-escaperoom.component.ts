@@ -24,6 +24,7 @@ import { DialogoConfirmacionComponent } from 'src/app/paginas/COMPARTIDO/dialogo
   styleUrls: ['./editar-objetos-activos-escaperoom.component.scss']
 })
 export class EditarObjetosActivosEscaperoomComponent implements OnInit {
+  tengoEscenaRequisitoPuntos: boolean;
 
   constructor(              
     
@@ -65,22 +66,27 @@ export class EditarObjetosActivosEscaperoomComponent implements OnInit {
     this.tengoObjeto=false;
     this.changed=false;
     this.escenaDelObjeto=this.data.escena;
-    this.nombreObjeto=this.data.escena.Nombre;
+    this.nombreObjeto=this.data.objeto.Nombre;
     this.objetoEditar=this.data.objeto;
     this.tengoMovil=this.data.objeto.Movil;
     this.tengoPista=this.data.objeto.Pista;
     this.idObjeto=this.data.objeto.IdObjetoAct;
     this.tengoPregunta=this.data.objeto.Pregunta;
+    if(this.data.escena.Requisito=='puntos'){
+      this.tengoEscenaRequisitoPuntos=true;
+    }else if(this.data.escena.Requisito=='objeto'){
+      this.tengoEscenaRequisitoPuntos=false;
+    }
     if(this.data.objeto.Pista){
       this.pistaString=this.data.objeto.PistaString;
     }
-    this.tengoRequisito=false;
+    this.tengoRequisito=this.data.objeto.EsRequisito;
     this.imagenObjeto= URL.ImagenesObjetos + this.data.imagen;
 
   }
 
 
-  AsignarObjeto(){
+  EditarObjeto(){
     if(this.tengoPista){
       if(this.pistaString!=null && this.pistaString!=''){
         this.selection.clear();
