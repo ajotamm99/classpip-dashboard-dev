@@ -34,7 +34,7 @@ import {
   JuegoDeVotacionUnoATodos, AlumnoJuegoDeVotacionUnoATodos,
   JuegoDeVotacionTodosAUno, AlumnoJuegoDeVotacionTodosAUno, CuestionarioSatisfaccion,
   JuegoDeCuestionarioSatisfaccion, AlumnoJuegoDeCuestionarioSatisfaccion, Rubrica,
-  JuegoDeControlDeTrabajoEnEquipo, AlumnoJuegoDeControlDeTrabajoEnEquipo, EquipoJuegoDeCuestionario, Evento, AlumnoJuegoDeCuento, JuegoDeCuento, RecursoCuento, RecursoCuentoJuego, JuegoDeVotacionAOpciones, AlumnoJuegoDeVotacionAOpciones, EscenaEscaperoom
+  JuegoDeControlDeTrabajoEnEquipo, AlumnoJuegoDeControlDeTrabajoEnEquipo, EquipoJuegoDeCuestionario, Evento, AlumnoJuegoDeCuento, JuegoDeCuento, RecursoCuento, RecursoCuentoJuego, JuegoDeVotacionAOpciones, AlumnoJuegoDeVotacionAOpciones, EscenaEscaperoom, Pregunta
 } from '../../clases/index';
 
 
@@ -115,6 +115,18 @@ export interface PreguntaActMostrar {
   Pregunta: string;
   PuntosSumar: string;
   PuntosRestar: number;
+}
+
+export interface ObjetoPreguntaActMostrar {
+  IdObjetoAct:number;
+  IdPreguntaAct?:number;
+  Nombre: string;
+  IdObjetoEscenaAct: string;
+  OrdenEscenaAct:number;
+  TituloPregunta?:string;
+  TengoPregunta: boolean;
+  Restar?:number;
+  Sumar?:number;
 }
 
 export interface RequisitosEscenas {
@@ -525,12 +537,22 @@ export class JuegoComponent implements OnInit {
   displayedColumnsEscenasObjetos: string[] = ['select','Orden','Nombre', 'Tiempo Limite', 'Requisito'];
 
   preguntasObjetosRecibidas: PreguntaActiva[]=[];
+  preguntasDelProfesor: Pregunta[]=[];
+  objetosConPreguntas: ObjetoActMostrar[]=[];
+  objetosMostrarConPreguntas: ObjetoPreguntaActMostrar[]=[];
+  dataSourceObjetosConPreguntas;
+  displayedColumnsObjetosConPreguntas: string[] = ['Nombre','Orden Escena','Titulo', 'Puntos Sumar', 'Puntos Restar', 'Iconos'];
   tengoPreguntasObjetos: boolean;
   dataSourcePreguntas;
-  displayedColumnsPreguntasActivas: string[] = ['Nombre', 'Puntos Sumar', 'Puntos Restar', 'Iconos'];
+  requisitosEscenasPuntos: RequisitosEscenas[]=[];
+  dataSourceRequisitosEscenasPuntos;
+  displayedColumnsRequisitosEscenasPuntos: string[] = ['Orden Escena', 'Puntos Restantes', 'Cumplido'];
+  //displayedColumnsPreguntasActivas: string[] = ['Nombre', 'Puntos Sumar', 'Puntos Restar', 'Iconos'];
   objetosPublicos: ObjetoEscaperoom[];
   objetosMostrar: ObjetoEscaperoom[];
   tengoRequisitosObjetosConPuntos: boolean;
+  tengoObjetosConPreguntas: boolean;
+  tengoRequisitosObjetosConPreguntas: boolean;
   
 
 
@@ -3736,8 +3758,10 @@ export class JuegoComponent implements OnInit {
     for(let i=0; i<this.escenasActivasMostrar.length; i++){
       if(this.escenasActivasMostrar[i].Requisito=='puntos'){        
         this.requisitosEscenas.push({Requisito: this.escenasActivasMostrar[i].Requisito, OrdenEscena: this.escenasActivasMostrar[i].Orden, PuntosRequisito: +this.escenasActivasMostrar[i].Puntosrequisito, Cumplidos:false })
+        this.tengoRequisitosObjetosConPuntos=true;
       }else{
         this.requisitosEscenas.push({Requisito: this.escenasActivasMostrar[i].Requisito, OrdenEscena: this.escenasActivasMostrar[i].Orden, Cumplidos: false })
+        this.tengoRequisitosObjetos=true;
       }
     }
     this.DameObjetosPublicosYDelProfesor();
@@ -3851,11 +3875,16 @@ export class JuegoComponent implements OnInit {
     // RECUPERAREMOS LA NUEVA LISTA DE LOS CROMO Y VOLVEREMOS A BUSCAR LOS CROMOS QUE TIENE LA COLECCION
     dialogRef.afterClosed().subscribe(objetoAgregado => {
       if(objetoAgregado!=null && objetoAgregado!=undefined){
-        console.log(objetoAgregado);
-        this.objetosEscenasMostrar.push(objetoAgregado);
-        this.tengoObjetosEscena=true;
-        this.FiltrarObjetosEscena(this.escenaObjetoSeleccionada);
-        this.ConfirmarRequisitosObjetos();          
+        if(this.objetosEscenasMostrar.find(obj=> obj==objetoAgregado)==undefined){
+          console.log(objetoAgregado);
+          this.objetosEscenasMostrar.push(objetoAgregado);
+          this.tengoObjetosEscena=true;
+          this.FiltrarObjetosEscena(this.escenaObjetoSeleccionada);
+          this.ConfirmarRequisitosObjetos();           
+          this.ConfirmarHayObjetosPuntos();
+        }else{
+          Swal.fire("Error","Objeto duplicado no añadido",'error');
+        }         
       }
      });
   }
@@ -3874,13 +3903,18 @@ export class JuegoComponent implements OnInit {
     // RECUPERAREMOS LA NUEVA LISTA DE LOS CROMO Y VOLVEREMOS A BUSCAR LOS CROMOS QUE TIENE LA COLECCION
     dialogRef.afterClosed().subscribe(objetoAgregado => {
       if(objetoAgregado!=null && objetoAgregado!=undefined){
-        
-        console.log(objetoAgregado);
-        this.objetosEscenasMostrar=this.objetosEscenasMostrar.filter(obj=>obj!=objetoActivo);
-        this.objetosEscenasMostrar.push(objetoAgregado);
-        this.tengoObjetosEscena=true;
-        this.FiltrarObjetosEscena(this.escenaObjetoSeleccionada);
-        this.ConfirmarRequisitosObjetos();          
+        if(this.objetosEscenasMostrar.find(obj=> obj==objetoAgregado)==undefined){
+          console.log(objetoAgregado);
+          this.objetosEscenasMostrar=this.objetosEscenasMostrar.filter(obj=>obj!=objetoActivo);
+          this.objetosEscenasMostrar.push(objetoAgregado);
+          this.tengoObjetosEscena=true;
+          this.FiltrarObjetosEscena(this.escenaObjetoSeleccionada);
+          this.ConfirmarRequisitosObjetos();             
+          this.ConfirmarHayObjetosPuntos();       
+        }else{          
+          Swal.fire("Error","Objeto duplicado no añadido",'error');
+        }
+
       }
      });
 
@@ -3904,6 +3938,7 @@ export class JuegoComponent implements OnInit {
           this.tengoObjetosEscena=false;
         }
         this.ConfirmarRequisitosObjetos();
+        this.ConfirmarHayObjetosPuntos();
       }
   });
 
@@ -3958,9 +3993,65 @@ export class JuegoComponent implements OnInit {
     }
   }
 
+  DameObjetosConPreguntas(){
+    this.objetosConPreguntas=this.objetosEscenasMostrar.filter(obj=> obj.Pregunta==true);
+    if(this.objetosConPreguntas!=undefined && this.objetosConPreguntas.length>0){
+      for(let i=0; i<this.objetosConPreguntas.length;i++){
+        this.objetosMostrarConPreguntas.push({Nombre:this.objetosConPreguntas[i].Nombre, 
+        IdObjetoAct: this.objetosConPreguntas[i].IdObjetoAct, 
+        IdObjetoEscenaAct: this.objetosConPreguntas[i].IdObjetoEscenaAct,
+        TengoPregunta: false, OrdenEscenaAct: this.objetosConPreguntas[i].OrdenEscenaAct});
+        if(i==this.objetosConPreguntas.length){
+          
+        }
+      }
+      this.dataSourceObjetosConPreguntas= new MatTableDataSource(this.objetosMostrarConPreguntas);
+      this.tengoObjetosConPreguntas=true;
+      this.tengoRequisitosObjetosConPreguntas=false;
+      this.DamePreguntasDelProfesor();
+    }else{
+      this.tengoObjetosConPreguntas=false;
+      this.tengoRequisitosObjetosConPreguntas=true;
+    }
+
+  }
+
+  DamePreguntasDelProfesor(){
+    this.peticionesAPI.DameTodasMisPreguntas(this.profesorId).subscribe(res=>{
+      if(res!=null && res!=undefined){
+        this.preguntasDelProfesor=res;
+      }
+    },error=>{
+      this.preguntasDelProfesor=undefined;
+    })
+
+  }
+
+  AbrirDialogoConfirmacionBorrarPregunta(objeto: ObjetoPreguntaActMostrar){
+
+  }
+
+  AbrirDialogoAgregarPregunta(objeto: ObjetoPreguntaActMostrar){
+
+  }
+
+  EditarPreguntasActivas(objeto: ObjetoPreguntaActMostrar){
+
+  }
+
+  CrearEscenasActivas(){
+
+  }
+
   CrearObjetosActivos(){
 
   }
+
+  CrearPreguntasActivas(){
+
+  }
+
+  CrearJuegoEscaperoom(){}
 
 
 }
