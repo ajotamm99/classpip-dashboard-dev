@@ -1,3 +1,47 @@
-<p>
-  editar-preguntas-activas-escaperoom works!
-</p>
+<div align="center">
+  <mat-card class="panel">
+  
+    <form>
+      <div class="enColumna">
+        <span style="font-weight: bold;color:black;">Nombre: {{objetoEditar.Nombre}}</span>
+        <img style="margin-left: 15px;" class="imagenObjeto" mat-card-image [src]="imagenObjeto">
+        <br>
+        <br>
+        <div class="enColumna">
+          <section class="example-section">
+            <h4>Edita las opciones del objeto:</h4>
+            <br>
+            <p><mat-checkbox [(ngModel)]="tengoPista" [ngModelOptions]="{standalone: true}" (change)="tengoObjeto=true">¿Contiene una pista?</mat-checkbox></p>
+            <textarea *ngIf="tengoPista" style="background-color: transparent" type="text" name="nombre" placeholder="Escribe la pista" requiered [(ngModel)]="pistaString" [ngModelOptions]="{standalone: true}" (change)="tengoObjeto=true"></textarea>
+
+            <p><mat-checkbox [(ngModel)]="tengoPregunta" [ngModelOptions]="{standalone: true}" (change)="tengoObjeto=true">¿Tiene una pregunta?</mat-checkbox></p>
+            <p><mat-checkbox [(ngModel)]="tengoMovil" [ngModelOptions]="{standalone: true}" (change)="tengoObjeto=true">¿Se puede mover?</mat-checkbox></p>
+            
+            <p><mat-checkbox (change)="TengoRequisito()" [disabled]="tengoEscenaRequisitoPuntos" [(ngModel)]="tengoRequisito" [ngModelOptions]="{standalone: true}" (change)="tengoObjeto=true">¿Es requisito de la escena?</mat-checkbox></p>
+
+          </section>
+          <br>
+          <br>
+          <!-- Lugar Del Objeto en la escena
+          <span style="font-weight: bold;">Lugar del Objeto: </span>
+          <mat-select name="Lugares" placeholder="Selecciona el lugar del objeto en la escena" (selectionChange)="AsignarLugar()" [(ngModel)]="LugarObjeto" [ngModelOptions]="{standalone: true}" required>
+            <mat-option *ngFor="let lugar of Lugares" [value]="lugar.id" matTooltip={{lugar.descripcion}}>
+              {{lugar.nombre}}
+            </mat-option>
+          </mat-select>
+          -->
+        </div>
+      </div>
+    </form>
+  
+    <div  *ngIf="tengoObjeto" class = "enColumna" align="center">
+      <button style = "width: 20%" (click)="EditarObjeto()" [disabled]="!tengoObjeto" type="button" class="btn Aceptar">Editar objeto</button>
+    </div>
+  <br>
+  
+    <mat-dialog-actions align= "center">
+      <!-- <button mat-button [mat-dialog-close] class="btn Cerrar">Cerrar</button> routerLink= "editarColeccion" -->
+        <button mat-button (click)= "Cerrar();" class="btn Cerrar">Cerrar</button>
+    </mat-dialog-actions>
+  </mat-card>
+  </div>

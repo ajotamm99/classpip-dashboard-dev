@@ -1,3 +1,5 @@
+import { AsignarPreguntasEscaperoomComponent } from './DialogosEscaperoom/asignar-preguntas-escaperoom/asignar-preguntas-escaperoom.component';
+import { EditarPreguntasActivasEscaperoomComponent } from './DialogosEscaperoom/editar-preguntas-activas-escaperoom/editar-preguntas-activas-escaperoom.component';
 import { ObjetoEscaperoom } from './../../clases/clasesParaJuegoDeEscapeRoom/ObjetoEscaperoom';
 import { EditarObjetosActivosEscaperoomComponent } from './DialogosEscaperoom/editar-objetos-activos-escaperoom/editar-objetos-activos-escaperoom.component';
 import { AsignarObjetosEscaperoomComponent } from './DialogosEscaperoom/asignar-objetos-escaperoom/asignar-objetos-escaperoom.component';
@@ -133,8 +135,10 @@ export interface RequisitosEscenas {
   OrdenEscena?: number;
   Requisito: string;
   PuntosRequisito?: number;
+  PuntosActuales?: number;
   Cumplidos: boolean;
 }
+
 
 @Component({
   selector: 'app-juego',
@@ -3756,12 +3760,12 @@ export class JuegoComponent implements OnInit {
 
   CrearRequisitos(){
     for(let i=0; i<this.escenasActivasMostrar.length; i++){
-      if(this.escenasActivasMostrar[i].Requisito=='puntos'){        
+      if(this.escenasActivasMostrar[i].Requisito=="puntos"){        
         this.requisitosEscenas.push({Requisito: this.escenasActivasMostrar[i].Requisito, OrdenEscena: this.escenasActivasMostrar[i].Orden, PuntosRequisito: +this.escenasActivasMostrar[i].Puntosrequisito, Cumplidos:false })
-        this.tengoRequisitosObjetosConPuntos=true;
+        this.tengoRequisitosObjetosConPuntos=false;
       }else{
         this.requisitosEscenas.push({Requisito: this.escenasActivasMostrar[i].Requisito, OrdenEscena: this.escenasActivasMostrar[i].Orden, Cumplidos: false })
-        this.tengoRequisitosObjetos=true;
+        this.tengoRequisitosObjetos=false;
       }
     }
     this.DameObjetosPublicosYDelProfesor();
@@ -4001,14 +4005,12 @@ export class JuegoComponent implements OnInit {
         IdObjetoAct: this.objetosConPreguntas[i].IdObjetoAct, 
         IdObjetoEscenaAct: this.objetosConPreguntas[i].IdObjetoEscenaAct,
         TengoPregunta: false, OrdenEscenaAct: this.objetosConPreguntas[i].OrdenEscenaAct});
-        if(i==this.objetosConPreguntas.length){
-          
-        }
       }
       this.dataSourceObjetosConPreguntas= new MatTableDataSource(this.objetosMostrarConPreguntas);
       this.tengoObjetosConPreguntas=true;
       this.tengoRequisitosObjetosConPreguntas=false;
       this.DamePreguntasDelProfesor();
+      this.CreaTablaRequisitosPreguntas();
     }else{
       this.tengoObjetosConPreguntas=false;
       this.tengoRequisitosObjetosConPreguntas=true;
@@ -4027,15 +4029,104 @@ export class JuegoComponent implements OnInit {
 
   }
 
-  AbrirDialogoConfirmacionBorrarPregunta(objeto: ObjetoPreguntaActMostrar){
-
+  CreaTablaRequisitosPreguntas(){      
+    for(let i=0; i<this.requisitosEscenas.length;i++){
+      if(this.requisitosEscenas[i].Requisito=='puntos'){       
+          this.requisitosEscenasPuntos.push({Requisito: this.requisitosEscenas[i].Requisito, 
+            OrdenEscena: this.requisitosEscenas[i].OrdenEscena, 
+            PuntosRequisito: this.requisitosEscenas[i].PuntosRequisito, 
+            Cumplidos:false, PuntosActuales:0  })       
+      }
+    }
+    this.dataSourceRequisitosEscenasPuntos= new MatTableDataSource(this.requisitosEscenasPuntos);
   }
 
-  AbrirDialogoAgregarPregunta(objeto: ObjetoPreguntaActMostrar){
+
+
+  AbrirDialogoConfirmacionBorrarPregunta(objeto: ObjetoPreguntaActMostrar){
+    let puntosSumar=objeto.Sumar;
+    let ordenEscena=objeto.OrdenEscenaAct;
+    Swal.fire({
+      title: 'Eliminar',
+      text: "Estas segura/o de que quieres eliminar la pregunta del objeto: "+objeto.Nombre +"?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        let index=this.objetosMostrarConPreguntas.findIndex(obj=> obj==objeto);
+        this.objetosMostrarConPreguntas[index].TengoPregunta=false;
+        this.objetosMostrarConPreguntas[index].IdPreguntaAct=undefined;        
+        this.objetosMostrarConPreguntas[index].Restar=undefined;       
+        this.objetosMostrarConPreguntas[index].Sumar=undefined;       
+        this.objetosMostrarConPreguntas[index].TituloPregunta=undefined;
+        this.dataSourceObjetosConPreguntas = new MatTableDataSource(this.objetosMostrarConPreguntas);
+
+
+        if(this.objetosMostrarConPreguntas.length==0){
+          this.tengoObjetosConPreguntas=false;
+        }
+        this.requisitosEscenasPuntos[this.requisitosEscenasPuntos.findIndex(req=> req.OrdenEscena == ordenEscena)].PuntosActuales-=puntosSumar;
+        this.dataSourceRequisitosEscenasPuntos= new MatTableDataSource(this.requisitosEscenasPuntos);
+        this.ConfirmarRequisitosPuntosPreguntas();
+      }
+  });
+  }
+
+
+  AbrirDialogoAgregarPregunta(objeto: ObjetoPreguntaActMostrar){    
+    let ordenEscena=objeto.OrdenEscenaAct;
+    const dialogRef = this.dialog.open(AsignarPreguntasEscaperoomComponent, {
+      width: '900px',
+      maxHeight: '600px',
+      data:{
+        objeto: objeto,
+        preguntas: this.preguntasDelProfesor
+      }
+    });
+
+    // RECUPERAREMOS LA NUEVA LISTA DE LOS CROMO Y VOLVEREMOS A BUSCAR LOS CROMOS QUE TIENE LA COLECCION
+    dialogRef.afterClosed().subscribe(preguntaAgregada => {
+      if(preguntaAgregada!=null && preguntaAgregada!=undefined){
+          console.log(preguntaAgregada);
+          this.objetosMostrarConPreguntas.push(preguntaAgregada);
+          this.dataSourceObjetosConPreguntas = new MatTableDataSource(this.objetosMostrarConPreguntas);
+          this.requisitosEscenasPuntos[this.requisitosEscenasPuntos.findIndex(req=> req.OrdenEscena == ordenEscena)].PuntosActuales+=preguntaAgregada.Sumar;
+          this.dataSourceRequisitosEscenasPuntos= new MatTableDataSource(this.requisitosEscenasPuntos);
+          this.ConfirmarRequisitosPuntosPreguntas();
+      }
+     });
 
   }
 
   EditarPreguntasActivas(objeto: ObjetoPreguntaActMostrar){
+    let puntosSumar=objeto.Sumar;
+    let ordenEscena=objeto.OrdenEscenaAct;
+    const dialogRef = this.dialog.open(EditarPreguntasActivasEscaperoomComponent, {
+      width: '900px',
+      maxHeight: '600px',
+      data:{
+        preguntas: this.preguntasDelProfesor,
+        objeto: objeto
+       
+      }
+    });
+
+    // RECUPERAREMOS LA NUEVA LISTA DE LOS CROMO Y VOLVEREMOS A BUSCAR LOS CROMOS QUE TIENE LA COLECCION
+    dialogRef.afterClosed().subscribe(objetoAgregado => {
+      if(objetoAgregado!=null && objetoAgregado!=undefined){
+        
+
+      }
+     });
+
+
+  }
+
+  ConfirmarRequisitosPuntosPreguntas(){
 
   }
 

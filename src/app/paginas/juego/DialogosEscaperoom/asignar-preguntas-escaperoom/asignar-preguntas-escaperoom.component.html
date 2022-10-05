@@ -1,3 +1,86 @@
-<p>
-  asignar-preguntas-escaperoom works!
-</p>
+<div align="center">
+  <mat-card class="panel">
+  
+    <form *ngIf="tengoObjetosDeEscena">
+      <div class="enColumna">
+        <div class="enFila">
+          <div style="width:60% ;">
+            <div class = "filter2">
+              <mat-form-field>
+                <input matInput (keyup)="applyFilterObjetos($event.target.value)" placeholder="Filtro para buscar objetos añadidos...">
+                <i class="material-icons" matSuffix>search</i>
+              </mat-form-field>
+            </div>
+            <table align="center" mat-table [dataSource]="dataSourceObjetos" class="example-container mat-elevation-z8">
+  
+          <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla">
+            </th>
+      
+            <td mat-cell *matCellDef="let row;">
+              <mat-checkbox
+                      (click)="$event.stopPropagation()"
+                      (change)="Marcar (row) "
+                      [checked]="selection.isSelected(row)">
+              </mat-checkbox>
+            </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="Nombre">
+            <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla" style="text-align: left !important;"> Nombre </th>
+            <td mat-cell *matCellDef="let objeto"> {{objeto.Nombre}} </td>
+          </ng-container>
+  
+          
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+              (click)="Marcar(row)">
+          </tr>
+  
+            </table>
+          </div>
+          <div *ngIf="tengoObjeto" style="width:30% ;">
+            <span *ngIf="tengoObjeto" style="font-weight: bold;color:black;">Nombre: {{objetoMostrar.Nombre}}</span>
+            <img *ngIf="tengoObjeto" style="margin-left: 15px;" class="imagenObjeto" mat-card-image [src]="imagenObjeto">
+          </div>
+        </div>
+        <br>
+        <br>
+        <div class="enColumna">
+          <section class="example-section">
+            <h4>Selecciona las opciones del objeto:</h4>
+            <br>
+            <p><mat-checkbox [(ngModel)]="tengoPista" [ngModelOptions]="{standalone: true}">¿Contiene una pista?</mat-checkbox></p>
+            <textarea *ngIf="tengoPista" style="background-color: transparent" type="text" name="nombre" placeholder="Escribe la pista" requiered [(ngModel)]="pistaString" [ngModelOptions]="{standalone: true}"></textarea>
+
+            <p><mat-checkbox [(ngModel)]="tengoPregunta" [ngModelOptions]="{standalone: true}">¿Tiene una pregunta?</mat-checkbox></p>
+            <p><mat-checkbox [(ngModel)]="tengoMovil" [ngModelOptions]="{standalone: true}">¿Se puede mover?</mat-checkbox></p>
+            
+            <p><mat-checkbox [disabled]="tengoEscenaRequisitoPuntos" (change)="TengoRequisito()" [(ngModel)]="tengoRequisito" [ngModelOptions]="{standalone: true}">¿Es requisito de la escena?</mat-checkbox></p>
+           
+          </section>
+          <br>
+          <br>
+          <!-- Lugar Del Objeto en la escena
+          <span style="font-weight: bold;">Lugar del Objeto: </span>
+          <mat-select name="Lugares" placeholder="Selecciona el lugar del objeto en la escena" (selectionChange)="AsignarLugar()" [(ngModel)]="LugarObjeto" [ngModelOptions]="{standalone: true}" required>
+            <mat-option *ngFor="let lugar of Lugares" [value]="lugar.id" matTooltip={{lugar.descripcion}}>
+              {{lugar.nombre}}
+            </mat-option>
+          </mat-select>
+          -->
+        </div>
+      </div>
+    </form>
+  
+    <div  *ngIf="tengoObjeto" class = "enColumna" align="center">
+      <button style = "width: 20%" (click)="AsignarObjeto()" [disabled]="!tengoObjeto" type="button" class="btn Aceptar">Asignar objeto</button>
+    </div>
+  <br>
+  
+    <mat-dialog-actions align= "center">
+      <!-- <button mat-button [mat-dialog-close] class="btn Cerrar">Cerrar</button> routerLink= "editarColeccion" -->
+        <button mat-button (click)= "Cerrar();" class="btn Cerrar">Cerrar</button>
+    </mat-dialog-actions>
+  </mat-card>
+  </div>
