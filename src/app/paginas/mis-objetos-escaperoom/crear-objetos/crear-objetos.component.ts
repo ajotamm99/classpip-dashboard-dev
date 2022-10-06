@@ -13,10 +13,6 @@ import 'rxjs';
 import { PivotSchemaDesignerComponent } from 'ej-angular2';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
-interface Type{
-  nombre: string;
-  id: string;
-}
 @Component({
   selector: 'app-crear-objetos',
   templateUrl: './crear-objetos.component.html',
@@ -29,17 +25,10 @@ export class CrearObjetosComponent implements OnInit {
   myForm: FormGroup;
 
   selectedType: string;
-
-  types: Type[]=[
-    {nombre:'Enigma', id:'enigma'},
-    {nombre:'Pista', id: 'pista'},
-    {nombre:'Otros', id: 'otros'}
-  ]
   
   
   // CREAR ESCENARIO
   nombreObjeto: string;
-  tipoObjeto: string;
   ObjetoCreado: ObjetoEscaperoom;
   prueba: EscenaEscaperoom;
   
@@ -74,7 +63,6 @@ export class CrearObjetosComponent implements OnInit {
     // REALMENTE LA APP FUNCIONARÁ COGIENDO AL PROFESOR DEL SERVICIO, NO OBSTANTE AHORA LO RECOGEMOS DE LA URL
     // this.profesorId = this.profesorService.RecibirProfesorIdDelServicio();
     this.profesorId = this.sesion.DameProfesor().id;
-    this.selectedType= this.types[0].id;
   
     // Constructor myForm
     this.myForm = this.formBuilder.group({
@@ -85,15 +73,10 @@ export class CrearObjetosComponent implements OnInit {
   DatosObjeto(){
     this.nombreObjeto=this.myForm.value.nombreObjeto;
   
-    this.tipoObjeto=this.selectedType.toLowerCase();
     console.log(this.selectedType);
   
   }
 
-  AsignarTipo(){
-    console.log(this.selectedType);
-    this.tipoObjeto= this.selectedType;
-  }
 
   ComprobarImagenesObjetos(comprobar: String){
     return new Promise ((resolve, reject)=>{
@@ -119,7 +102,7 @@ export class CrearObjetosComponent implements OnInit {
     this.ComprobarImagenesObjetos(this.nombreImagenObjeto)
     .then((cont)=>{
       if (cont==0){
-        this.peticionesAPI.PonObjetoEscaperoom(new ObjetoEscaperoom(this.nombreObjeto,this.nombreImagenObjeto, this.tipoObjeto), this.profesorId)
+        this.peticionesAPI.PonObjetoEscaperoom(new ObjetoEscaperoom(this.nombreObjeto,this.nombreImagenObjeto), this.profesorId)
       .subscribe((res) => {
         if (res != null) {
           console.log ('OBJETO CREADO: ' + res.id );

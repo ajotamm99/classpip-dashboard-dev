@@ -41,7 +41,6 @@ export class MostrarObjetosPublicosComponent implements OnInit {
     this.ObjetoEscaperoom = this.data.objeto;
     this.nombreObjeto = this.data.objeto.Nombre;
     this.nombreImagenObjeto= this.data.objeto.Imagen;
-    this.tipoObjeto = this.data.objeto.Tipo;
     this.imagenObjeto=URL.ImagenesObjetos + this.nombreImagenObjeto;
     console.log(this.ObjetoEscaperoom);
   }

@@ -13,10 +13,6 @@ import { EditarEscenaDialogComponent } from '../../mis-escenarios-escaperoom/mis
 
 import * as URL from '../../../URLs/urls';
 
-interface Type{
-  nombre: string;
-  id: string;
-}
 
 @Component({
   selector: 'app-editar-objeto-dialog',
@@ -36,12 +32,6 @@ export class EditarObjetoDialogComponent implements OnInit {
   imagenObjetoAntigua: string;
   selectedType: string;
 
-  types: Type[]=[
-    {nombre:'Enigma', id:'enigma'},
-    {nombre:'Pista', id: 'pista'},
-    {nombre:'Otros', id: 'otros'}
-  ]
-  
   // imagen y archivo escena
   nombreImagenObjetoAntigua: string;
   nombreImagenObjetoNueva: string;
@@ -74,8 +64,6 @@ export class EditarObjetoDialogComponent implements OnInit {
     this.ObjetoEscaperoom = this.data.objeto;
     this.nombreObjeto = this.data.objeto.Nombre;
     this.nombreImagenObjetoNueva= this.data.objeto.Imagen;
-    this.tipoObjeto = this.data.objeto.Tipo;
-    this.selectedType=this.tipoObjeto;
     this.imagenObjetoAntigua = URL.ImagenesObjetos + this.nombreImagenObjetoNueva;
     // this.opcionSeleccionadaProbabilidad = this.cromo.Probabilidad;
     console.log(this.ObjetoEscaperoom);
@@ -111,7 +99,7 @@ export class EditarObjetoDialogComponent implements OnInit {
     this.ComprobarImagenesObjeto(this.nombreImagenObjetoNueva, this.ObjetoEscaperoom.id)
     .then(cont=>{
       if(cont==0){
-        var objeto=new ObjetoEscaperoom(this.nombreObjeto,  this.nombreImagenObjetoNueva, this.tipoObjeto);
+        var objeto=new ObjetoEscaperoom(this.nombreObjeto,  this.nombreImagenObjetoNueva);
         objeto.Publica=this.ObjetoEscaperoom.Publica;
         this.peticionesAPI.ModificaObjeto(objeto, this.ObjetoEscaperoom.id,this.profesorId)
         .subscribe((res) => {
@@ -165,12 +153,6 @@ export class EditarObjetoDialogComponent implements OnInit {
    // Activa la función ExaminarImagenCromo
 ActivarInputImagenObjeto() {
     document.getElementById('inputObjetoImagen').click();
-}
-
-AsignarTipo(){
-  console.log(this.selectedType);
-  this.tipoObjeto= this.selectedType;
-  this.cambios=true;
 }
 
   // Buscaremos la imagen en nuestro ordenador y después se mostrará en el form con la variable "imagen" y guarda el

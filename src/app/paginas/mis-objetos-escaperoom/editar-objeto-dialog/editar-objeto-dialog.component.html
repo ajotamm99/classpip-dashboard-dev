@@ -13,16 +13,6 @@
                     <input matInput type="text" style="color: yellow;" placeholder="Nombre" required [(ngModel)]="nombreObjeto" (change) = "cambios=true">
                     <mat-error>Este campo es obligatorio</mat-error>
                   </mat-form-field>
-                <br>
-                <br>
-                <mat-form-field appearance="fill">
-                  <mat-label>Tipo</mat-label>
-                  <mat-select name="Type" placeholder="Selecciona el tipo" [(value)]="tipoObjeto" (selectionChange)="AsignarTipo()" [(ngModel)]="selectedType" required #select>
-                    <mat-option *ngFor="let type of types" [value]="type.id">
-                      {{type.nombre}}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
             </div>
 
             <div class="enColumna" style="width: 100%">
