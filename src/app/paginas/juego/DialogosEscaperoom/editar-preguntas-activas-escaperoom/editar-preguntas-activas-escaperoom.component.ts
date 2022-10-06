@@ -87,11 +87,11 @@ export class EditarPreguntasActivasEscaperoomComponent implements OnInit {
     this.changed=true;
     this.tengoObjetoPregunta=false;
     if(!this.tengoPreguntaSeleccionada){
-      this.objetoPreguntaAgregado= ({IdObjetoAct:this.objetoPregunta.IdObjetoAct,Nombre:this.objetoPregunta.Nombre, IdObjetoEscenaAct:this.objetoPregunta.IdObjetoEscenaAct, OrdenEscenaAct: this.objetoPregunta.OrdenEscenaAct, TengoPregunta: true, Sumar: this.PuntosSumar, Restar:this.PuntosRestar, IdPreguntaAct:this.objetoPregunta.IdPreguntaAct,TituloPregunta:this.objetoPregunta.TituloPregunta});
+      this.objetoPreguntaAgregado= ({IdObjetoAct:this.objetoPregunta.IdObjetoAct,Nombre:this.objetoPregunta.Nombre, IdObjetoEscenaAct:this.objetoPregunta.IdObjetoEscenaAct, OrdenEscenaAct: this.objetoPregunta.OrdenEscenaAct, TengoPregunta: true, Sumar: this.PuntosSumar, Restar:this.PuntosRestar, IdPreguntaAct:this.objetoPregunta.IdPreguntaAct,TituloPregunta:this.objetoPregunta.TituloPregunta, Pregunta: this.objetoPregunta.Pregunta});
       console.log(this.objetoPreguntaAgregado);
       
     }else{
-      this.objetoPreguntaAgregado= ({IdObjetoAct:this.objetoPregunta.IdObjetoAct,Nombre:this.objetoPregunta.Nombre, IdObjetoEscenaAct:this.objetoPregunta.IdObjetoEscenaAct, OrdenEscenaAct: this.objetoPregunta.OrdenEscenaAct, TengoPregunta: true, Sumar: this.PuntosSumar, Restar:this.PuntosRestar, IdPreguntaAct:this.preguntaSeleccionada.id,TituloPregunta:this.preguntaSeleccionada.Titulo});
+      this.objetoPreguntaAgregado= ({IdObjetoAct:this.objetoPregunta.IdObjetoAct,Nombre:this.objetoPregunta.Nombre, IdObjetoEscenaAct:this.objetoPregunta.IdObjetoEscenaAct, OrdenEscenaAct: this.objetoPregunta.OrdenEscenaAct, TengoPregunta: true, Sumar: this.PuntosSumar, Restar:this.PuntosRestar, IdPreguntaAct:this.preguntaSeleccionada.id,TituloPregunta:this.preguntaSeleccionada.Titulo, Pregunta:this.preguntaSeleccionada.Pregunta});
       console.log(this.objetoPreguntaAgregado);
     }
     Swal.fire("Escena añadida", "La escena se ha añadido con éxito", 'success');

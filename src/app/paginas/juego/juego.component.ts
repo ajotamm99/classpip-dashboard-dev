@@ -127,6 +127,7 @@ export interface ObjetoPreguntaActMostrar {
   OrdenEscenaAct:number;
   TituloPregunta?:string;
   TengoPregunta: boolean;
+  Pregunta?:string;
   Restar?:number;
   Sumar?:number;
 }
@@ -545,12 +546,12 @@ export class JuegoComponent implements OnInit {
   objetosConPreguntas: ObjetoActMostrar[]=[];
   objetosMostrarConPreguntas: ObjetoPreguntaActMostrar[]=[];
   dataSourceObjetosConPreguntas;
-  displayedColumnsObjetosConPreguntas: string[] = ['Nombre','Orden Escena','Titulo', 'Puntos Sumar', 'Puntos Restar', 'Iconos'];
+  displayedColumnsObjetosConPreguntas: string[] = ['Nombre','Orden Escena','Titulo','Pregunta', 'Puntos Sumar', 'Puntos Restar', 'Iconos'];
   tengoPreguntasObjetos: boolean;
   dataSourcePreguntas;
   requisitosEscenasPuntos: RequisitosEscenas[]=[];
   dataSourceRequisitosEscenasPuntos;
-  displayedColumnsRequisitosEscenasPuntos: string[] = ['Orden Escena', 'Puntos Restantes', 'Cumplido'];
+  displayedColumnsRequisitosEscenasPuntos: string[] = ['Orden Escena', 'Puntos Requisito', 'Puntos Actuales'];
   //displayedColumnsPreguntasActivas: string[] = ['Nombre', 'Puntos Sumar', 'Puntos Restar', 'Iconos'];
   objetosPublicos: ObjetoEscaperoom[];
   objetosMostrar: ObjetoEscaperoom[];
@@ -709,8 +710,8 @@ export class JuegoComponent implements OnInit {
     this.tiempoRestante=1;
     this.escenaSeleccionada=false;
     this.tengoObjetosEscena=false;
-    this.tengoRequisitosObjetos=false;
-    this.tengoRequisitosObjetosConPuntos=false;
+    this.tengoRequisitosObjetos=true;
+    this.tengoRequisitosObjetosConPuntos=true;
 
   }
 
@@ -3998,7 +3999,6 @@ export class JuegoComponent implements OnInit {
   }
 
   DameObjetosConPreguntas(){
-    this.objetosMostrarConPreguntas=undefined;
     this.objetosConPreguntas=this.objetosEscenasMostrar.filter(obj=> obj.Pregunta==true);
     if(this.objetosConPreguntas!=undefined && this.objetosConPreguntas.length>0){
       for(let i=0; i<this.objetosConPreguntas.length;i++){
@@ -4064,6 +4064,7 @@ export class JuegoComponent implements OnInit {
         this.objetosMostrarConPreguntas[index].Restar=undefined;       
         this.objetosMostrarConPreguntas[index].Sumar=undefined;       
         this.objetosMostrarConPreguntas[index].TituloPregunta=undefined;
+        this.objetosMostrarConPreguntas[index].Pregunta=undefined;
         this.dataSourceObjetosConPreguntas = new MatTableDataSource(this.objetosMostrarConPreguntas);
 
 
@@ -4122,6 +4123,7 @@ export class JuegoComponent implements OnInit {
         this.requisitosEscenasPuntos[this.requisitosEscenasPuntos.findIndex(req=> req.OrdenEscena == ordenEscena)].PuntosActuales+=(preguntaAgregada.Sumar-puntosSumar);
         this.dataSourceRequisitosEscenasPuntos= new MatTableDataSource(this.requisitosEscenasPuntos);
         this.objetosMostrarConPreguntas.splice(this.objetosMostrarConPreguntas.indexOf(objeto),1,preguntaAgregada)
+        this.dataSourceObjetosConPreguntas= new MatTableDataSource(this.objetosMostrarConPreguntas);
         this.ConfirmarRequisitosPuntosPreguntas();
       }
      });
@@ -4130,7 +4132,15 @@ export class JuegoComponent implements OnInit {
   }
 
   ConfirmarRequisitosPuntosPreguntas(){
-
+    var cont=0;
+    for(let i=0;i<this.requisitosEscenasPuntos.length;i++){
+      if(this.requisitosEscenasPuntos[i].PuntosActuales>=this.requisitosEscenasPuntos[i].PuntosRequisito){
+        cont++
+      }
+      if(cont==this.requisitosEscenasPuntos.length){
+        this.tengoRequisitosObjetosConPreguntas= true;
+      }
+    }
   }
 
   CrearEscenasActivas(){
@@ -4145,7 +4155,9 @@ export class JuegoComponent implements OnInit {
 
   }
 
-  CrearJuegoEscaperoom(){}
+  CrearJuegoEscaperoom(){
+
+  }
 
 
 }

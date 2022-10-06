@@ -1,3 +1,5 @@
+import { PreguntaActiva } from './../clases/clasesParaJuegoDeEscapeRoom/PreguntaActiva';
+import { EscenaActiva } from './../clases/clasesParaJuegoDeEscapeRoom/EscenaActiva';
 import { EnigmaActivo } from './../clases/clasesParaJuegoDeEscapeRoom/EnigmaActivo';
 import { ObjetoActivo } from './../clases/clasesParaJuegoDeEscapeRoom/ObjetoActivo';
 import { Enigma } from './../clases/clasesParaJuegoDeEscapeRoom/Enigma';
@@ -2837,4 +2839,29 @@ public ModificaInscripcionAlumnoJuegoDeVotacionAOpciones(inscripcion: AlumnoJueg
     { responseType: ResponseContentType.Blob });
 
   }
+/*
+  public PonObjetoActivo(objeto: ObjetoActivo): Observable<ObjetoActivo>{
+    return this.http.post<ObjetoActivo>(this.APIUrlObjetosActivos, objeto);
+  }
+
+  public PonEscenaActiva(escena: EscenaActiva): Observable<EscenaActiva>{
+    return this.http.post<EscenaActiva>(this.APIUrlEscenaActiva, escena);
+  }
+
+  public PonPreguntaActiva(pregunta: PreguntaActiva): Observable<PreguntaActiva>{
+    return this.http.post<PreguntaActiva>(this.APIUrlPreguntaActiva, pregunta);
+  }
+
+  public CreaJuegoEscaperoom(juegoEscaperoom: JuegoDeEscapeRoom): Observable<JuegoDeEscapeRoom>{
+    return this.http.post<JuegoDeEscapeRoom>(this.APIUrlGrupos + grupoId, juegoEscaperoom);
+  }
+
+  public InscribeAlumnoJuegoDeEscaperoom(){
+
+  }
+  public InscribeEquipoJuegoDeEscaperoom(){
+
+  }
+
+*/
 }

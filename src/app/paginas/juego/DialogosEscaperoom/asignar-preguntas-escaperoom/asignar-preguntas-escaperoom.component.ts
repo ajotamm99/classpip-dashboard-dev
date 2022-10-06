@@ -86,7 +86,7 @@ export class AsignarPreguntasEscaperoomComponent implements OnInit {
     if(this.tengoPuntosSumar && this.tengoPuntosRestar){      
       this.changed=true;
       this.tengoObjetoPregunta=false;
-      this.objetoPreguntaAgregado= ({IdObjetoAct:this.objetoPregunta.IdObjetoAct,Nombre:this.objetoPregunta.Nombre, IdObjetoEscenaAct:this.objetoPregunta.IdObjetoEscenaAct, OrdenEscenaAct: this.objetoPregunta.OrdenEscenaAct, TengoPregunta: true, Sumar: this.PuntosSumar, Restar:this.PuntosRestar, IdPreguntaAct:this.preguntaSeleccionada.id,TituloPregunta:this.preguntaSeleccionada.Titulo});
+      this.objetoPreguntaAgregado= ({IdObjetoAct:this.objetoPregunta.IdObjetoAct,Nombre:this.objetoPregunta.Nombre, IdObjetoEscenaAct:this.objetoPregunta.IdObjetoEscenaAct, OrdenEscenaAct: this.objetoPregunta.OrdenEscenaAct, TengoPregunta: true, Sumar: this.PuntosSumar, Restar:this.PuntosRestar, IdPreguntaAct:this.preguntaSeleccionada.id,TituloPregunta:this.preguntaSeleccionada.Titulo, Pregunta: this.preguntaSeleccionada.Pregunta});
       console.log(this.objetoPreguntaAgregado);      
       Swal.fire("Escena añadida", "La escena se ha añadido con éxito", 'success');      
     }else{
