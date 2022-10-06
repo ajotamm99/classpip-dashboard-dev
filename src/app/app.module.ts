@@ -293,7 +293,6 @@ import { JuegoDeMemoramaSeleccionadoInactivoComponent } from './paginas/juego-se
 import { JuegoDeMemoramaSeleccionadoActivoComponent } from './paginas/juego-seleccionado-activo/juego-de-memorama-seleccionado-activo/juego-de-memorama-seleccionado-activo.component';
 import { AsignacionFamiliaJuegoComponent } from './paginas/juego/asignacion-familia-juego/asignacion-familia-juego.component';
 import { MisEscenariosEscaperoomComponent } from './paginas/mis-escenarios-escaperoom/mis-escenarios-escaperoom.component';
-import { MisEnigmasEscaperoomComponent } from './paginas/mis-enigmas-escaperoom/mis-enigmas-escaperoom.component';
 import { MisSkinsEscaperoomComponent } from './paginas/mis-skins-escaperoom/mis-skins-escaperoom.component';
 import { MisMapasEscaperoomComponent } from './paginas/mis-escenarios-escaperoom/mis-mapas-escaperoom/mis-mapas-escaperoom.component';
 import { GuardarMapaComponent } from './paginas/mis-escenarios-escaperoom/mis-mapas-escaperoom/guardar-mapa/guardar-mapa.component';
@@ -305,9 +304,6 @@ import { EditarEscenaDialogComponent } from './paginas/mis-escenarios-escaperoom
 import { EditarObjetoDialogComponent } from './paginas/mis-objetos-escaperoom/editar-objeto-dialog/editar-objeto-dialog.component';
 import { MostrarObjetosPublicosComponent } from './paginas/mis-objetos-escaperoom/mostrar-objetos-publicos/mostrar-objetos-publicos.component';
 import { CrearObjetosComponent } from './paginas/mis-objetos-escaperoom/crear-objetos/crear-objetos.component';
-import { CrearEnigmasComponent } from './paginas/mis-enigmas-escaperoom/crear-enigmas/crear-enigmas.component';
-import { EditarEnigmasDialogComponent } from './paginas/mis-enigmas-escaperoom/editar-enigmas-dialog/editar-enigmas-dialog.component';
-import { MostrarEnigmasPublicosComponent } from './paginas/mis-enigmas-escaperoom/mostrar-enigmas-publicos/mostrar-enigmas-publicos.component';
 import { MostrarSkinsPublicasComponent } from './paginas/mis-skins-escaperoom/mostrar-skins-publicas/mostrar-skins-publicas.component';
 import { CrearSkinsComponent } from './paginas/mis-skins-escaperoom/crear-skins/crear-skins.component';
 import { EditarSkinDialogComponent } from './paginas/mis-skins-escaperoom/editar-skin-dialog/editar-skin-dialog.component';
@@ -496,7 +492,6 @@ import { EditarPreguntasActivasEscaperoomComponent } from './paginas/juego/Dialo
     AsignacionFamiliaJuegoComponent,
     MisEscenariosEscaperoomComponent,
     MisObjetosEscaperoomComponent,
-    MisEnigmasEscaperoomComponent,
     MisSkinsEscaperoomComponent,
     MisMapasEscaperoomComponent,
     GuardarMapaComponent,
@@ -508,9 +503,6 @@ import { EditarPreguntasActivasEscaperoomComponent } from './paginas/juego/Dialo
     EditarObjetoDialogComponent,
     MostrarObjetosPublicosComponent,
     CrearObjetosComponent,
-    CrearEnigmasComponent,
-    EditarEnigmasDialogComponent,
-    MostrarEnigmasPublicosComponent,
     MostrarSkinsPublicasComponent,
     CrearSkinsComponent,
     EditarSkinDialogComponent,
@@ -581,7 +573,7 @@ import { EditarPreguntasActivasEscaperoomComponent } from './paginas/juego/Dialo
     InformacionRespuestasJuegoDeCuestionarioDialogComponent,
     RespuestasAlumnoJuegoDeCuestionarioComponent,
     AsignarFamiliaImagenesPerfilComponent, EvaluacionDialogoComponent, EvaluacionBorrarDialogoComponent, AgregarEscenaDialogComponent, EditarEscenaDialogComponent,
-    EditarObjetoDialogComponent, EditarEnigmasDialogComponent, EditarSkinDialogComponent, MostrarObjetosPublicosComponent, MostrarSkinsPublicasComponent, MostrarEnigmasPublicosComponent, AsignarEscenasEscaperoomComponent, EditarEscenasActivasEscaperoomComponent,
+    EditarObjetoDialogComponent,  EditarSkinDialogComponent, MostrarObjetosPublicosComponent, MostrarSkinsPublicasComponent, AsignarEscenasEscaperoomComponent, EditarEscenasActivasEscaperoomComponent,
     AsignarObjetosEscaperoomComponent,EditarObjetosActivosEscaperoomComponent, AsignarPreguntasEscaperoomComponent,EditarPreguntasActivasEscaperoomComponent
   ],
   bootstrap: [AppComponent],

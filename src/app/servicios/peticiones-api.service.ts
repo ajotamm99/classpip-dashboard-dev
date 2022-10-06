@@ -1,8 +1,6 @@
 import { PreguntaActiva } from './../clases/clasesParaJuegoDeEscapeRoom/PreguntaActiva';
 import { EscenaActiva } from './../clases/clasesParaJuegoDeEscapeRoom/EscenaActiva';
-import { EnigmaActivo } from './../clases/clasesParaJuegoDeEscapeRoom/EnigmaActivo';
 import { ObjetoActivo } from './../clases/clasesParaJuegoDeEscapeRoom/ObjetoActivo';
-import { Enigma } from './../clases/clasesParaJuegoDeEscapeRoom/Enigma';
 import { ObjetoEscaperoom } from './../clases/clasesParaJuegoDeEscapeRoom/ObjetoEscaperoom';
 import { EscenaEscaperoom } from './../clases/clasesParaJuegoDeEscapeRoom/EscenaEscaperoom';
 import { Injectable } from '@angular/core';
@@ -2752,34 +2750,6 @@ public ModificaInscripcionAlumnoJuegoDeVotacionAOpciones(inscripcion: AlumnoJueg
 
     return this.http.get<ObjetoEscaperoom[]>(this.APIURLObjetosEscaperoom + '?filter[where][Publica]=true');
   
-  }
-
-  public DameEnigmasEscaperoomDelProfesor(profesorId: number): Observable<Enigma[]> {
-
-    return this.http.get<Enigma[]>(this.APIUrlProfesores + '/' + profesorId + '/enigmaEscaperooms');
-  
-  }
-
-  public DameEnigmaActivoId(enigmaEscaperoomId: number): Observable<EnigmaActivo[]>{
-    return this.http.get<EnigmaActivo[]>(this.APIURLEnigmasActivos + '?filter[where][enigmaId]=' + enigmaEscaperoomId)
-  }
-
-  public BorrarEnigmaEscaperoom(enigmaEscaperoomId: number): Observable<any>{
-    return this.http.delete<any>(this.APIURLEnigmasEscaperoom + '/'+enigmaEscaperoomId)
-  }
-
-  public ModificaEnigma(enigmaEscaperoom: Enigma, enigmaEscaperoomId: number, profesorId: number): Observable<Enigma>{
-    return this.http.put<Enigma>(this.APIUrlProfesores + '/' + profesorId + '/enigmaEscaperooms/' + enigmaEscaperoomId, enigmaEscaperoom);
-  }
-
-  public DameEnigmasEscaperoomPublicos(): Observable<Enigma[]> {
-
-    return this.http.get<Enigma[]>(this.APIURLEnigmasEscaperoom +  '?filter[where][Publica]=true');
-  
-  }
-
-  public PonEnigmaEscaperoom(enigmaEscaperoom:Enigma, profesorId: number): Observable<Enigma>{
-    return this.http.post<Enigma>(this.APIUrlProfesores + '/'+ profesorId + '/enigmaEscaperooms'+ '', enigmaEscaperoom);
   }
 
   public DameSkinsEscaperoomDelProfesor(profesorId: number): Observable<Skin[]> {
