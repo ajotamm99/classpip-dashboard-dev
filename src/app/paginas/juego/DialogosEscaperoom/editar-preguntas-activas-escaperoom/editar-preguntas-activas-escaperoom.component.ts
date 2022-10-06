@@ -1,3 +1,5 @@
+import { forEach } from '@angular/router/src/utils/collection';
+import { data } from 'jquery';
 import { ObjetoActMostrar, ObjetoPreguntaActMostrar } from './../../juego.component';
 import { ObjetoEscaperoom } from './../../../../clases/clasesParaJuegoDeEscapeRoom/ObjetoEscaperoom';
 import { EscenaActiva } from './../../../../clases/clasesParaJuegoDeEscapeRoom/EscenaActiva';
@@ -17,12 +19,14 @@ import * as URL from '../../../../URLs/urls';
 import 'rxjs';
 import { SelectionModel } from '@angular/cdk/collections';
 import { DialogoConfirmacionComponent } from 'src/app/paginas/COMPARTIDO/dialogo-confirmacion/dialogo-confirmacion.component';
+import { CellDef } from '@angular/cdk/table';
+import { InformacionJuegoDeGeocachingDialogComponent } from 'src/app/paginas/juego-seleccionado-activo/juego-de-geocaching-seleccionado-activo/informacion-juego-de-geocaching-dialog/informacion-juego-de-geocaching-dialog.component';
 
 
 @Component({
   selector: 'app-editar-preguntas-activas-escaperoom',
   templateUrl: './editar-preguntas-activas-escaperoom.component.html',
-  styleUrls: ['./editar-preguntas-activas-escaperoom.component.scss']
+  styleUrls: ['./editar-preguntas-activas-escaperoom.component.scss'],
 })
 export class EditarPreguntasActivasEscaperoomComponent implements OnInit {
   tengoEscenaRequisitoPuntos: boolean;
@@ -98,10 +102,25 @@ export class EditarPreguntasActivasEscaperoomComponent implements OnInit {
   }
 
   SeleccionarPregunta(pregunta: Pregunta){
+    var tabla=document.getElementById("tablaPA") as HTMLTableElement;
+    let i = this.dataSourcePreguntas.filteredData.indexOf(pregunta);
+    console.log(i,tabla);
+    console.log(tabla.rows[i]);
+    tabla.rows[i+1].classList.add("pregunta-seleccionada");
+    var found=false;
+    for(let b=1; b<tabla.rows.length && !found; b++){
+      console.log(tabla.rows[b].className);
+      if(b!=i+1){
+        if(tabla.rows[b].className.endsWith("pregunta-seleccionada")){          
+          tabla.rows[b].classList.remove("pregunta-seleccionada");
+          found=true;
+        }  
+      }
+    }
     this.preguntaSeleccionada=pregunta;
     this.tengoPreguntaSeleccionada=true;
+    this.tengoObjetoPregunta=true;
   }
-
 
   TengoPuntosSumar(){
     if(!isNaN(+this.PuntosSumar)){      

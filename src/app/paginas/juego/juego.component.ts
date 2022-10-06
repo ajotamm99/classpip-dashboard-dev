@@ -4139,6 +4139,8 @@ export class JuegoComponent implements OnInit {
       }
       if(cont==this.requisitosEscenasPuntos.length){
         this.tengoRequisitosObjetosConPreguntas= true;
+      }else{
+        this.tengoRequisitosObjetosConPreguntas=false;
       }
     }
   }

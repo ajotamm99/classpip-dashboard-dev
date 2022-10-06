@@ -96,6 +96,21 @@ export class AsignarPreguntasEscaperoomComponent implements OnInit {
   }
 
   SeleccionarPregunta(pregunta: Pregunta){
+    var tabla=document.getElementById("tablaPA") as HTMLTableElement;
+    let i = this.dataSourcePreguntas.filteredData.indexOf(pregunta);
+    console.log(i,tabla);
+    console.log(tabla.rows[i]);
+    tabla.rows[i+1].classList.add("pregunta-seleccionada");
+    var found=false;
+    for(let b=1; b<tabla.rows.length && !found; b++){
+      console.log(tabla.rows[b].className);
+      if(b!=i+1){
+        if(tabla.rows[b].className.endsWith("pregunta-seleccionada")){          
+          tabla.rows[b].classList.remove("pregunta-seleccionada");
+          found=true;
+        }  
+      }
+    }
     this.preguntaSeleccionada=pregunta;
     this.tengoPreguntaSeleccionada=true;
   }

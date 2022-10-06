@@ -2712,14 +2712,14 @@
                   </div>
                   <table style = "width: 80%" align= "center" mat-table [dataSource]="dataSourceRequisitosEscenasPuntos" class="mat-elevation-z8">
         
-                    <ng-container matColumnDef="Orden">
+                    <ng-container matColumnDef="Orden Escena">
                       <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla"> Orden de la escena </th>
                       <td mat-cell *matCellDef="let req"> {{req.OrdenEscena}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="Puntos Requisito">
                       <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla"> Puntos Min. </th>
-                      <td mat-cell *matCellDef="let req"> {{req.PuntosRquisito}} </td>
+                      <td mat-cell *matCellDef="let req"> {{req.PuntosRequisito}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="Puntos Actuales">
