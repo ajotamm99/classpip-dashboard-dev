@@ -1,80 +1,78 @@
 <div align="center">
   <mat-card class="panel">
   
-    <form *ngIf="tengoObjetosDeEscena">
+    <form>
       <div class="enColumna">
-        <div class="enFila">
-          <div style="width:60% ;">
             <div class = "filter2">
               <mat-form-field>
-                <input matInput (keyup)="applyFilterObjetos($event.target.value)" placeholder="Filtro para buscar objetos añadidos...">
+                <input matInput (keyup)="applyFilterPreguntas($event.target.value)" placeholder="Filtro para buscar preguntas del profesor...">
                 <i class="material-icons" matSuffix>search</i>
               </mat-form-field>
             </div>
-            <table align="center" mat-table [dataSource]="dataSourceObjetos" class="example-container mat-elevation-z8">
+            <table align="center" mat-table [dataSource]="dataSourcePreguntas" class="example-container mat-elevation-z8">
   
-          <ng-container matColumnDef="select">
-            <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla">
-            </th>
-      
-            <td mat-cell *matCellDef="let row;">
-              <mat-checkbox
-                      (click)="$event.stopPropagation()"
-                      (change)="Marcar (row) "
-                      [checked]="selection.isSelected(row)">
-              </mat-checkbox>
-            </td>
-          </ng-container>
-  
-          <ng-container matColumnDef="Nombre">
+          <ng-container matColumnDef="Titulo">
             <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla" style="text-align: left !important;"> Nombre </th>
-            <td mat-cell *matCellDef="let objeto"> {{objeto.Nombre}} </td>
+            <td style=" max-width: 100px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;" mat-cell *matCellDef="let pregunta"> {{pregunta.Titulo}} </td>
           </ng-container>
-  
+
+          <ng-container matColumnDef="Tipo">
+            <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla" style="text-align: left !important;"> Nombre </th>
+            <td mat-cell *matCellDef="let pregunta"> {{pregunta.Tipo}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Pregunta">
+            <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla" style="text-align: left !important;"> Nombre </th>
+            <td style=" max-width: 100px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;" mat-cell *matCellDef="let pregunta"> {{pregunta.Pregunta}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Temática">
+            <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla" style="text-align: left !important;"> Nombre </th>
+            <td mat-cell *matCellDef="let pregunta"> {{pregunta.Tematica}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Iconos">
+            <th  mat-header-cell *matHeaderCellDef class="tituloColumnaTabla"></th>
+            <td  mat-cell *matCellDef="let pregunta">
+              <div align="right">
+                <button  (click) = "SeleccionarPregunta(pregunta)" mat-icon-button matTooltip="Selecciona la pregunta">
+                  <i class="material-icons green md-36">add</i>
+                </button>
+
+              </div>
+          </td>
+        </ng-container>
           
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"
-              (click)="Marcar(row)">
+            [ngClass]="{'pregunta-selected': row.id === preguntaSeleccionada.id}">
           </tr>
   
             </table>
-          </div>
-          <div *ngIf="tengoObjeto" style="width:30% ;">
-            <span *ngIf="tengoObjeto" style="font-weight: bold;color:black;">Nombre: {{objetoMostrar.Nombre}}</span>
-            <img *ngIf="tengoObjeto" style="margin-left: 15px;" class="imagenObjeto" mat-card-image [src]="imagenObjeto">
-          </div>
-        </div>
-        <br>
-        <br>
-        <div class="enColumna">
-          <section class="example-section">
-            <h4>Selecciona las opciones del objeto:</h4>
-            <br>
-            <p><mat-checkbox [(ngModel)]="tengoPista" [ngModelOptions]="{standalone: true}">¿Contiene una pista?</mat-checkbox></p>
-            <textarea *ngIf="tengoPista" style="background-color: transparent" type="text" name="nombre" placeholder="Escribe la pista" requiered [(ngModel)]="pistaString" [ngModelOptions]="{standalone: true}"></textarea>
 
-            <p><mat-checkbox [(ngModel)]="tengoPregunta" [ngModelOptions]="{standalone: true}">¿Tiene una pregunta?</mat-checkbox></p>
-            <p><mat-checkbox [(ngModel)]="tengoMovil" [ngModelOptions]="{standalone: true}">¿Se puede mover?</mat-checkbox></p>
-            
-            <p><mat-checkbox [disabled]="tengoEscenaRequisitoPuntos" (change)="TengoRequisito()" [(ngModel)]="tengoRequisito" [ngModelOptions]="{standalone: true}">¿Es requisito de la escena?</mat-checkbox></p>
-           
-          </section>
-          <br>
-          <br>
-          <!-- Lugar Del Objeto en la escena
-          <span style="font-weight: bold;">Lugar del Objeto: </span>
-          <mat-select name="Lugares" placeholder="Selecciona el lugar del objeto en la escena" (selectionChange)="AsignarLugar()" [(ngModel)]="LugarObjeto" [ngModelOptions]="{standalone: true}" required>
-            <mat-option *ngFor="let lugar of Lugares" [value]="lugar.id" matTooltip={{lugar.descripcion}}>
-              {{lugar.nombre}}
-            </mat-option>
-          </mat-select>
-          -->
-        </div>
+        <br>
+        <br>        
+        <h4>Añade las opciones de la pregunta:</h4>
+        <br>
+        <span style="font-weight: bold;">Puntos a sumar: </span>
+        <input style="background-color: transparent" type="number" name="nombre" placeholder="Escribe los puntos a sumar" (change) = "TengoPuntosSumar()" requiered [(ngModel)]="PuntosSumar" [ngModelOptions]="{standalone: true}">
+        <br>
+        <br>
+        <span style="font-weight: bold;">Puntos a restar: </span>
+        <input style="background-color: transparent" type="number" name="nombre" placeholder="Escribe el orden de la escena" (change) = "TengoPuntosRestar()" requiered [(ngModel)]="PuntosRestar" [ngModelOptions]="{standalone: true}">
+        <br>
+        <br>
       </div>
     </form>
   
-    <div  *ngIf="tengoObjeto" class = "enColumna" align="center">
-      <button style = "width: 20%" (click)="AsignarObjeto()" [disabled]="!tengoObjeto" type="button" class="btn Aceptar">Asignar objeto</button>
+    <div  *ngIf="tengoPreguntaSeleccionada" class = "enColumna" align="center">
+      <button style = "width: 20%" (click)="AsignarPregunta()" [disabled]="!tengoPreguntaSeleccionada" type="button" class="btn Aceptar">Editar pregunta</button>
     </div>
   <br>
   

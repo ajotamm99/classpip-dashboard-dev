@@ -56,6 +56,8 @@ export class EditarPreguntasActivasEscaperoomComponent implements OnInit {
     PuntosRestar: number;
     PuntosRestarReserva: number;
     tengoPuntosRestar: boolean;
+    tituloPreguntaSeleccionada: string;
+    IdPreguntaSeleccionada:number;
 
     changed: boolean;
 
@@ -80,15 +82,26 @@ export class EditarPreguntasActivasEscaperoomComponent implements OnInit {
   }
 
 
-  EditarObjeto(){
-
-      this.selection.clear();
-      this.changed=true;
-      this.tengoObjetoPregunta=false;
-      //this.objetoPreguntaAgregado= ({IdObjetoAct:this.idObjeto,Nombre:this.nombreObjeto, IdObjetoEscenaAct:this.escenaDelObjeto.IdEscenaAct, OrdenEscenaAct: this.escenaDelObjeto.Orden, Pregunta:this.tengoPregunta, Pista: this.tengoPista, Movil:this.tengoMovil, EsRequisito: this.tengoRequisito});
+  EditarPregunta(){    
+    this.selection.clear();
+    this.changed=true;
+    this.tengoObjetoPregunta=false;
+    if(!this.tengoPreguntaSeleccionada){
+      this.objetoPreguntaAgregado= ({IdObjetoAct:this.objetoPregunta.IdObjetoAct,Nombre:this.objetoPregunta.Nombre, IdObjetoEscenaAct:this.objetoPregunta.IdObjetoEscenaAct, OrdenEscenaAct: this.objetoPregunta.OrdenEscenaAct, TengoPregunta: true, Sumar: this.PuntosSumar, Restar:this.PuntosRestar, IdPreguntaAct:this.objetoPregunta.IdPreguntaAct,TituloPregunta:this.objetoPregunta.TituloPregunta});
       console.log(this.objetoPreguntaAgregado);
-      Swal.fire("Escena añadida", "La escena se ha añadido con éxito", 'success');
+      
+    }else{
+      this.objetoPreguntaAgregado= ({IdObjetoAct:this.objetoPregunta.IdObjetoAct,Nombre:this.objetoPregunta.Nombre, IdObjetoEscenaAct:this.objetoPregunta.IdObjetoEscenaAct, OrdenEscenaAct: this.objetoPregunta.OrdenEscenaAct, TengoPregunta: true, Sumar: this.PuntosSumar, Restar:this.PuntosRestar, IdPreguntaAct:this.preguntaSeleccionada.id,TituloPregunta:this.preguntaSeleccionada.Titulo});
+      console.log(this.objetoPreguntaAgregado);
+    }
+    Swal.fire("Escena añadida", "La escena se ha añadido con éxito", 'success');
   }
+
+  SeleccionarPregunta(pregunta: Pregunta){
+    this.preguntaSeleccionada=pregunta;
+    this.tengoPreguntaSeleccionada=true;
+  }
+
 
   TengoPuntosSumar(){
     if(!isNaN(+this.PuntosSumar)){      
@@ -148,4 +161,7 @@ export class EditarPreguntasActivasEscaperoomComponent implements OnInit {
     }
   }
 
+  applyFilterPreguntas(filterValue: string){
+    this.dataSourcePreguntas.filter = filterValue.trim().toLowerCase();
+  }
 }
