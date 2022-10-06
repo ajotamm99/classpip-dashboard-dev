@@ -3,16 +3,17 @@
   
     <form>
       <div class="enColumna">
-            <div class = "filter2">
-              <mat-form-field>
-                <input matInput (keyup)="applyFilterPreguntas($event.target.value)" placeholder="Filtro para buscar preguntas del profesor...">
-                <i class="material-icons" matSuffix>search</i>
-              </mat-form-field>
-            </div>
-            <table align="center" mat-table [dataSource]="dataSourcePreguntas" class="example-container mat-elevation-z8">
+          <div class = "filter2">
+            <mat-form-field>
+              <input matInput (keyup)="applyFilterPreguntas($event.target.value)" placeholder="Filtro para buscar preguntas del profesor...">
+              <i class="material-icons" matSuffix>search</i>
+            </mat-form-field>
+          </div>
+
+          <table align="center" mat-table [dataSource]="dataSourcePreguntas" class="example-container mat-elevation-z8">
   
           <ng-container matColumnDef="Titulo">
-            <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla" style="text-align: left !important;"> Nombre </th>
+            <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla" style="text-align: left !important;"> Título </th>
             <td style=" max-width: 100px;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -20,20 +21,20 @@
           </ng-container>
 
           <ng-container matColumnDef="Tipo">
-            <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla" style="text-align: left !important;"> Nombre </th>
+            <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla" style="text-align: left !important;"> Tipo </th>
             <td mat-cell *matCellDef="let pregunta"> {{pregunta.Tipo}} </td>
           </ng-container>
 
           <ng-container matColumnDef="Pregunta">
-            <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla" style="text-align: left !important;"> Nombre </th>
+            <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla" style="text-align: left !important;"> Pregunta </th>
             <td style=" max-width: 100px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;" mat-cell *matCellDef="let pregunta"> {{pregunta.Pregunta}} </td>
           </ng-container>
 
-          <ng-container matColumnDef="Temática">
-            <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla" style="text-align: left !important;"> Nombre </th>
+          <ng-container matColumnDef="Tematica">
+            <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla" style="text-align: left !important;"> Temática </th>
             <td mat-cell *matCellDef="let pregunta"> {{pregunta.Tematica}} </td>
           </ng-container>
 
@@ -49,12 +50,11 @@
           </td>
         </ng-container>
           
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"
-            [ngClass]="{'pregunta-selected': row.id === preguntaSeleccionada.id}">
+          <tr mat-header-row *matHeaderRowDef="displayedColumnsPreguntas"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumnsPreguntas;">
           </tr>
   
-            </table>
+        </table>
 
         <br>
         <br>        

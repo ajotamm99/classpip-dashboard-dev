@@ -3998,6 +3998,7 @@ export class JuegoComponent implements OnInit {
   }
 
   DameObjetosConPreguntas(){
+    this.objetosMostrarConPreguntas=undefined;
     this.objetosConPreguntas=this.objetosEscenasMostrar.filter(obj=> obj.Pregunta==true);
     if(this.objetosConPreguntas!=undefined && this.objetosConPreguntas.length>0){
       for(let i=0; i<this.objetosConPreguntas.length;i++){
@@ -4077,7 +4078,7 @@ export class JuegoComponent implements OnInit {
   }
 
 
-  AbrirDialogoAgregarPregunta(objeto: ObjetoPreguntaActMostrar){    
+  AbrirDialogoAgregarPregunta(objeto: ObjetoPreguntaActMostrar){  
     let ordenEscena=objeto.OrdenEscenaAct;
     const dialogRef = this.dialog.open(AsignarPreguntasEscaperoomComponent, {
       width: '900px',
@@ -4092,7 +4093,7 @@ export class JuegoComponent implements OnInit {
     dialogRef.afterClosed().subscribe(preguntaAgregada => {
       if(preguntaAgregada!=null && preguntaAgregada!=undefined){
           console.log(preguntaAgregada);
-          this.objetosMostrarConPreguntas.push(preguntaAgregada);
+          this.objetosMostrarConPreguntas.splice(this.objetosMostrarConPreguntas.indexOf(objeto),1,preguntaAgregada)
           this.dataSourceObjetosConPreguntas = new MatTableDataSource(this.objetosMostrarConPreguntas);
           this.requisitosEscenasPuntos[this.requisitosEscenasPuntos.findIndex(req=> req.OrdenEscena == ordenEscena)].PuntosActuales+=preguntaAgregada.Sumar;
           this.dataSourceRequisitosEscenasPuntos= new MatTableDataSource(this.requisitosEscenasPuntos);

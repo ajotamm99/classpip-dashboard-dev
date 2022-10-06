@@ -67,6 +67,7 @@ export class AsignarPreguntasEscaperoomComponent implements OnInit {
     this.changed=false;
     this.objetoPregunta=this.data.objeto;
     this.preguntasProfesor= this.data.preguntas;
+    console.log(<Pregunta[]>this.data.preguntas);
     if (this.data.preguntas!=undefined){
       this.tengoPreguntas=true;
       this.dataSourcePreguntas= new MatTableDataSource(this.preguntasProfesor);
@@ -85,7 +86,7 @@ export class AsignarPreguntasEscaperoomComponent implements OnInit {
     if(this.tengoPuntosSumar && this.tengoPuntosRestar){      
       this.changed=true;
       this.tengoObjetoPregunta=false;
-      this.objetoPreguntaAgregado= ({IdObjetoAct:this.objetoPregunta.IdObjetoAct,Nombre:this.objetoPregunta.Nombre, IdObjetoEscenaAct:this.objetoPregunta.IdObjetoEscenaAct, OrdenEscenaAct: this.objetoPregunta.OrdenEscenaAct, TengoPregunta: true, Sumar: this.PuntosSumar, Restar:this.PuntosRestar, IdPreguntaAct:this.objetoPregunta.IdPreguntaAct,TituloPregunta:this.objetoPregunta.TituloPregunta});
+      this.objetoPreguntaAgregado= ({IdObjetoAct:this.objetoPregunta.IdObjetoAct,Nombre:this.objetoPregunta.Nombre, IdObjetoEscenaAct:this.objetoPregunta.IdObjetoEscenaAct, OrdenEscenaAct: this.objetoPregunta.OrdenEscenaAct, TengoPregunta: true, Sumar: this.PuntosSumar, Restar:this.PuntosRestar, IdPreguntaAct:this.preguntaSeleccionada.id,TituloPregunta:this.preguntaSeleccionada.Titulo});
       console.log(this.objetoPreguntaAgregado);      
       Swal.fire("Escena añadida", "La escena se ha añadido con éxito", 'success');      
     }else{
@@ -109,6 +110,7 @@ export class AsignarPreguntasEscaperoomComponent implements OnInit {
         Swal.fire("Error", "No puede tener una posición superior al número de escenas totales o ser menor o igual a 0",'error');
       }else{     
         this.tengoObjetoPregunta=true;   
+        this.tengoPuntosSumar=true;
       }
     }else{
       this.tengoObjetoPregunta=false;      
@@ -126,6 +128,7 @@ export class AsignarPreguntasEscaperoomComponent implements OnInit {
         Swal.fire("Error", "No puede tener una posición superior al número de escenas totales o ser menor o igual a 0",'error');
       }else{     
         this.tengoObjetoPregunta=true;   
+        this.tengoPuntosRestar=true;
       }
     }else{
       this.tengoObjetoPregunta=false;      
