@@ -152,8 +152,8 @@ export class CrearSkinsComponent implements OnInit {
     reader.readAsDataURL(this.fileImagenSkin);
     reader.onload = () => {
       var date = new Date();
-      var timestamp= (date.getFullYear()).toString()+(date.getMonth).toString()+(date.getDay).toString()
-      +(date.getHours).toString()+(date.getMinutes).toString()+(date.getSeconds).toString()+(date.getMilliseconds).toString();
+      var timestamp= (date.getFullYear()).toString()+(date.getMonth()).toString()+(date.getDay()).toString()
+      +(date.getHours()).toString()+(date.getMinutes()).toString()+(date.getSeconds()).toString()+(date.getMilliseconds()).toString();
       
     this.nombreImagenSkin = timestamp +this.profesorId+this.fileImagenSkin.name;
       console.log('ya Escena');

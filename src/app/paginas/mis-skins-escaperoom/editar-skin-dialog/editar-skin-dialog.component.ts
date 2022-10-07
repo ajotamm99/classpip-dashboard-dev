@@ -158,8 +158,8 @@ ExaminarImagenSkin($event) {
   reader.readAsDataURL(this.fileImagenSkin);
   reader.onload = () => {
     var date = new Date();
-    var timestamp= (date.getFullYear()).toString()+(date.getMonth).toString()+(date.getDay).toString()
-      +(date.getHours).toString()+(date.getMinutes).toString()+(date.getSeconds).toString()+(date.getMilliseconds).toString();
+    var timestamp= (date.getFullYear()).toString()+(date.getMonth()).toString()+(date.getDay()).toString()
+      +(date.getHours()).toString()+(date.getMinutes()).toString()+(date.getSeconds()).toString()+(date.getMilliseconds()).toString();
       
     console.log('ya Escena');
     this.nombreImagenSkinAntigua=this.nombreImageSkinNueva;

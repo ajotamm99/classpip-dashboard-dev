@@ -159,8 +159,8 @@ export class CrearObjetosComponent implements OnInit {
     reader.readAsDataURL(this.fileImagenObjeto);
     reader.onload = () => {
       var date = new Date();
-      var timestamp= (date.getFullYear()).toString()+(date.getMonth).toString()+(date.getDay).toString()
-        +(date.getHours).toString()+(date.getMinutes).toString()+(date.getSeconds).toString()+(date.getMilliseconds).toString();
+      var timestamp= (date.getFullYear()).toString()+(date.getMonth()).toString()+(date.getDay()).toString()
+        +(date.getHours()).toString()+(date.getMinutes()).toString()+(date.getSeconds()).toString()+(date.getMilliseconds()).toString();
         
       this.nombreImagenObjeto = timestamp+this.profesorId+this.fileImagenObjeto.name;
       console.log('ya Escena');

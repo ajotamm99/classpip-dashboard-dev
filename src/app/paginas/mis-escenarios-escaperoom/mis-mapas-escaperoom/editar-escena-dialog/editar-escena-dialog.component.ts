@@ -190,8 +190,8 @@ ExaminarImagenEscena($event) {
   reader.readAsDataURL(this.fileImagenEscena);
   reader.onload = () => {
     var date = new Date();
-    var timestamp= (date.getFullYear()).toString()+(date.getMonth).toString()+(date.getDay).toString()
-      +(date.getHours).toString()+(date.getMinutes).toString()+(date.getSeconds).toString()+(date.getMilliseconds).toString();
+    var timestamp= (date.getFullYear()).toString()+(date.getMonth()).toString()+(date.getDay()).toString()
+      +(date.getHours()).toString()+(date.getMinutes()).toString()+(date.getSeconds()).toString()+(date.getMilliseconds()).toString();
       
     this.nombreImagenEscenaAntigua=this.nombreImagenEscenaNueva;
     this.nombreImagenEscenaNueva = timestamp+this.profesorId+ this.fileImagenEscena.name;
@@ -216,8 +216,8 @@ ExaminarArchivoEscena($event) {
   reader.onload = () => {
     try {
       var date = new Date();
-      var timestamp= (date.getFullYear()).toString()+(date.getMonth).toString()+(date.getDay).toString()
-        +(date.getHours).toString()+(date.getMinutes).toString()+(date.getSeconds).toString()+(date.getMilliseconds).toString();
+      var timestamp= (date.getFullYear()).toString()+(date.getMonth()).toString()+(date.getDay()).toString()
+        +(date.getHours()).toString()+(date.getMinutes()).toString()+(date.getSeconds()).toString()+(date.getMilliseconds()).toString();
         
           this.infoArchivoEscena = JSON.parse(reader.result.toString());
           this.archivoEscenaCargado =true;
