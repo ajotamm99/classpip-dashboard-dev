@@ -3450,6 +3450,7 @@ export class JuegoComponent implements OnInit {
           console.log ('volvemos de agregar escena ' + <EscenaActiva>escenaAgregada.EscenaAct);
           // tslint:disable-next-line:prefer-for-of
           if(escenaAgregada.EscenaAct.orden == this.numeroEscenasActivas){
+            console.log("hola");
             this.escenasActivasRecibidas.push(escenaAgregada.EscenaAct);
             if(escenaAgregada.EscenaAct.TipoRequisito=='puntos'){
               this.escenasActivasMostrar.push({Nombre: escenaAgregada.Escena.Nombre, IdEscenaAct: escenaAgregada.Escena.id
@@ -4157,22 +4158,22 @@ export class JuegoComponent implements OnInit {
 
   VolverAtrasPreguntas(){    
     this.tengoObjetosConPreguntas=false;
-    this.tengoRequisitosObjetosConPreguntas=undefined;
-    this.objetosMostrarConPreguntas=undefined;
-    this.dataSourceObjetosConPreguntas= undefined;    
-    this.requisitosEscenasPuntos=undefined;
-    this.dataSourceRequisitosEscenasPuntos=undefined;
-    this.preguntasDelProfesor=undefined;
+    this.tengoRequisitosObjetosConPreguntas=false;
+    this.objetosMostrarConPreguntas=[];
+    this.dataSourceObjetosConPreguntas= new MatTableDataSource(this.objetosMostrarConPreguntas);    
+    this.requisitosEscenasPuntos=[];
+    this.dataSourceRequisitosEscenasPuntos=new MatTableDataSource(this.requisitosEscenasPuntos);
+    this.preguntasDelProfesor=[];
   }
 
   VolverAtrasObjetos(){
     this.tengoRequisitosObjetosConPuntos=true;
-    this.objetosEscenasMostrar=undefined;
-    this.dataSourceObjetosEscena=undefined;
+    this.objetosEscenasMostrar=[];
+    this.dataSourceObjetosEscena=new MatTableDataSource(this.objetosEscenasMostrar);
     this.tengoRequisitosObjetos=true;
-    this.requisitosEscenas=undefined;
-    this.objetosMostrar=undefined;
-    this.objetosPublicos=undefined;    
+    this.requisitosEscenas=[];
+    this.objetosMostrar=[];
+    this.objetosPublicos=[];    
     this.tengoObjetosEscena=false;
     this.selection.clear();
     this.escenaSeleccionada=false;
@@ -4183,18 +4184,18 @@ export class JuegoComponent implements OnInit {
 
   VolverAtrasEscenas(){
     this.selection.clear();
-    this.requisitosEscenas=undefined;
+    this.requisitosEscenas=[];
     this.numeroEscenasActivas=0;
     this.tiemposEscenas=0;
     this.tengoTiempos=false;
-    this.tiempoRestante=1;
-    this.escenasActivasMostrar=undefined;
-    this.escenasActivasRecibidas=undefined;
+    this.tiempoRestante=+this.tiempoLimiteEscaperoom;
+    this.escenasActivasMostrar=[];
+    this.escenasActivasRecibidas=[];
     this.tengoEscenasEscaperoom=false;
-    this.dataSourceEscenas=undefined;
+    this.dataSourceEscenas=new MatTableDataSource(this.escenasActivasMostrar);
+    this.tengoEscenarioEscaperoom = false;    
     this.escenarioEscaperoomRecibido = undefined;
-    this.tengoEscenarioEscaperoom = false;
-    this.escenasEscenarioRecibidas=undefined;
+    this.escenasEscenarioRecibidas=[];
     this.hayEscenas=false;
 
   }
