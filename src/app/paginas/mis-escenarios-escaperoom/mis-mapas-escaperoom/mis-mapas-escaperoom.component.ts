@@ -65,9 +65,7 @@ export class MisMapasEscaperoomComponent implements OnInit {
     this.peticionesAPI.DameEscenariosEscaperoomDelProfesor(this.profesorId)
     .subscribe(escenarios => {
       if (escenarios[0] !== undefined) {
-        console.log('Voy a dar la lista');
         this.EscenariosProfesor = escenarios;
-        console.log(this.EscenariosProfesor);
         this.dataSource = new MatTableDataSource(this.EscenariosProfesor);
         // this.profesorService.EnviarProfesorIdAlServicio(this.profesorId);
       } else {
@@ -103,7 +101,6 @@ export class MisMapasEscaperoomComponent implements OnInit {
   .subscribe(res=>{
     this.ImagenesArchivosAsync(res)
     .then(_=>{
-      console.log(this.EscenasBase64);
       var cont=0;
       for(let i=0; i<this.EscenasBase64.length;i++){   
         var fld=zip.folder(this.EscenasBase64[i].Nombre);     
@@ -197,7 +194,6 @@ VerEscenas(EscenarioEscaperoom: EscenarioEscaperoom) {
       this.router.navigate(['/inicio/' + this.profesorId + '/recursos/misRecursosEscaperoom/misMapas/editarMapa']);
 
   }, (error) =>{
-    console.log("no hay ninguna escena en el escenario", error);
     let errors: HttpErrorResponse = error;
     if (errors.status>=500){
       //Swal.fire('Escenas', 'No hay ninguna escena en el escenario: '+EscenarioEscaperoom.Nombre, 'warning');
@@ -218,7 +214,6 @@ VerEscenasPublicas(EscenarioEscaperoom: EscenarioEscaperoom) {
       this.sesion.TomaEscenasdeEscenario(this.EscenasdeEscenario);
       this.router.navigate(['/inicio/' + this.profesorId + '/recursos/misRecursosEscaperoom/misMapas/escenasPublicas']);
   }, (error) =>{
-    console.log("no hay ninguna escena en el escenario", error);
     let errors: HttpErrorResponse = error;
     if (errors.status>=500){
       //Swal.fire('Escenas', 'No hay ninguna escena en el escenario: '+EscenarioEscaperoom.Nombre, 'warning');
@@ -232,9 +227,8 @@ VerEscenasPublicas(EscenarioEscaperoom: EscenarioEscaperoom) {
    // Utilizamos esta función para eliminar una colección de la base de datos y actualiza la lista de colecciones
 BorrarEscenarioEscaperoom(EscenarioEscaperoom: EscenarioEscaperoom) {
 
-    console.log ('Vamos a eliminar el escenario');
     this.peticionesAPI.DameEscenasdeEscenariosEscaperoom(EscenarioEscaperoom.id).subscribe(res =>{
-      console.log(res);      
+
       this.EscenasdeEscenario=res;
       this.peticionesAPI.DameEscenasEscaperoom().subscribe(escenas =>{
         var escenas = escenas;
@@ -251,7 +245,6 @@ BorrarEscenarioEscaperoom(EscenarioEscaperoom: EscenarioEscaperoom) {
 
 
     }, (error) =>{
-      console.log("no hay ninguna escena en el escenario", error);
       let errors: HttpErrorResponse = error;
       if (errors.status>=500){
         this.peticionesAPI.BorrarEscenarioEscaperoom(EscenarioEscaperoom.id).subscribe();
@@ -259,7 +252,6 @@ BorrarEscenarioEscaperoom(EscenarioEscaperoom: EscenarioEscaperoom) {
     }
     });
 
-    console.log ('La saco de la lista');
     this.EscenariosProfesor = this.EscenariosProfesor.filter(escenario => escenario.id !== EscenarioEscaperoom.id);
     this.EscenariosPublicos=this.EscenariosPublicos.filter(escenario => escenario.id !== EscenarioEscaperoom.id);
     this.dataSource = new MatTableDataSource(this.EscenariosProfesor);
@@ -286,7 +278,6 @@ BorrarEscenarioEscaperoom(EscenarioEscaperoom: EscenarioEscaperoom) {
         
         //Antes de eliminar el escenario tenemos que ver si hay algun juego activo
         this.peticionesAPI.DameJuegosEscaperoomdeEscenarioId(EscenarioEscaperoom.id).subscribe((res)=>{
-            console.log("Hemos llegado", res);
             
               this.JuegoEscaperoom=res;
               var cont =0;
@@ -303,7 +294,6 @@ BorrarEscenarioEscaperoom(EscenarioEscaperoom: EscenarioEscaperoom) {
               }
 
           }, (error) =>{
-            console.log("no hay ningun juego activo", error);
             let errors: HttpErrorResponse = error;
             if (errors.status>=500){
               this.BorrarEscenarioEscaperoom(EscenarioEscaperoom);

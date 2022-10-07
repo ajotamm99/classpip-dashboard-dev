@@ -111,7 +111,6 @@ export class EditarEscenasActivasEscaperoomComponent implements OnInit {
       this.changed=true;
       this.cambios=false;
       this.escenaAgregada= ({Nombre:this.escenaNombre, IdEscenaAct:this.idEscenaAct, TiempoLimite:this.TiempoLimite, Orden:this.orden, Requisito:this.TipoRequisito, Puntosrequisito:this.RequisitoPuntosEscena});
-      console.log(this.orden);
       Swal.fire("Escena añadida", "La escena se ha añadido con éxito", 'success');
     }else if(this.TipoRequisito=='objeto' && this.tengoTiempoLimite && this.tengoOrdenEscenas){
       this.selection.clear();
@@ -127,7 +126,6 @@ export class EditarEscenasActivasEscaperoomComponent implements OnInit {
   }
 
   TengoTiempoLimiteEscena(){
-    console.log(this.tengoTiempoLimite);
     if(!isNaN(+this.TiempoLimiteEscena)){
       this.cambios=true;
       this.tengoTiempoLimite=true;
@@ -140,7 +138,6 @@ export class EditarEscenasActivasEscaperoomComponent implements OnInit {
   }
 
   TengoPuntosEscena(){
-    console.log(this.tengoRequisitoPuntos);
     if(!isNaN(+this.RequisitoPuntosEscena)){
       this.cambios=true;
       this.tengoRequisitoPuntos=true;
@@ -153,7 +150,6 @@ export class EditarEscenasActivasEscaperoomComponent implements OnInit {
   }
 
   TengoOrdenEscena(){
-    console.log(this.tengoOrdenEscenas);
     if(!isNaN(+this.ordenEscena)){      
       if(+this.ordenEscena>(this.numeroEscenas) || +this.ordenEscena<=0){
         this.ordenEscena=this.ordenReserva;
@@ -175,7 +171,6 @@ export class EditarEscenasActivasEscaperoomComponent implements OnInit {
   }
 
   AsignarTipo(){
-    console.log(this.TipoRequisito, this.tengoRequisitoPuntos);
     if(this.TipoRequisito=='puntos'){      
       this.cambios=true;
       this.tengoTipoPuntos=true;

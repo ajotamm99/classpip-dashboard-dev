@@ -36,8 +36,6 @@ export class MisObjetosEscaperoomComponent implements OnInit {
   dataSource;
   dataSourcePublicas;
 
-  // PARA DIÁLOGO DE CONFIRMACIÓN
-  // tslint:disable-next-line:no-inferrable-types
   mensaje: string = 'Estás seguro/a de que quieres eliminar el equipo llamado: ';
   displayedColumns: string[] = ['nombre', 'iconos'];
   //displayedColumns: string[] = ['nombre', 'edit', 'delete', 'copy', 'publica'];
@@ -52,24 +50,18 @@ export class MisObjetosEscaperoomComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
-    // REALMENTE LA APP FUNCIONARÁ COGIENDO AL PROFESOR DEL SERVICIO, NO OBSTANTE AHORA LO RECOGEMOS DE LA URL
-    // this.profesorId = this.profesorService.RecibirProfesorIdDelServicio();
     this.profesorId = this.sesion.DameProfesor().id;
 
     this.TraeObjetosDelProfesor();
     this.DameTodosLosObjetosPublicos();
   }
 
-  // Obtenemos todas las colecciones del profesor
   TraeObjetosDelProfesor() {
 
     this.peticionesAPI.DameObjetosEscaperoomDelProfesor(this.profesorId)
     .subscribe(objetos => {
       if (objetos[0] !== undefined) {
-        console.log('Voy a dar la lista');
         this.ObjetosEscaperoom = objetos;
-        console.log(this.ObjetosEscaperoom);
         this.dataSource = new MatTableDataSource(this.ObjetosEscaperoom);
         this.sesion.TomaObjetosEscaperoomProfesor(this.ObjetosEscaperoom);
         this.TraeImagenesObjetos();
@@ -148,26 +140,20 @@ VerObjetoDialog(ObjetoEscaperoom: ObjetoEscaperoom) {
   const dialogRef = this.dialog.open(EditarObjetoDialogComponent, {
     width: '900px',
     maxHeight: '600px',
-    // Le pasamos solo los id del grupo y profesor ya que es lo único que hace falta para vincular los alumnos
     data: {
       objeto: ObjetoEscaperoom,
     }
   });
 
-   // RECUPERAREMOS LA NUEVA LISTA DE LOS CROMO Y VOLVEREMOS A BUSCAR LOS CROMOS QUE TIENE LA COLECCION
   dialogRef.afterClosed().subscribe(nuevoObjeto => {
     try{
-      console.log ('objeto editado ' + nuevoObjeto);
     // tslint:disable-next-line:prefer-for-of
     if(nuevoObjeto!=null && nuevoObjeto!=undefined){
-      //var objetoBuscar = this.ObjetosEscaperoom.filter(obj => obj.id == nuevoObjeto.id)[0];
-      //var index = this.ObjetosEscaperoom.indexOf(objetoBuscar);
       this.ObjetosEscaperoom.splice(this.ObjetosEscaperoom.findIndex(obj => obj.id == nuevoObjeto.id), 1 ,nuevoObjeto);
       this.ObjetosEscaperoomPublicos.splice(this.ObjetosEscaperoomPublicos.findIndex(obj => obj.id == nuevoObjeto.id), 1 ,nuevoObjeto)
       this.sesion.TomaObjetosEscaperoomProfesor;
       this.dataSource = new MatTableDataSource(this.ObjetosEscaperoom);
       this.dataSourcePublicas = new MatTableDataSource(this.ObjetosEscaperoomPublicos);
-      //this.TraeImagenColeccion(this.coleccion);
       this.TraeImagenesObjetos();
     }
   }catch{
@@ -175,9 +161,6 @@ VerObjetoDialog(ObjetoEscaperoom: ObjetoEscaperoom) {
   }
 
    });
-  //abrir dialog
-  //this.router.navigate(['/inicio/' + this.profesorId + '/recursos/misRecursosEscaperoom/misObjetos']);
-
 }
 
 
@@ -187,20 +170,14 @@ VerObjetoPublicoDialog(ObjetoEscaperoom: ObjetoEscaperoom) {
   const dialogRef = this.dialog.open(MostrarObjetosPublicosComponent, {
     width: '900px',
     maxHeight: '600px',
-    // Le pasamos solo los id del grupo y profesor ya que es lo único que hace falta para vincular los alumnos
     data: {
       objeto: ObjetoEscaperoom,
     }
   });
-
-  //this.router.navigate(['/inicio/' + this.profesorId + '/recursos/misRecursosEscaperoom/misMapas/escenasPublicas']);
-
 }
 
-   // Utilizamos esta función para eliminar una colección de la base de datos y actualiza la lista de colecciones
 BorrarObjetoEscaperoom(objetoEscaperoom: ObjetoEscaperoom) {
 
-    console.log ('Vamos a eliminar el objeto');
     this.peticionesAPI.BorrarObjetoEscaperoom(objetoEscaperoom.id).subscribe();
 
     var cont=0;
@@ -214,7 +191,6 @@ BorrarObjetoEscaperoom(objetoEscaperoom: ObjetoEscaperoom) {
     }          
 
 
-    console.log ('La saco de la lista');
     this.ObjetosEscaperoom = this.ObjetosEscaperoom.filter(obj => obj.id !== objetoEscaperoom.id);
     this.ObjetosEscaperoomPublicos = this.ObjetosEscaperoomPublicos.filter(obj => obj.id !== objetoEscaperoom.id);
     this.sesion.TomaObjetosEscaperoomProfesor(this.ObjetosEscaperoom);
@@ -223,9 +199,7 @@ BorrarObjetoEscaperoom(objetoEscaperoom: ObjetoEscaperoom) {
 }
 
 
-  // Si queremos borrar un equipo, antes nos saldrá un aviso para confirmar la acción como medida de seguridad. Esto se
-  // hará mediante un diálogo al cual pasaremos el mensaje y el nombre del equipo
-  AbrirDialogoConfirmacionBorrarObjeto(objetoEscaperoom: ObjetoEscaperoom): void {
+ AbrirDialogoConfirmacionBorrarObjeto(objetoEscaperoom: ObjetoEscaperoom): void {
     Swal.fire({
       title: 'Eliminar',
       text: "Estas segura/o de que quieres eliminar el objeto?: " + objetoEscaperoom.Nombre,

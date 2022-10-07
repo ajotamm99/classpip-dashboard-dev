@@ -76,12 +76,9 @@ export class AsignarObjetosEscaperoomComponent implements OnInit {
     this.escenaDelObjeto=this.data.escena;
     if(this.data.escena.Requisito=='puntos'){
       this.tengoEscenaRequisitoPuntos=true;
-      console.log("es puntos");
     }else if(this.data.escena.Requisito=='objeto'){
       this.tengoEscenaRequisitoPuntos=false;
-      console.log("es objeto");
     }
-    console.log(this.data.escena);
     this.tengoMovil=false;
     this.tengoPista=false;
     this.tengoPregunta=false;
@@ -108,10 +105,8 @@ export class AsignarObjetosEscaperoomComponent implements OnInit {
       this.selection.select(row);
       this.dataSourceObjetos.data.forEach ( row => {
         if (this.selection.isSelected(row)) {
-          console.log ('hemos elegido ', row);
           this.objetoMostrar= row;
           this.imagenObjeto= URL.ImagenesObjetos + this.objetoMostrar.Imagen;
-          console.log(row);          
           this.tengoObjeto=true;
         }
       });
@@ -125,7 +120,6 @@ export class AsignarObjetosEscaperoomComponent implements OnInit {
         this.changed=true;
         this.tengoObjeto=false;
         this.objetoAgregado= ({IdObjetoAct:this.objetoMostrar.id , Nombre:this.objetoMostrar.Nombre, IdObjetoEscenaAct:this.escenaDelObjeto.IdEscenaAct, OrdenEscenaAct: this.escenaDelObjeto.Orden, Pregunta:this.tengoPregunta, Pista: this.tengoPista, Movil:this.tengoMovil, PistaString:this.pistaString, EsRequisito: this.tengoRequisito});
-        console.log(this.objetoAgregado);
         Swal.fire("Escena añadida", "La escena se ha añadido con éxito", 'success');
       }else{
         Swal.fire("Error", "No has insertado ninguna pista", 'error');
@@ -136,7 +130,6 @@ export class AsignarObjetosEscaperoomComponent implements OnInit {
       this.changed=true;
       this.tengoObjeto=false;
       this.objetoAgregado= ({IdObjetoAct:this.objetoMostrar.id, Nombre:this.objetoMostrar.Nombre, IdObjetoEscenaAct:this.escenaDelObjeto.IdEscenaAct, OrdenEscenaAct: this.escenaDelObjeto.Orden, Pregunta:this.tengoPregunta, Pista: this.tengoPista, Movil:this.tengoMovil, EsRequisito: this.tengoRequisito});
-      console.log(this.objetoAgregado);
       Swal.fire("Escena añadida", "La escena se ha añadido con éxito", 'success');
     }
 

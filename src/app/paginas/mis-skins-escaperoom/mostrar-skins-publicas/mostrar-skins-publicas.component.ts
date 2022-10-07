@@ -41,7 +41,6 @@ export class MostrarSkinsPublicasComponent implements OnInit {
     this.nombreSkin = this.data.skin.Nombre;
     this.nombreImagenSkin= this.data.skin.Spritesheet;
     this.imagenSkin=URL.ImagenesSkins + this.nombreImagenSkin;
-    console.log(this.SkinEscaperoom);
   }
 
 Cerrar(): void {

@@ -34,18 +34,11 @@ export class EditarMapaComponent implements OnInit {
   descripcionEscenario: string;
   file: File;
 
-  // tslint:disable-next-line:ban-types
   imagenCambiada: Boolean = false;
 
-  // PARA DIÁLOGO DE CONFIRMACIÓN
-  // tslint:disable-next-line:no-inferrable-types
-  mensaje: string = 'Confirma que quieres eliminar el equipo llamado: ';
 
-  // tslint:disable-next-line:ban-types
   cambios: Boolean = false;
-  // tslint:disable-next-line:ban-types
   voltear: Boolean = false;
-  // tslint:disable-next-line:ban-types
   mostrarTextoGuardar: Boolean = false;
 
   interval;
@@ -66,25 +59,12 @@ export class EditarMapaComponent implements OnInit {
     this.EscenasdeEscenario = this.sesion.DameEscenasdeEscenario();
     this.nombreEscenario = this.EscenarioEscaperoom.Nombre;
     this.descripcionEscenario = this.EscenarioEscaperoom.Descripcion;
-    console.log ('escenas');
-    console.log (this.EscenasdeEscenario);
     this.TraeArchivosEscenas();
-    // Me traigo la imagen de la colección y las imagenes de cada cromo
-    // this.TraeImagenColeccion(this.coleccion);
-    // Cargo el imagen de la coleccion
-    // this.GET_Imagen();
+
   }
 
-  // Se hace un PUT de la coleccion seleccionada para editar
   EditarEscenario() {
-    console.log('Entro a editar');
-    // Borramos la imagen anterior
 
-    /*/if (this.coleccion.ImagenColeccion !== undefined) {
-      this.peticionesAPI.BorrarImagenColeccion (this.coleccion.ImagenColeccion).subscribe();
-    }*/
-
-    // tslint:disable-next-line:max-line-length
     var escena= new EscenarioEscaperoom(this.EscenarioEscaperoom.profesorId, this.nombreEscenario, this.descripcionEscenario);
     escena.setPublica(this.EscenarioEscaperoom.Publica);
     this.peticionesAPI.ModificaEscenarioEscaperoom(escena, this.EscenarioEscaperoom.profesorId, this.EscenarioEscaperoom.id)
@@ -100,26 +80,20 @@ export class EditarMapaComponent implements OnInit {
 
   }
 
-  // SI QUEREMOS AÑADIR CROMOS MANUALMENTE LO HAREMOS EN UN DIALOGO
   AbrirDialogoAgregarEscenaEscenario(): void {
     const dialogRef = this.dialog.open(AgregarEscenaDialogComponent, {
       width: '900px',
       maxHeight: '600px',
-      // Le pasamos solo los id del grupo y profesor ya que es lo único que hace falta para vincular los alumnos
       data: {
         escenario: this.EscenarioEscaperoom,
       }
     });
 
-     // RECUPERAREMOS LA NUEVA LISTA DE LOS CROMO Y VOLVEREMOS A BUSCAR LOS CROMOS QUE TIENE LA COLECCION
     dialogRef.afterClosed().subscribe(escenasAgregadas => {
       try{
-      console.log ('volvemos de agregar cromos ' + escenasAgregadas.length);
-      // tslint:disable-next-line:prefer-for-of
       for (let i = 0 ; i < escenasAgregadas.length; i++) {
         this.EscenasdeEscenario.push (escenasAgregadas[i]);
       }
-      //this.TraeImagenColeccion(this.coleccion);
       this.TraeArchivosEscenas();
     }catch{}
 
@@ -127,7 +101,6 @@ export class EditarMapaComponent implements OnInit {
   }
 
   TraeArchivosEscenas() {
-    // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < this.EscenasdeEscenario.length; i++) {
 
       this.EscenaEscaperoom = this.EscenasdeEscenario[i];
@@ -136,12 +109,10 @@ export class EditarMapaComponent implements OnInit {
       this.archivosEscenas[i] = URL.ArchivosEscenas + this.EscenaEscaperoom.Archivo;
 
     }
-    console.log(this.imagenesEscenas);
     //por si quiero ordenar:
     //this.EscenasdeEscenario.sort((a, b) => a.Nombre.localeCompare(b.Nombre));
   }
 
-  // TAMBIEN EDITAREMOS EL CROMO EN UN DIALOGO
   AbrirDialogoEditarEscena(escena: EscenaEscaperoom): void {
 
     const dialogRef = this.dialog.open ( EditarEscenaDialogComponent , {
@@ -153,17 +124,10 @@ export class EditarMapaComponent implements OnInit {
       }
     });
 
-    // tslint:disable-next-line:no-shadowed-variable
     dialogRef.afterClosed().subscribe( escena => {
       try{
-      // tslint:disable-next-line:prefer-for-of
       if(escena!== null){
-        console.log(escena.Nombre);
-        //var EscenaBuscar= this.EscenasdeEscenario.filter(escen=> escen.id==escena.id)[0];
-        //var posicion = this.EscenasdeEscenario.indexOf(EscenaBuscar);
         this.EscenasdeEscenario.splice(this.EscenasdeEscenario.findIndex(escen=> escen.id==escena.id),1, escena);
-        //this.EscenasdeEscenario = this.EscenasdeEscenario.filter(escen => escen.id !== escena.id);
-        //this.EscenasdeEscenario.push (escena);
         this.TraeArchivosEscenas();
       }
     }catch{}
@@ -171,15 +135,11 @@ export class EditarMapaComponent implements OnInit {
     });
   }
 
-  // Guardo cromo en sesión, porque lo necesitará el componente de editar cromo
-  GuardarEscena(escena: EscenaEscaperoom) {
-    console.log('voy a enviar');
+ GuardarEscena(escena: EscenaEscaperoom) {
     this.sesion.TomaEscenaEscaperoom(this.EscenaEscaperoom);
   }
 
-  // Si queremos borrar un cromo, antes nos saldrá un aviso para confirmar la acción como medida de seguridad. Esto se
-  // hará mediante un diálogo al cual pasaremos el mensaje y el nombre del equipo
-  AbrirDialogoConfirmacionBorrarEscena(escena: EscenaEscaperoom): void {
+   AbrirDialogoConfirmacionBorrarEscena(escena: EscenaEscaperoom): void {
     Swal.fire({
       title: 'Eliminar',
       text: "Estas segura/o de que quieres eliminar la escena llamada: " +escena.Nombre,
@@ -200,27 +160,17 @@ export class EditarMapaComponent implements OnInit {
 
   }
 
-  // Utilizamos esta función para eliminar un cromo de la base de datos y actualiza la lista de cromos
-  BorrarEscena(escena: EscenaEscaperoom) {
+   BorrarEscena(escena: EscenaEscaperoom) {
     const posicion = this.EscenasdeEscenario.indexOf (escena);
-    console.log ('voy a borrar la escena ' + escena.id +  ' de la posición ' + posicion);
 
     this.peticionesAPI.BorrarEscenaEscaperoom (escena.id).subscribe( () => {
-       // usar splice? this.EscenasdeEscenario.splice
         this.EscenasdeEscenario.splice(posicion,1);
-        //const nueva = this.EscenasdeEscenario.slice(0, posicion).concat(this.EscenasdeEscenario.slice(posicion + 1, this.EscenasdeEscenario.length))
-        //this.EscenasdeEscenario = nueva;
-        console.log ('ya esta borrado');
-        console.log (this.EscenasdeEscenario);
+
         this.peticionesAPI.BorrarImagenEscena(escena.Tilesheet).subscribe( () => {
-          // tslint:disable-next-line:max-line-length
-          //const nueva = this.imagenesCromosDelante.slice(0, posicion).concat(this.imagenesCromosDelante.slice(posicion + 1, this.imagenesCromosDelante.length));
-          //this.imagenesEscenas =nueva;
+
           this.imagenesEscenas.splice(posicion,1);
           this.peticionesAPI.BorrarArchivoEscena(escena.Archivo).subscribe( () => {
-            // tslint:disable-next-line:max-line-length
-            //const nueva = this.ArchivosEscenas.slice(0, posicion).concat(this.imagenesCromosDetras.slice(posicion + 1, this.imagenesCromosDetras.length));
-            //this.archivosEscenas =nueva;
+
             this.archivosEscenas.splice(posicion,1);
           }
           );        

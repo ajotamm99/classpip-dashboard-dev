@@ -72,14 +72,7 @@ export class EditarEscenaDialogComponent implements OnInit {
     this.nombreEscena = this.EscenaEscaperoom.Nombre;
     this.nombreImagenEscenaNueva= this.data.escena.Tilesheet;
     this.nombreArchivoEscenaNuevo = this.data.escena.Archivo;
-    //this.imagenEscenaAntigua = this.EscenaEscaperoom.Tilesheet;
-    //this.archivoEscenaAntigua = this.EscenaEscaperoom.Archivo;
     this.EscenasdeEscenario = this.sesion.DameEscenasdeEscenario();
-
-    // this.opcionSeleccionadaProbabilidad = this.cromo.Probabilidad;
-    console.log(this.EscenaEscaperoom);
-    // Cargo el imagen del cromo
-    //this.TraeArchivosEscenas();
   }
   /*
   ComprobarImagenesyArchivosEscena(comprobarImagen: String, comprobarArchivo: String,escenaId:number){
@@ -112,7 +105,6 @@ export class EditarEscenaDialogComponent implements OnInit {
   }*/
 
   EditarEscena() {
-    console.log('Entro a editar');
     /*
     this.ComprobarImagenesyArchivosEscena(this.nombreImagenEscenaNueva,this.nombreArchivoEscenaNuevo,this.EscenaEscaperoom.id)
     .then(data=>{
@@ -123,32 +115,28 @@ export class EditarEscenaDialogComponent implements OnInit {
           if (res != null) {
             this.EscenaEscaperoom = res;
             // this.cromosEditados.push (res);
-            // console.log('nombre del cromo + nivel' + this.cromosEditados[0].Nombre + this.cromosEditados[0].Nivel);
             if (this.imagenEscenaCargada === true) {
               // HACEMOS EL POST DE LA NUEVA IMAGEN EN LA BASE DE DATOS
-              console.log ('Nueva imagen');          
               this.peticionesAPI.BorrarImagenEscena(this.nombreImagenEscenaAntigua).subscribe();
               const formData: FormData = new FormData();
               formData.append(this.nombreImagenEscenaNueva, this.fileImagenEscena,this.nombreImagenEscenaNueva);
               this.peticionesAPI.PonImagenEscena(formData)
-              .subscribe(() => console.log('Imagen cargado'));
+              .subscribe((res) => {});
             }
 
             if (this.archivoEscenaCargado === true) {
-              // HACEMOS EL POST DE LA NUEVA IMAGEN EN LA BASE DE DATOS
-              console.log ('Nueva imagen');          
+              // HACEMOS EL POST DE LA NUEVA IMAGEN EN LA BASE DE DATOS 
               this.peticionesAPI.BorrarArchivoEscena(this.nombreArchivoEscenaAntiguo).subscribe();
               const formData: FormData = new FormData();
               formData.append(this.nombreArchivoEscenaNuevo, this.fileArchivoEscena,this.nombreArchivoEscenaNuevo);
               this.peticionesAPI.PonArchivoEscena(formData)
-              .subscribe(() => console.log('Imagen cargado'));
+              .subscribe(() => {});
             }
             Swal.fire("Editada","Escena editada con éxito",'success');
             this.cambios = false;
             this.changed =true;
           } else {
             Swal.fire("Error","No se ha podido editar la escena",'error');
-            console.log('fallo editando');
           }
         },error=>{
           Swal.fire("Error","Inserte imagen y archivo",'error');
@@ -169,7 +157,6 @@ export class EditarEscenaDialogComponent implements OnInit {
     
  }
 
-   // Activa la función ExaminarImagenCromo
 ActivarInputImagenEscena() {
     document.getElementById('inputEscenaImagen').click();
 }
@@ -178,12 +165,10 @@ ActivarInputEscenaArchivo() {
     document.getElementById('inputEscenaArchivo').click();
 }
 
-  // Buscaremos la imagen en nuestro ordenador y después se mostrará en el form con la variable "imagen" y guarda el
-  // nombre de la foto en la variable nombreImagen
+
 ExaminarImagenEscena($event) {
   this.fileImagenEscena = $event.target.files[0];
 
-  console.log('fichero ' + this.fileImagenEscena.name);
 
 
   const reader = new FileReader();
@@ -195,9 +180,8 @@ ExaminarImagenEscena($event) {
       
     this.nombreImagenEscenaAntigua=this.nombreImagenEscenaNueva;
     this.nombreImagenEscenaNueva = timestamp+this.profesorId+ this.fileImagenEscena.name;
-    console.log('ya Escena');
+
     this.imagenEscenaCargada= true;
-    // this.imagenCargadoCromo = true;
     this.imagenEscena = reader.result.toString();
     this.cambios=true;
   };
@@ -205,11 +189,8 @@ ExaminarImagenEscena($event) {
 }
   
 ExaminarArchivoEscena($event) {
-    this.fileArchivoEscena = $event.target.files[0];
+  this.fileArchivoEscena = $event.target.files[0];
   
-  console.log('fichero ' + this.fileArchivoEscena.name);
-
-
   const fileInfo = $event.target.files[0];
   const reader = new FileReader();
   reader.readAsText(fileInfo, 'ISO-8859-1');
@@ -228,7 +209,6 @@ ExaminarArchivoEscena($event) {
     }catch{
       Swal.fire('Archivo JSON no válido','Prueba a subir otro archivo o corregir el existente', 'error')
       this.fileArchivoEscena = undefined;
-      //this.nombreArchivoEscenaNuevo = this.nombreArchivoEscenaAntiguo;
     }
   }
   $event.target.value="";

@@ -27,16 +27,12 @@ export class CrearObjetosComponent implements OnInit {
   selectedType: string;
   
   
-  // CREAR ESCENARIO
   nombreObjeto: string;
   ObjetoCreado: ObjetoEscaperoom;
   prueba: EscenaEscaperoom;
   
-  // CREAR ESCENA
   imagenObjeto: string;
-  // tslint:disable-next-line:ban-types
   
-  // COMPARTIDO
   profesorId: number;
   
   nombreImagenObjeto: string;
@@ -45,8 +41,6 @@ export class CrearObjetosComponent implements OnInit {
   // tslint:disable-next-line:ban-types
   imagenCargadaObjeto: Boolean = false;
   
-  
-  // PONEMOS LAS COLUMNAS DE LA TABLA Y LA LISTA QUE TENDRÁ LA INFORMACIÓN QUE QUEREMOS MOSTRAR
 
   
   constructor(
@@ -60,8 +54,6 @@ export class CrearObjetosComponent implements OnInit {
   
   ngOnInit() {
   
-    // REALMENTE LA APP FUNCIONARÁ COGIENDO AL PROFESOR DEL SERVICIO, NO OBSTANTE AHORA LO RECOGEMOS DE LA URL
-    // this.profesorId = this.profesorService.RecibirProfesorIdDelServicio();
     this.profesorId = this.sesion.DameProfesor().id;
   
     // Constructor myForm
@@ -71,10 +63,7 @@ export class CrearObjetosComponent implements OnInit {
   }
   
   DatosObjeto(){
-    this.nombreObjeto=this.myForm.value.nombreObjeto;
-  
-    console.log(this.selectedType);
-  
+    this.nombreObjeto=this.myForm.value.nombreObjeto;  
   }
 
 /*
@@ -97,7 +86,6 @@ export class CrearObjetosComponent implements OnInit {
   }
   */
   
-  // Creamos un escenario dandole un nombre y una descripcion
   CrearObjeto() {
 
     /*
@@ -108,21 +96,18 @@ export class CrearObjetosComponent implements OnInit {
         this.peticionesAPI.PonObjetoEscaperoom(new ObjetoEscaperoom(this.nombreObjeto,this.nombreImagenObjeto), this.profesorId)
       .subscribe((res) => {
         if (res != null) {
-          console.log ('OBJETO CREADO: ' + res.id );
-          console.log(res);
           if (this.imagenObjeto !== undefined) {
     
             // Hacemos el POST de la nueva imagen en la base de datos recogida de la función ExaminarImagenCromo
             const formData: FormData = new FormData();
             formData.append(this.nombreImagenObjeto, this.fileImagenObjeto,this.nombreImagenObjeto);
             this.peticionesAPI.PonImagenObjeto(formData)
-            .subscribe(() => console.log('Imagen cargada'));
+            .subscribe(() => {});
           }        
           this.LimpiarCampos();
           this.stepper.previous();
           Swal.fire('Creado',"Objeto creado con éxito",'success');
         } else {
-          console.log('Fallo en la creación');
           Swal.fire('Error',"Fallo creando el objeto",'error');
         }
       },(error)=>{      
@@ -139,10 +124,7 @@ export class CrearObjetosComponent implements OnInit {
     
   }
   
-  
-  // Activa la función ExaminarImagenCromoDelante
   ActivarInputImagenObjeto() {
-    console.log('Activar input');
     document.getElementById('inputObjetoImagen').click();
   }
   
@@ -153,7 +135,6 @@ export class CrearObjetosComponent implements OnInit {
   ExaminarImagenObjeto($event) {
     this.fileImagenObjeto = $event.target.files[0];
   
-    console.log('fichero ' + this.fileImagenObjeto.name);
   
     const reader = new FileReader();
     reader.readAsDataURL(this.fileImagenObjeto);
@@ -163,16 +144,14 @@ export class CrearObjetosComponent implements OnInit {
         +(date.getHours()).toString()+(date.getMinutes()).toString()+(date.getSeconds()).toString()+(date.getMilliseconds()).toString();
         
       this.nombreImagenObjeto = timestamp+this.profesorId+this.fileImagenObjeto.name;
-      console.log('ya Escena');
       this.imagenCargadaObjeto= true;
-      // this.imagenCargadoCromo = true;
       this.imagenObjeto = reader.result.toString();
     };
     $event.target.value="";
   }
 
   
-  // Limpiamos los campos del cromo
+  // Limpiamos los campos 
   LimpiarCampos() {
       this.nombreObjeto = undefined;
       this.imagenObjeto=undefined;
@@ -192,7 +171,7 @@ export class CrearObjetosComponent implements OnInit {
       // Al darle al botón de finalizar limpiamos el formulario y reseteamos el stepper
       this.myForm.reset();
       this.stepper.reset();
-      // Tambien limpiamos las variables utilizadas para crear el nueva coleccion, por si queremos crear otra.
+      
       this.LimpiarCampos()
       Swal.fire('objeto creado con éxito', '', 'success');
       this.router.navigate(['/inicio/' + this.profesorId]);

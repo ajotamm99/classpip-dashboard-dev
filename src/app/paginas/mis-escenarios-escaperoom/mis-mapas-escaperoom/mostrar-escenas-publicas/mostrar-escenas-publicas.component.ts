@@ -44,8 +44,6 @@ export class MostrarEscenasPublicasComponent implements OnInit {
     this.EscenasdeEscenario = this.sesion.DameEscenasdeEscenario();
     this.nombreEscenario = this.EscenarioEscaperoom.Nombre;
     this.descripcionEscenario = this.EscenarioEscaperoom.Descripcion;
-    console.log ('escenas');
-    console.log (this.EscenasdeEscenario);
     this.TraeArchivosEscenas();
   }
 

@@ -2829,7 +2829,7 @@
                 <br>
                 <div class="btnCambiarStep">
                   <button type="button" class="btn Back" (click)="VolverAtrasPreguntas()" matStepperPrevious>Atrás</button>
-                  <button [disabled]="!tengoRequisitosObjetosConPreguntas" type="button" class="btn Next" (click)="CrearPreguntasActivas(); CrearObjetosActivos()"
+                  <button [disabled]="!tengoRequisitosObjetosConPreguntas" type="button" class="btn Next"
                     matStepperNext>Siguiente</button>
                 </div>
               </mat-step>
@@ -2842,7 +2842,7 @@
                 </ng-template>
 
                 <div class="btnCambiarStep">
-                  <button type="button" class="btn Back" (click)="BorrarObjetosYPreguntasActivas()" matStepperPrevious>Atrás</button>
+                  <button type="button" class="btn Back" matStepperPrevious>Atrás</button>
                   <button style="width: 60%" type="button" class="btn Aceptar"
                     (click)="CrearJuegoEscaperoom()">Crear juego de escaperoom</button>
                 </div>

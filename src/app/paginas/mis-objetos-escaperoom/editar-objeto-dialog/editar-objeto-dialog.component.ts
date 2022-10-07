@@ -64,11 +64,7 @@ export class EditarObjetoDialogComponent implements OnInit {
     this.ObjetoEscaperoom = this.data.objeto;
     this.nombreObjeto = this.data.objeto.Nombre;
     this.nombreImagenObjetoNueva= this.data.objeto.Imagen;
-    this.imagenObjetoAntigua = URL.ImagenesObjetos + this.nombreImagenObjetoNueva;
-    // this.opcionSeleccionadaProbabilidad = this.cromo.Probabilidad;
-    console.log(this.ObjetoEscaperoom);
-    //this.select.value=(this.types.find(tp=>tp.id==this.tipoObjeto).id);
-    //document.getElementById('select').value=(this.types.find(tp=> tp.id==this.tipoObjeto).id);   
+    this.imagenObjetoAntigua = URL.ImagenesObjetos + this.nombreImagenObjetoNueva;  
   }
  /*
   ComprobarImagenesObjeto(comprobar: String, objId:number){
@@ -107,7 +103,6 @@ export class EditarObjetoDialogComponent implements OnInit {
           if (res != null) {
             this.ObjetoEscaperoom = res;
             if (this.imagenObjetoCargada === true) {
-              console.log ('Nueva imagen'); 
               var cont=0;
               for(let i=0; i<this.ObjetosEscaperoom.length; i++ ){
                 if(this.ObjetosEscaperoom[i].Imagen ==this.nombreImagenObjetoAntigua){
@@ -122,7 +117,7 @@ export class EditarObjetoDialogComponent implements OnInit {
               const formData: FormData = new FormData();
               formData.append(this.nombreImagenObjetoNueva, this.fileImagenObjeto,this.nombreImagenObjetoNueva);
               this.peticionesAPI.PonImagenObjeto(formData)
-              .subscribe(() => console.log('Imagen cargado'));
+              .subscribe(() => {});
               this.imagenObjetoAntigua=this.imagenObjeto;
               this.imagenObjetoCargada=false;
             }            
@@ -131,7 +126,6 @@ export class EditarObjetoDialogComponent implements OnInit {
             this.changed=true;
           } else {            
             Swal.fire("Error","No se ha podido editar el objeto",'error');
-            console.log('fallo editando');
           }
         });
         /*
@@ -145,17 +139,13 @@ export class EditarObjetoDialogComponent implements OnInit {
     */
  }
 
-   // Activa la función ExaminarImagenCromo
 ActivarInputImagenObjeto() {
     document.getElementById('inputObjetoImagen').click();
 }
 
-  // Buscaremos la imagen en nuestro ordenador y después se mostrará en el form con la variable "imagen" y guarda el
-  // nombre de la foto en la variable nombreImagen
 ExaminarImagenObjeto($event) {
   this.fileImagenObjeto = $event.target.files[0];
 
-  console.log('fichero ' + this.fileImagenObjeto.name);
 
   const reader = new FileReader();
   reader.readAsDataURL(this.fileImagenObjeto);
@@ -168,10 +158,8 @@ ExaminarImagenObjeto($event) {
     this.nombreImagenObjetoAntigua=this.nombreImagenObjetoNueva;
     this.nombreImagenObjetoNueva = timestamp+this.profesorId+this.fileImagenObjeto.name;
   
-    console.log('ya objeto');
     this.imagenObjetoCargada= true;
     this.cambios=true;
-    // this.imagenCargadoCromo = true;
     this.imagenObjeto = reader.result.toString();
   };
   $event.target.value="";

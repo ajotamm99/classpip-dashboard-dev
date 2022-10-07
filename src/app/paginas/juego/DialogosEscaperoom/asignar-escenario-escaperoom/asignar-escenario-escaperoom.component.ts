@@ -75,7 +75,6 @@ export class AsignarEscenarioEscaperoomComponent implements OnInit {
       
     })
     promisee.then(()=>{
-      console.log("tengo escenarios", this.misEscenarios, this.escenariosPublicos);
       this.FiltrarEscenarios();
     })
 
@@ -127,7 +126,6 @@ export class AsignarEscenarioEscaperoomComponent implements OnInit {
     let escenarioSeleccionado;
     this.dataSourceMisEscenarios.data.forEach ( row => {
       if (this.selection.isSelected(row)) {
-        console.log ('hemos elegido ', row);
         escenarioSeleccionado = row;
 
       }

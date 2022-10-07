@@ -59,9 +59,6 @@ export class EditarSkinDialogComponent implements OnInit {
     this.nombreSkin = this.data.skin.Nombre;
     this.nombreImageSkinNueva= this.data.skin.Spritesheet;
     this.imagenSkinAntigua= URL.ImagenesSkins+this.nombreImageSkinNueva;
-    console.log(this.skinEscaperoom);
-    // Cargo el imagen del cromo
-    //this.TraeArchivosEscenas();
   }
  /*
   ComprobarImagenesSkins(comprobar: String,skinId:number){
@@ -98,14 +95,9 @@ export class EditarSkinDialogComponent implements OnInit {
         .subscribe((res) => {
           if (res != null) {
             this.skinEscaperoom = res;
-            // this.cromosEditados.push (res);
-            // console.log('nombre del cromo + nivel' + this.cromosEditados[0].Nombre + this.cromosEditados[0].Nivel);
-            if (this.imagenSkinCargada === true) {
+           if (this.imagenSkinCargada === true) {
               // HACEMOS EL POST DE LA NUEVA IMAGEN EN LA BASE DE DATOS
-              console.log ('Nueva imagen');
               var cont=0;
-              //var search = this.skinsEscaperoom.find(sk=> sk.id== this.skinEscaperoom.id)[0];
-              //var index = this.skinsEscaperoom.indexOf(search);
               for(let i=0; i<this.skinsEscaperoom.length; i++ ){
                 if(this.skinsEscaperoom[i].Spritesheet ==this.nombreImagenSkinAntigua){
                   cont++;
@@ -118,7 +110,7 @@ export class EditarSkinDialogComponent implements OnInit {
               const formData: FormData = new FormData();
               formData.append(this.nombreImageSkinNueva, this.fileImagenSkin, this.nombreImageSkinNueva);
               this.peticionesAPI.PonImagenSkin(formData)
-              .subscribe(() => console.log('Imagen cargado'));
+              .subscribe(() => {});
               this.imagenSkinAntigua=this.imagenSkin;
               this.imagenSkinCargada=false;
             }
@@ -128,7 +120,6 @@ export class EditarSkinDialogComponent implements OnInit {
           } else {
             
             Swal.fire("Error","No se ha podido editar la skin",'error');
-            console.log('fallo editando');
           }
         });
         /*
@@ -141,18 +132,12 @@ export class EditarSkinDialogComponent implements OnInit {
     */
  }
 
-   // Activa la función ExaminarImagenCromo
 ActivarInputImagenSkin() {
     document.getElementById('inputSkinImagen').click();
 }
 
-  // Buscaremos la imagen en nuestro ordenador y después se mostrará en el form con la variable "imagen" y guarda el
-  // nombre de la foto en la variable nombreImagen
 ExaminarImagenSkin($event) {
   this.fileImagenSkin = $event.target.files[0];
-
-  console.log('fichero ' + this.fileImagenSkin.name);
-
 
   const reader = new FileReader();
   reader.readAsDataURL(this.fileImagenSkin);
@@ -161,12 +146,10 @@ ExaminarImagenSkin($event) {
     var timestamp= (date.getFullYear()).toString()+(date.getMonth()).toString()+(date.getDay()).toString()
       +(date.getHours()).toString()+(date.getMinutes()).toString()+(date.getSeconds()).toString()+(date.getMilliseconds()).toString();
       
-    console.log('ya Escena');
     this.nombreImagenSkinAntigua=this.nombreImageSkinNueva;
     this.nombreImageSkinNueva = timestamp+this.profesorId+this.fileImagenSkin.name;
     this.imagenSkinCargada= true;
     this.cambios=true;
-    // this.imagenCargadoCromo = true;
     this.imagenSkin = reader.result.toString();
   };
   $event.target.value="";

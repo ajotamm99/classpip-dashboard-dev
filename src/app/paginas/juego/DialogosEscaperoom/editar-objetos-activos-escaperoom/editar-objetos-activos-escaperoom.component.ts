@@ -93,7 +93,6 @@ export class EditarObjetosActivosEscaperoomComponent implements OnInit {
         this.changed=true;
         this.tengoObjeto=false;
         this.objetoAgregado= ({IdObjetoAct:this.idObjeto, Nombre:this.nombreObjeto, IdObjetoEscenaAct:this.escenaDelObjeto.IdEscenaAct, OrdenEscenaAct: this.escenaDelObjeto.Orden, Pregunta:this.tengoPregunta, Pista: this.tengoPista, Movil:this.tengoMovil, PistaString:this.pistaString, EsRequisito: this.tengoRequisito});
-        console.log(this.objetoAgregado);
         Swal.fire("Escena añadida", "La escena se ha añadido con éxito", 'success');
       }else{
         Swal.fire("Error", "No has insertado ninguna pista", 'error');
@@ -104,7 +103,6 @@ export class EditarObjetosActivosEscaperoomComponent implements OnInit {
       this.changed=true;
       this.tengoObjeto=false;
       this.objetoAgregado= ({IdObjetoAct:this.idObjeto,Nombre:this.nombreObjeto, IdObjetoEscenaAct:this.escenaDelObjeto.IdEscenaAct, OrdenEscenaAct: this.escenaDelObjeto.Orden, Pregunta:this.tengoPregunta, Pista: this.tengoPista, Movil:this.tengoMovil, EsRequisito: this.tengoRequisito});
-      console.log(this.objetoAgregado);
       Swal.fire("Escena añadida", "La escena se ha añadido con éxito", 'success');
     }
 

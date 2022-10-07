@@ -105,10 +105,8 @@ export class AsignarEscenasEscaperoomComponent implements OnInit {
       this.selection.select(row);
       this.dataSourceEscenasDeEscenario.data.forEach ( row => {
         if (this.selection.isSelected(row)) {
-          console.log ('hemos elegido ', row);
           this.escenaAgregada = row;
           this.imagenEscena= URL.ImagenesEscenas + this.escenaAgregada.Tilesheet;
-          console.log(row);          
           this.tengoEscena=true;
         }
       });
@@ -121,14 +119,12 @@ export class AsignarEscenasEscaperoomComponent implements OnInit {
       this.changed=true;
       this.tengoEscena=false;
       this.escenaActiva= new EscenaActiva(this.escenaAgregada.escenarioEscapeRoomId, this.escenaAgregada.id, this.orden, this.TiempoLimite, this.TipoRequisito, this.RequisitoPuntos);
-      console.log(this.escenaActiva);
       Swal.fire("Escena añadida", "La escena se ha añadido con éxito", 'success');
     }else if(this.TipoRequisito=='objeto' && this.tengoTiempoLimite && this.tengoOrdenEscenas){
       this.selection.clear();
       this.changed=true;
       this.tengoEscena=false;
       this.escenaActiva= new EscenaActiva(this.escenaAgregada.escenarioEscapeRoomId, this.escenaAgregada.id, this.orden, this.TiempoLimite, this.TipoRequisito);
-      console.log(this.escenaActiva);
       Swal.fire("Escena añadida", "La escena se ha añadido con éxito", 'success');
     }else{
       Swal.fire("Error", "Completa todos los campos de la escena", 'error');
@@ -137,7 +133,6 @@ export class AsignarEscenasEscaperoomComponent implements OnInit {
   }
 
   TengoTiempoLimiteEscena(){
-    console.log(this.tengoTiempoLimite);
     if(!isNaN(+this.TiempoLimiteEscena)){
       this.tengoTiempoLimite=true;
       this.TiempoLimite= +this.TiempoLimiteEscena;
@@ -148,7 +143,6 @@ export class AsignarEscenasEscaperoomComponent implements OnInit {
   }
 
   TengoPuntosEscena(){
-    console.log(this.tengoRequisitoPuntos);
     if(!isNaN(+this.RequisitoPuntosEscena)){
       this.tengoRequisitoPuntos=true;
       this.RequisitoPuntos= +this.RequisitoPuntosEscena;
@@ -159,7 +153,6 @@ export class AsignarEscenasEscaperoomComponent implements OnInit {
   }
 
   TengoOrdenEscena(){
-    console.log(this.tengoOrdenEscenas);
     if(!isNaN(+this.ordenEscena)){
       if(+this.ordenEscena>(this.numeroEscenas+1) || +this.ordenEscena<=0){
         this.ordenEscena= (this.numeroEscenas+1).toString();
@@ -177,7 +170,6 @@ export class AsignarEscenasEscaperoomComponent implements OnInit {
   }
 
   AsignarTipo(){
-    console.log(this.TipoRequisito, this.tengoRequisitoPuntos);
     if(this.TipoRequisito=='puntos'){
       this.tengoTipoPuntos=true;
     }else{

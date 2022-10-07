@@ -32,9 +32,7 @@ export class MisSkinsEscaperoomComponent implements OnInit {
   dataSource;
   dataSourcePublicas;
 
-  // PARA DIÁLOGO DE CONFIRMACIÓN
   // tslint:disable-next-line:no-inferrable-types
-  mensaje: string = 'Estás seguro/a de que quieres eliminar el equipo llamado: ';
   displayedColumns: string[] = ['nombre', 'iconos'];
   //displayedColumns: string[] = ['nombre', 'edit', 'delete', 'copy', 'publica'];
   displayedColumnsPublica: string[] = ['nombre', 'iconos'];
@@ -48,9 +46,6 @@ export class MisSkinsEscaperoomComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
-    // REALMENTE LA APP FUNCIONARÁ COGIENDO AL PROFESOR DEL SERVICIO, NO OBSTANTE AHORA LO RECOGEMOS DE LA URL
-    // this.profesorId = this.profesorService.RecibirProfesorIdDelServicio();
     this.profesorId = this.sesion.DameProfesor().id;
 
     this.TraeSkinsDelProfesor();
@@ -63,12 +58,9 @@ export class MisSkinsEscaperoomComponent implements OnInit {
     this.peticionesAPI.DameSkinsEscaperoomDelProfesor(this.profesorId)
     .subscribe(skins => {
       if (skins[0] !== undefined) {
-        console.log('Voy a dar la lista');
         this.SkinsEscaperoom = skins;
-        console.log(this.SkinsEscaperoom);
         this.sesion.TomaSkisnEscaperoom(this.SkinsEscaperoom);
         this.dataSource = new MatTableDataSource(this.SkinsEscaperoom);
-        // this.profesorService.EnviarProfesorIdAlServicio(this.profesorId);
       } else {
         this.SkinsEscaperoom = undefined;
       }
@@ -141,18 +133,14 @@ VerSkinDialog(SkinEscaperoom: Skin) {
   const dialogRef = this.dialog.open(EditarSkinDialogComponent, {
     width: '900px',
     maxHeight: '600px',
-    // Le pasamos solo los id del grupo y profesor ya que es lo único que hace falta para vincular los alumnos
     data: {
       skin: SkinEscaperoom,
     }
   });
 
-   // RECUPERAREMOS LA NUEVA LISTA DE LOS CROMO Y VOLVEREMOS A BUSCAR LOS CROMOS QUE TIENE LA COLECCION
-  dialogRef.afterClosed().subscribe(nuevaSkin => {
+   dialogRef.afterClosed().subscribe(nuevaSkin => {
     try{
-    console.log ('skin editado ' + nuevaSkin);
     if(nuevaSkin!=null){
-      //tslint:disable-next-line:prefer-for-of
       
       this.SkinsEscaperoom.splice(this.SkinsEscaperoom.findIndex(sk=> sk.id== nuevaSkin.id),1,nuevaSkin);
       this.SkinsEscaperoomPublicas.splice(this.SkinsEscaperoom.findIndex(sk=> sk.id== nuevaSkin.id),1,nuevaSkin);
@@ -163,9 +151,7 @@ VerSkinDialog(SkinEscaperoom: Skin) {
     }
   }catch{}
    });
-  //abrir dialog
-  //this.router.navigate(['/inicio/' + this.profesorId + '/recursos/misRecursosEscaperoom/misObjetos']);
-
+  
 }
 
 
@@ -175,20 +161,14 @@ VerSkinPublicaDialog(skinEscaperoom: Skin) {
   const dialogRef = this.dialog.open(MostrarSkinsPublicasComponent, {
     width: '900px',
     maxHeight: '600px',
-    // Le pasamos solo los id del grupo y profesor ya que es lo único que hace falta para vincular los alumnos
-    data: {
+     data: {
       skin: skinEscaperoom,
     }
   });
 
-  //this.router.navigate(['/inicio/' + this.profesorId + '/recursos/misRecursosEscaperoom/misMapas/escenasPublicas']);
-
 }
-
-   // Utilizamos esta función para eliminar una colección de la base de datos y actualiza la lista de colecciones
 BorrarSkinEscaperoom(skinEscaperoom: Skin) {
 
-    console.log ('Vamos a eliminar la skin');
     this.peticionesAPI.BorrarSkinEscaperoom(skinEscaperoom.id).subscribe();
 
     var cont=0;
@@ -202,7 +182,6 @@ BorrarSkinEscaperoom(skinEscaperoom: Skin) {
     }          
 
 
-    console.log ('La saco de la lista');
     this.SkinsEscaperoom = this.SkinsEscaperoom.filter(sk => sk.id !== skinEscaperoom.id);
     this.SkinsEscaperoomPublicas = this.SkinsEscaperoomPublicas.filter(sk => sk.id !== skinEscaperoom.id);
     this.sesion.TomaSkisnEscaperoom(this.SkinsEscaperoom);
@@ -211,9 +190,7 @@ BorrarSkinEscaperoom(skinEscaperoom: Skin) {
 }
 
 
-  // Si queremos borrar un equipo, antes nos saldrá un aviso para confirmar la acción como medida de seguridad. Esto se
-  // hará mediante un diálogo al cual pasaremos el mensaje y el nombre del equipo
-  AbrirDialogoConfirmacionBorrarSkin(skinEscaperoom: Skin): void {
+   AbrirDialogoConfirmacionBorrarSkin(skinEscaperoom: Skin): void {
     Swal.fire({
       title: 'Eliminar',
       text: "Estas segura/o de que quieres eliminar la skin?: " + skinEscaperoom.Nombre,

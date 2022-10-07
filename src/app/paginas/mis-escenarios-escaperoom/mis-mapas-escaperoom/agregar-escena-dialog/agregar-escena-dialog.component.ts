@@ -27,7 +27,6 @@ EscenasAgregadasMostrar: EscenaEscaperoom[]=[];
 dataSourceMostrar;
 // tslint:disable-next-line:ban-types
 
-// COMPARTIDO
 
 nombreImagenEscena: string;
 nombreImagenEscenaMostrar: string;
@@ -91,13 +90,8 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
   }
   */
 
-  // Creamos una cromo y lo añadimos a la coleccion dandole un nombre, una probabilidad, un nivel y una imagen
   AgregarEscenaEscenario() {
 
-    console.log('Entro a asignar el cromo ' + this.nombreEscena);
-    console.log('Entro a asignar la escena al escenario' + this.EscenarioRecibido.id);
-    console.log(this.nombreImagenEscena );
-    console.log(this.nombreArchivoEscena );
     /*
     this.ComprobarImagenesyArchivosEscena(this.nombreImagenEscena,this.nombreArchivoEscena)
     .then(data=>{
@@ -109,17 +103,13 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
           new EscenaEscaperoom(this.nombreArchivoEscena, this.nombreImagenEscena, this.nombreEscena),this.EscenarioRecibido.id)
           .subscribe((res) => {
             if (res != null) {
-              console.log('asignado correctamente');
-              // Añadimos el cromo a la lista
               this.EscenasAgregadas.push(res);
               var Escena =new EscenaEscaperoom(this.nombreArchivoEscenaMostrar,this.nombreImagenEscenaMostrar,res.Nombre,res.escenarioEscapeRoomId);
               Escena.Publica=res.Publica;
               Escena.id=res.id;
               this.EscenasAgregadasMostrar.push(Escena);
               this.dataSourceMostrar= new MatTableDataSource(this.EscenasAgregadasMostrar);
-              //this.EscenasAgregadas = this.EscenasAgregadas.filter(result => result.Nombre !== '');
-              // this.CromosAgregados(res);
-      
+              
               // Hago el POST de la imagen de delante SOLO si hay algo cargado.
               if (this.imagenCargadaEscena === true && this.archivoCargadoEscena===true) {
       
@@ -128,19 +118,18 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
                 formData.append(this.nombreImagenEscena, this.fileImagenEscena,this.nombreImagenEscena);
                 this.peticionesAPI.PonImagenEscena(formData)
                 .subscribe(() => {
-                  console.log('Imagen cargada');
                   const formData: FormData = new FormData();
                   formData.append(this.nombreArchivoEscena, this.fileArchivoEscena,this.nombreArchivoEscena);
                   this.peticionesAPI.PonArchivoEscena(formData)
-                  .subscribe(() => 
-                    console.log('Archivo cargado'));
+                  .subscribe(() => {
                     Swal.fire("Agregada","La escena ha sido agregada con éxito",'success');
                     this.LimpiarCampos();
+                  })
+                  
                 });
               }
             } else {          
               Swal.fire("Error","La escena no se ha podido agregar",'error');
-              console.log('fallo en la asignación');
             }
           },error=>{
             Swal.fire("Error","Inserte imagen y archivo",'error');
@@ -159,16 +148,13 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
     */
   }
 
-  // Utilizamos esta función para eliminar un cromo de la base de datos y de la lista de añadidos recientemente
   BorrarEscena(escena: EscenaEscaperoom) {
-    console.log('Id cromo ' + escena.id);
     this.peticionesAPI.BorrarEscenaEscaperoom(escena.id)
     .subscribe(() => {
-      // Elimino el cromo de la lista
       this.EscenasAgregadas = this.EscenasAgregadas.filter(res => res.id !== escena.id);
       this.EscenasAgregadasMostrar = this.EscenasAgregadasMostrar.filter(res => res.id !== escena.id);
       this.dataSourceMostrar= new MatTableDataSource(this.EscenasAgregadasMostrar);
-      console.log('Cromo borrado correctamente');
+
       Swal.fire("Eliminada","Escena eliminada con éxito", 'success');
   
     });
@@ -180,9 +166,7 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
     }
   }
 
-
-   // Activa la función ExaminarImagenCromo
-   ActivarInputImagenEscena() {
+  ActivarInputImagenEscena() {
     document.getElementById('inputEscenaImagen').click();
   }
 
@@ -195,7 +179,6 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
   ExaminarImagenEscena($event) {
     this.fileImagenEscena = $event.target.files[0];
   
-    console.log('fichero ' + this.fileImagenEscena.name);
   
     const reader = new FileReader();
     reader.readAsDataURL(this.fileImagenEscena);
@@ -207,7 +190,7 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
       
     this.nombreImagenEscena = timestamp+this.profesorId+this.fileImagenEscena.name;
     this.nombreImagenEscenaMostrar=this.fileImagenEscena.name;
-      console.log('ya Escena');
+
       this.imagenCargadaEscena= true;
       // this.imagenCargadoCromo = true;
       this.imagenEscena = reader.result.toString();
@@ -217,8 +200,6 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
   ExaminarArchivoEscena($event) {
     this.fileArchivoEscena = $event.target.files[0];
   
-    
-    console.log('fichero ' + this.fileArchivoEscena.name);
   
     const fileInfo = $event.target.files[0];
     const reader = new FileReader();
@@ -242,7 +223,7 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
     }
   }
 
-  // Limpiamos los campos del cromo
+  // Limpiamos los campos
   LimpiarCampos() {
     this.nombreEscena = undefined;
     this.imagenEscena=undefined;
@@ -260,7 +241,6 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
     this.archivoCargadoEscena =false;
   }
 
-  // Al cerrar el dialogo retorno la lista de cromos que hay que agregar
   Cerrar() {
     this.dialogRef.close(this.EscenasAgregadas);
   }

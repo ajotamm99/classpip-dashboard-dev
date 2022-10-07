@@ -3175,6 +3175,14 @@ export class JuegoComponent implements OnInit {
 
     this.recursoElegido = undefined;
     this.tengoRecurso = false;
+
+    this.selectedMecanica=this.mecanicasEscaperoom[0].id;
+    this.tengoTiempoLimite=false;
+    this.VolverAtrasEscenas();
+    this.VolverAtrasObjetos();
+    this.VolverAtrasPreguntas();
+    this.objetosEscenasCreadas=[];
+    this.preguntasObjetosCreadas=[];
   }
 
 
@@ -3398,10 +3406,17 @@ export class JuegoComponent implements OnInit {
   }
 
   TengoTiempoLimiteEscaperoom(){
+    //Compruebo si el tiempo es un número válido
     if(!isNaN(+this.tiempoLimiteEscaperoom)){
+      if(+this.tiempoLimiteEscaperoom>0){
+        
       this.tengoTiempoLimite=true;
       this.tiempoLimiteEscaperoomNumber=+this.tiempoLimiteEscaperoom;
       this.tiempoRestante=+this.tiempoLimiteEscaperoom;
+      }else{        
+        this.tengoTiempoLimite=false;
+        this.tiempoLimiteEscaperoomNumber=undefined;
+      }
     }else{
       this.tengoTiempoLimite=false;
       this.tiempoLimiteEscaperoomNumber=undefined;
@@ -3409,9 +3424,10 @@ export class JuegoComponent implements OnInit {
   }
 
   RecibeEscenarioEscaperoom($event) {
+    //Recibo el escenario seleccionado de el componente asignar escenrario
     this.escenarioEscaperoomRecibido = $event;
     this.tengoEscenarioEscaperoom = true;
-    console.log ('he recibido escenario Escaperoom');
+    //Pido las escenas de este escenario
     this.DameEscenasEscenarioEscaperoom(this.escenarioEscaperoomRecibido);
   }
 
@@ -3421,7 +3437,6 @@ export class JuegoComponent implements OnInit {
       if(res.length>0){
         this.escenasEscenarioRecibidas= res;
         this.hayEscenas=true;
-        console.log(this.hayEscenas,res);
       }else{
         Swal.fire("Error","El escenario "+escenarioRecibido.Nombre+" no tiene escenas todavía", 'error');
         this.hayEscenas=false;
@@ -3437,6 +3452,7 @@ export class JuegoComponent implements OnInit {
   }
 
   AbrirDialogoAgregarEscena(){
+    //Paso las escenas a seleccionar y la cantidad actual de escenas añadidas para asignar el orden
     const dialogRef = this.dialog.open(AsignarEscenasEscaperoomComponent, {
       width: '900px',
       maxHeight: '600px',
@@ -3449,14 +3465,10 @@ export class JuegoComponent implements OnInit {
      // RECUPERAREMOS LA NUEVA LISTA DE LOS CROMO Y VOLVEREMOS A BUSCAR LOS CROMOS QUE TIENE LA COLECCION
     dialogRef.afterClosed().subscribe(escenaAgregada => {
       try{
-        console.log("1",this.escenasActivasRecibidas);
         if(escenaAgregada.EscenaAct!=null && escenaAgregada.EscenaAct!=undefined){
+          //Si recibo una escena aumento el número de escenas y la añado al vector 'user friendly' para mostrarla
           this.numeroEscenasActivas+=1;
-          console.log("escenas",this.escenasActivasRecibidas);
-          console.log ('volvemos de agregar escena ' + <EscenaActiva>escenaAgregada.EscenaAct);
-          // tslint:disable-next-line:prefer-for-of
           if(escenaAgregada.EscenaAct.orden == this.numeroEscenasActivas){
-            console.log("hola");
             this.escenasActivasRecibidas.push(escenaAgregada.EscenaAct);
             if(escenaAgregada.EscenaAct.TipoRequisito=='puntos'){
               this.escenasActivasMostrar.push({Nombre: escenaAgregada.Escena.Nombre, IdEscenaAct: escenaAgregada.Escena.id
@@ -3469,6 +3481,7 @@ export class JuegoComponent implements OnInit {
             }
   
           }else{
+            //Si añado un orden que ya existe tengo que modificar la escena que ya tuviera ese orden
             Swal.fire("Nuevo orden","La escena añadida tiene conflictos con el orden existente, se cambiarán de orden las escenas acorde a lo seleccionado",'warning');
             let index=this.escenasActivasRecibidas.findIndex(sc=>sc.orden==escenaAgregada.EscenaAct.orden);
             this.escenaModificar= this.escenasActivasRecibidas[index];
@@ -3528,6 +3541,7 @@ export class JuegoComponent implements OnInit {
 
     }).then((result) => {
       if (result.value) {
+        //borro escena y restablezco tiempos
         var ordenBuscar=escenaActiva.Orden;
 
         this.escenasActivasRecibidas= this.escenasActivasRecibidas.filter(sc=> sc.orden!=escenaActiva.Orden);
@@ -3564,23 +3578,19 @@ export class JuegoComponent implements OnInit {
       data:{
         escena: escenaActiva,
         numero: this.numeroEscenasActivas,
-        //idEscenario: this.escenasEscenarioRecibidas[this.escenasEscenarioRecibidas.findIndex(sc=>sc.id==+EscenaActiva.IdEscenaAct)].escenarioEscapeRoomId,
         imagen: this.escenasEscenarioRecibidas[this.escenasEscenarioRecibidas.findIndex(sc=>sc.id==+escenaActiva.IdEscenaAct)].Tilesheet
       }
     });
-    console.log(this.escenasActivasMostrar);
-    console.log(this.escenasActivasRecibidas);
-     // RECUPERAREMOS LA NUEVA LISTA DE LOS CROMO Y VOLVEREMOS A BUSCAR LOS CROMOS QUE TIENE LA COLECCION
     dialogRef.afterClosed().subscribe(escenaAgregada => {
       try{
         if(escenaAgregada!=null){
-          console.log(<EscenasActMostrar>escenaAgregada);
           let ordenAgregada= escenaAgregada.Orden;
+
+          //edito las escenas dependiendo de si se ha cambiado el orden y si su requisito es de puntos u objetos
           if(escenaActiva.Orden==escenaAgregada.Orden){
 
             if(escenaAgregada.Requisito=='puntos'){
               
-              console.log("edito con mismo orden y tipo puntos");
               let index=this.escenasActivasRecibidas.findIndex(sc=>sc.orden==escenaAgregada.Orden);
               let escenaMod= this.escenasActivasRecibidas[index];
               escenaMod.TiempoLimite= escenaAgregada.TiempoLimite;
@@ -3590,10 +3600,7 @@ export class JuegoComponent implements OnInit {
               this.escenasActivasMostrar.splice(this.escenasActivasMostrar.findIndex(sc=>sc.Orden==escenaAgregada.Orden),1,escenaAgregada)
               this.dataSourceEscenas= new MatTableDataSource(this.escenasActivasMostrar);           
               
-              console.log("2",this.escenasActivasMostrar);
-              console.log("2r",this.escenasActivasRecibidas);
             }else{
-              console.log("edito con mismo orden y tipo objeto");
               let index=this.escenasActivasRecibidas.findIndex(sc=>sc.orden==escenaAgregada.Orden);
               let escenaMod= this.escenasActivasRecibidas[index];
               escenaMod.TiempoLimite= escenaAgregada.TiempoLimite;
@@ -3604,8 +3611,6 @@ export class JuegoComponent implements OnInit {
               
               this.dataSourceEscenas= new MatTableDataSource(this.escenasActivasMostrar);
               
-              console.log("2",this.escenasActivasMostrar);
-              console.log("2r",this.escenasActivasRecibidas);
             }
             
           }else{
@@ -3625,7 +3630,6 @@ export class JuegoComponent implements OnInit {
                   this.escenasActivasMostrar[indexMostrar2]=escenaMostrarModificar2;
                   this.escenasActivasMostrar.sort((a, b)=>a.Orden - b.Orden);
                 
-                  console.log(this.escenasActivasMostrar);
                   this.dataSourceEscenas= new MatTableDataSource(this.escenasActivasMostrar);
               
                   //EscenasActRecibidas
@@ -3642,7 +3646,6 @@ export class JuegoComponent implements OnInit {
                   this.escenaModificar2.orden= ordenEscenaActiva;         
                   this.escenasActivasRecibidas[index2]=this.escenaModificar2;
                   this.escenasActivasRecibidas.sort((a, b)=>a.orden - b.orden);
-                  console.log(this.escenasActivasRecibidas);
               }else{
                               
                 let indexMostrar2=this.escenasActivasMostrar.findIndex(sc=>sc.Orden==escenaAgregada.Orden);        
@@ -3661,7 +3664,6 @@ export class JuegoComponent implements OnInit {
                 this.escenasActivasMostrar.sort((a, b)=>a.Orden - b.Orden);
 
               
-                console.log(this.escenasActivasMostrar);
                 this.dataSourceEscenas= new MatTableDataSource(this.escenasActivasMostrar);
             
                 //EscenasActRecibidas
@@ -3699,7 +3701,6 @@ export class JuegoComponent implements OnInit {
                 this.escenasActivasMostrar[indexMostrar2]=escenaMostrarModificar2;
                 this.escenasActivasMostrar.sort((a, b)=>a.Orden - b.Orden);
               
-                console.log(this.escenasActivasMostrar);
                 this.dataSourceEscenas= new MatTableDataSource(this.escenasActivasMostrar);
             
                 //EscenasActRecibidas
@@ -3715,7 +3716,6 @@ export class JuegoComponent implements OnInit {
                 this.escenaModificar2.orden= ordenEscenaActiva;         
                 this.escenasActivasRecibidas[index2]=this.escenaModificar2;
                 this.escenasActivasRecibidas.sort((a, b)=>a.orden - b.orden);
-                console.log(this.escenasActivasRecibidas);
             }else{
                             
               let indexMostrar2=this.escenasActivasMostrar.findIndex(sc=>sc.Orden==escenaAgregada.Orden);        
@@ -3733,7 +3733,6 @@ export class JuegoComponent implements OnInit {
               this.escenasActivasMostrar.sort((a, b)=>a.Orden - b.Orden);
 
             
-              console.log(this.escenasActivasMostrar);
               this.dataSourceEscenas= new MatTableDataSource(this.escenasActivasMostrar);
           
               //EscenasActRecibidas
@@ -3769,6 +3768,7 @@ export class JuegoComponent implements OnInit {
   }
 
   CrearRequisitos(){
+    //Creo los requisitos de las escenasActivas
     for(let i=0; i<this.escenasActivasMostrar.length; i++){
       if(this.escenasActivasMostrar[i].Requisito=="puntos"){        
         this.requisitosEscenas.push({Requisito: this.escenasActivasMostrar[i].Requisito, OrdenEscena: this.escenasActivasMostrar[i].Orden, PuntosRequisito: +this.escenasActivasMostrar[i].Puntosrequisito, Cumplidos:false })
@@ -3778,6 +3778,7 @@ export class JuegoComponent implements OnInit {
         this.tengoRequisitosObjetos=false;
       }
     }
+    //guardo los objetos públicos y del profesor
     this.DameObjetosPublicosYDelProfesor();
   }
 
@@ -3819,13 +3820,13 @@ export class JuegoComponent implements OnInit {
       
     })
     promisee.then(()=>{
-      console.log("tengo objetos", this.objetosMostrar, this.objetosPublicos);
       this.FiltrarObjetos();
     })
 
   }
 
   FiltrarObjetos(){
+    //Añado al vector principal los objetos públicos que no están duplicados en los del profesor
     if(this.objetosMostrar!=undefined && this.objetosPublicos!=undefined){
       for(let i=0; i<this.objetosPublicos.length; i++){
         var found=false;
@@ -3856,9 +3857,7 @@ export class JuegoComponent implements OnInit {
       this.selection.select(row);
       this.dataSourceEscenas.data.forEach ( row => {
         if (this.selection.isSelected(row)) {
-          console.log ('hemos elegido ', row);
           this.escenaObjetoSeleccionada = row;
-          console.log(row);          
           this.escenaSeleccionada=true;
           this.FiltrarObjetosEscena(row);
         }
@@ -3867,6 +3866,7 @@ export class JuegoComponent implements OnInit {
   }
 
   FiltrarObjetosEscena(escena: EscenasActMostrar){
+    //Filtrar objetos segun el orden de la escena
     let objetosEscena=this.objetosEscenasMostrar.filter(obj=> obj.OrdenEscenaAct ==escena.Orden);
     if (objetosEscena.length>0){
       this.dataSourceObjetosEscena= new MatTableDataSource(objetosEscena);
@@ -3886,12 +3886,10 @@ export class JuegoComponent implements OnInit {
       }
     });
 
-    // RECUPERAREMOS LA NUEVA LISTA DE LOS CROMO Y VOLVEREMOS A BUSCAR LOS CROMOS QUE TIENE LA COLECCION
     dialogRef.afterClosed().subscribe(objetoAgregado => {
       try{
         if(objetoAgregado!=null && objetoAgregado!=undefined){
           if(this.objetosEscenasMostrar.find(obj=> obj==objetoAgregado)==undefined){
-            console.log(objetoAgregado);
             this.objetosEscenasMostrar.push(objetoAgregado);
             this.tengoObjetosEscena=true;
             this.FiltrarObjetosEscena(this.escenaObjetoSeleccionada);
@@ -3921,7 +3919,6 @@ export class JuegoComponent implements OnInit {
       try{
         if(objetoAgregado!=null && objetoAgregado!=undefined){
           if(this.objetosEscenasMostrar.find(obj=> obj==objetoAgregado)==undefined){
-            console.log(objetoAgregado);
             this.objetosEscenasMostrar=this.objetosEscenasMostrar.filter(obj=>obj!=objetoActivo);
             this.objetosEscenasMostrar.push(objetoAgregado);
             this.tengoObjetosEscena=true;
@@ -3963,7 +3960,7 @@ export class JuegoComponent implements OnInit {
   }
 
   ConfirmarRequisitosObjetos(){
-    console.log(this.objetosEscenasMostrar,this.requisitosEscenas);    
+    //Compruebo que los requisitos de objeto se cumplen 
     var contObj=0;    
     var contObjCumplido=0;
     for(let i=0; i<this.requisitosEscenas.length;i++){
@@ -3991,8 +3988,8 @@ export class JuegoComponent implements OnInit {
     }
   }
 
-  ConfirmarHayObjetosPuntos(){
-    console.log(this.objetosEscenasMostrar,this.requisitosEscenas);    
+  ConfirmarHayObjetosPuntos(){ 
+    //Compruebo que hay objetos que requieren de prguntas con puntos
     var contEscen=0;    
     var contEscCumplido=0;
     for(let i=0; i<this.requisitosEscenas.length;i++){
@@ -4012,6 +4009,7 @@ export class JuegoComponent implements OnInit {
   }
 
   DameObjetosConPreguntas(){
+    //Añado los objetos a un vector 'user friendly' para mostrarlos 
     this.objetosConPreguntas=this.objetosEscenasMostrar.filter(obj=> obj.Pregunta==true);
     if(this.objetosConPreguntas!=undefined && this.objetosConPreguntas.length>0){
       for(let i=0; i<this.objetosConPreguntas.length;i++){
@@ -4044,6 +4042,7 @@ export class JuegoComponent implements OnInit {
   }
 
   CreaTablaRequisitosPreguntas(){      
+    //Creo una tabla de requisitos segun la escena y los puntos requeridos
     for(let i=0; i<this.requisitosEscenas.length;i++){
       if(this.requisitosEscenas[i].Requisito=='puntos'){       
           this.requisitosEscenasPuntos.push({Requisito: this.requisitosEscenas[i].Requisito, 
@@ -4107,7 +4106,6 @@ export class JuegoComponent implements OnInit {
     dialogRef.afterClosed().subscribe(preguntaAgregada => {
       try{
         if(preguntaAgregada!=null && preguntaAgregada!=undefined){
-            console.log(preguntaAgregada);
             this.objetosMostrarConPreguntas.splice(this.objetosMostrarConPreguntas.indexOf(objeto),1,preguntaAgregada)
             this.dataSourceObjetosConPreguntas = new MatTableDataSource(this.objetosMostrarConPreguntas);
             this.requisitosEscenasPuntos[this.requisitosEscenasPuntos.findIndex(req=> req.OrdenEscena == ordenEscena)].PuntosActuales+=preguntaAgregada.Sumar;
@@ -4149,6 +4147,7 @@ export class JuegoComponent implements OnInit {
   }
 
   ConfirmarRequisitosPuntosPreguntas(){
+    //Cada vez que hay un cambio confirmo que los requisitos se hayan cumplido antes de pasar al siguiente paso
     var cont=0;
     for(let i=0;i<this.requisitosEscenasPuntos.length;i++){
       if(this.requisitosEscenasPuntos[i].PuntosActuales>=this.requisitosEscenasPuntos[i].PuntosRequisito){
@@ -4162,6 +4161,7 @@ export class JuegoComponent implements OnInit {
     }
   }
 
+  //Funciones para limpiar campos y poder volver atrás
   VolverAtrasPreguntas(){    
     this.tengoObjetosConPreguntas=false;
     this.tengoRequisitosObjetosConPreguntas=false;
@@ -4206,44 +4206,6 @@ export class JuegoComponent implements OnInit {
 
   }
 
-
-  CrearObjetosActivos(){
-    for(let i=0; i<this.objetosEscenasMostrar.length; i++){
-      let obj=new ObjetoActivo(this.objetosEscenasMostrar[i].IdObjetoAct);
-      obj.EnMochila=false;
-      obj.Usado=false;
-      obj.MovilBool=this.objetosEscenasMostrar[i].Movil;      
-      obj.PistaBool=this.objetosEscenasMostrar[i].Pista;
-      if(this.objetosEscenasMostrar[i].Pista){
-        obj.PistaString=this.objetosEscenasMostrar[i].PistaString;
-      }
-      obj.escenaActivaId=+this.objetosEscenasMostrar[i].IdObjetoEscenaAct;
-      obj.Lugar=this.objetosEscenasMostrar[i].Lugar;
-      obj.PreguntaBool=this.objetosEscenasMostrar[i].Pregunta;
-      obj.RequisitoObjeto=this.objetosEscenasMostrar[i].EsRequisito;
-
-      this.objetosEscenasCreadas.push(obj);
-    }
-  }
-
-  CrearPreguntasActivas(){
-    for(let i=0; i<this.objetosMostrarConPreguntas.length; i++){
-      let obj=new PreguntaActiva();
-      obj.objetoActivoId=this.objetosMostrarConPreguntas[i].IdObjetoAct;
-      obj.preguntaId=this.objetosMostrarConPreguntas[i].IdPreguntaAct;
-      obj.PuntosRestar=this.objetosMostrarConPreguntas[i].Restar;
-      obj.PuntosSumar=this.objetosMostrarConPreguntas[i].Sumar;
-
-      this.preguntasObjetosCreadas.push(obj);
-    }
-  }
-
-  
-  BorrarObjetosYPreguntasActivas(){
-    this.objetosEscenasCreadas=[];
-    this.preguntasObjetosCreadas=[];
-  }
-
   async CrearJuegoEscaperoom(){
     
     const juego = new JuegoDeEscapeRoom(this.escenarioEscaperoomRecibido.id,
@@ -4269,11 +4231,9 @@ export class JuegoComponent implements OnInit {
           if(this.onlineSeleccionado=="Offline"){
             if(this.modalidadPresencialSeleccionada=="Clase"){
                   
-              console.log('Voy a inscribir a los alumnos del grupo');
               // tslint:disable-next-line:prefer-for-of
               for (let i = 0; i < this.alumnosGrupo.length; i++) {
                 // tslint:disable-next-line:max-line-length
-                console.log('inscribo');
 
                 const alumno = new AlumnoJuegoDeEscaperoom();
                 //Se podría añadir otro campo en el paso de creación de juego junto con la mecánica especial y Tiempo Límite
@@ -4286,10 +4246,8 @@ export class JuegoComponent implements OnInit {
 
                 this.peticionesAPI.InscribeAlumnojuegoDeEscaperoom(alumno)
                   .subscribe((res) => {
-                    console.log(res);
 
                   },(err) => {
-                      console.log(err);
                   });
 
               }
@@ -4366,11 +4324,9 @@ export class JuegoComponent implements OnInit {
         }else{
           if(this.onlineSeleccionado=="Offline"){
             if(this.modalidadPresencialSeleccionada=="Clase"){
-              console.log('Voy a inscribir a los alumnos del grupo');
               // tslint:disable-next-line:prefer-for-of
               for (let i = 0; i < this.equiposGrupo.length; i++) {
                 // tslint:disable-next-line:max-line-length
-                console.log('inscribo');
 
                 const equipo = new EquipoJuegoDeEscaperoom();
                 //Se podría añadir otro campo en el paso de creación de juego junto con la mecánica especial y Tiempo Límite
@@ -4383,9 +4339,7 @@ export class JuegoComponent implements OnInit {
 
                 this.peticionesAPI.InscribeEquipojuegoDeEscaperoom(equipo)
                   .subscribe((res) => {
-                    console.log(res);
                   },(err) => {
-                      console.log(err);
                   });                  
               }
               for(let i=0; i<this.escenasActivasRecibidas.length; i++){
@@ -4416,10 +4370,6 @@ export class JuegoComponent implements OnInit {
 
         this.tabGroup.selectedIndex = 0;
       });
-
-  }
-
-  LimpiarCamposEscaperoom(){
 
   }
 

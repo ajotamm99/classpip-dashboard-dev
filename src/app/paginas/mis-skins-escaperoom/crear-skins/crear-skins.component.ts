@@ -52,10 +52,7 @@ export class CrearSkinsComponent implements OnInit {
   
   ngOnInit() {
   
-    // REALMENTE LA APP FUNCIONARÁ COGIENDO AL PROFESOR DEL SERVICIO, NO OBSTANTE AHORA LO RECOGEMOS DE LA URL
-    // this.profesorId = this.profesorService.RecibirProfesorIdDelServicio();
     this.profesorId = this.sesion.DameProfesor().id;
-  
   
     // Constructor myForm
     this.myForm = this.formBuilder.group({
@@ -86,7 +83,6 @@ export class CrearSkinsComponent implements OnInit {
     this.nombreSkin=this.myForm.value.nombreSkins;  
   }
   
-  // Creamos un escenario dandole un nombre y una descripcion
   CrearSkin() {
     /*
     this.ComprobarImagenesSkins(this.nombreImagenSkin)
@@ -96,15 +92,13 @@ export class CrearSkinsComponent implements OnInit {
         this.peticionesAPI.PonSkinEscaperoom (new Skin(this.nombreImagenSkin,this.nombreSkin), this.profesorId)
         .subscribe((res) => {
           if (res != null) {
-            console.log ('SKIN CREADa: ' + res.id );
-            console.log(res);
             if (this.imagenSkin !== undefined) {
       
               // Hacemos el POST de la nueva imagen en la base de datos recogida de la función ExaminarImagenCromo
               const formData: FormData = new FormData();
               formData.append(this.nombreImagenSkin, this.fileImagenSkin,this.nombreImagenSkin);
               this.peticionesAPI.PonImagenSkin(formData)
-              .subscribe(() => console.log('Imagen cargada'));
+              .subscribe(() => {});
             }
             
             this.LimpiarCampos();
@@ -113,7 +107,6 @@ export class CrearSkinsComponent implements OnInit {
             Swal.fire('Creado',"Skin creada con éxito",'success');
             
           } else {
-            console.log('Fallo en la creación');
             Swal.fire('Error',"Fallo creando la skin",'error');
           }
         },(error=>{
@@ -132,21 +125,13 @@ export class CrearSkinsComponent implements OnInit {
   }
   
   
-  // Activa la función ExaminarImagenCromoDelante
   ActivarInputImagenSkin() {
-    console.log('Activar input');
     document.getElementById('inputSkinImagen').click();
   }
   
   
-  // Buscaremos la imagen en nuestro ordenador y después se mostrará en el form con la variable "imagen" y guarda el
-  // nombre de la foto en la variable nombreImagen
-  
   ExaminarImagenSkin($event) {
-    console.log("entro");
     this.fileImagenSkin = $event.target.files[0];
-  
-    console.log('fichero ' + this.fileImagenSkin.name);
   
     const reader = new FileReader();
     reader.readAsDataURL(this.fileImagenSkin);
@@ -156,9 +141,7 @@ export class CrearSkinsComponent implements OnInit {
       +(date.getHours()).toString()+(date.getMinutes()).toString()+(date.getSeconds()).toString()+(date.getMilliseconds()).toString();
       
     this.nombreImagenSkin = timestamp +this.profesorId+this.fileImagenSkin.name;
-      console.log('ya Escena');
       this.imagenCargadaSkin= true;
-      // this.imagenCargadoCromo = true;
       this.imagenSkin = reader.result.toString();
     };
     
@@ -166,7 +149,7 @@ export class CrearSkinsComponent implements OnInit {
   }
 
   
-  // Limpiamos los campos del cromo
+  // Limpiamos los campos 
   LimpiarCampos() {
       this.nombreSkin = undefined;
       this.imagenSkin=undefined;
@@ -187,7 +170,6 @@ export class CrearSkinsComponent implements OnInit {
       this.myForm.reset();
       this.stepper.reset();
   
-      // Tambien limpiamos las variables utilizadas para crear el nueva coleccion, por si queremos crear otra.
       this.LimpiarCampos()
       Swal.fire('skin creado con éxito', '', 'success');
       this.router.navigate(['/inicio/' + this.profesorId]);

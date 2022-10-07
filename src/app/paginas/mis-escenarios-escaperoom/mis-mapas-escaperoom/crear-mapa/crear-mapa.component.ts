@@ -84,12 +84,9 @@ constructor(
 
 ngOnInit() {
 
-  // REALMENTE LA APP FUNCIONARÁ COGIENDO AL PROFESOR DEL SERVICIO, NO OBSTANTE AHORA LO RECOGEMOS DE LA URL
-  // this.profesorId = this.profesorService.RecibirProfesorIdDelServicio();
   this.profesorId = this.sesion.DameProfesor().id;
 
 
-  // Constructor myForm
   this.myForm = this.formBuilder.group({
    nombreEscenario: ['', Validators.required],
    descripcionEscenario: ['', Validators.required]
@@ -111,13 +108,9 @@ CrearEscenario() {
   this.peticionesAPI.CreaEscenarioEscaperoom (new EscenarioEscaperoom(this.profesorId,this.nombreEscenario, this.descripcionEscenario), this.profesorId)
   .subscribe((res) => {
     if (res != null) {
-      console.log ('ESCENARIO CREADO: ' + res.id );
-      console.log(res);
-      this.EscenarioCreado = res; // Lo metemos en coleccionCreada, y no en coleccion!!
-      console.log ('He creado el escenario ' + this.EscenarioCreado.id);
+      this.EscenarioCreado = res; 
 
     } else {
-      console.log('Fallo en la creación');
     }
   });
 }
@@ -134,7 +127,6 @@ ComprobarImagenesyArchivosEscena(comprobarImagen: String, comprobarArchivo: Stri
       var contImages=0;
       var contArchivos=0;
       var filter=data;
-      //var lista:EscenaEscaperoom[]=[];
       filter.forEach(sc => {
         this.peticionesAPI.DameEscenasdeEscenariosEscaperoom(sc.id)
         .subscribe(data=>{
@@ -153,14 +145,9 @@ ComprobarImagenesyArchivosEscena(comprobarImagen: String, comprobarArchivo: Stri
   });
 }
 
-// Creamos una cromo y lo añadimos a la coleccion dandole un nombre, una probabilidad, un nivel y una imagen
+// Creamos una escena y la añadimos a la bbdd
 AgregarEscenaEscenario() {
 
-  console.log('Entro a asignar el cromo ' + this.nombreEscena);
-  console.log('Entro a asignar el cromo a la coleccionID' + this.EscenarioCreado.id);
-  console.log(this.nombreImagenEscena );
-  console.log(this.nombreArchivoEscena );
-  //this.nombreArchivoEscena="pep.json";
   this.ComprobarImagenesyArchivosEscena(this.nombreImagenEscena,this.nombreArchivoEscena)
   .then(data=>{
     if(data[0]==0 && data[1]==0){
@@ -168,17 +155,13 @@ AgregarEscenaEscenario() {
         new EscenaEscaperoom(this.nombreArchivoEscena, this.nombreImagenEscena, this.nombreEscena),this.EscenarioCreado.id)
         .subscribe((res) => {
           if (res != null) {
-            console.log('asignado correctamente');
-            // Añadimos el cromo a la lista
             this.EscenasAgregadas.push(res);
             var Escena =new EscenaEscaperoom(this.nombreArchivoEscenaMostrar,this.nombreImagenEscenaMostrar,res.Nombre,res.escenarioEscapeRoomId);
             Escena.Publica=res.Publica;
             Escena.id=res.id;
             this.EscenasAgregadasMostrar.push(Escena);
             this.dataSourceMostrar= new MatTableDataSource(this.EscenasAgregadasMostrar);
-            //this.EscenasAgregadas = this.EscenasAgregadas.filter(result => result.Nombre !== '');
-            // this.CromosAgregados(res);
-            console.log(this.imagenEscena,this.infoArchivoEscena);
+
             // Hago el POST de la imagen de delante SOLO si hay algo cargado.
             if (this.imagenEscena !== undefined && this.infoArchivoEscena!=undefined) {
     
@@ -187,18 +170,16 @@ AgregarEscenaEscenario() {
               formData.append(this.nombreImagenEscena, this.fileImagenEscena,this.nombreImagenEscena);
               this.peticionesAPI.PonImagenEscena(formData)
               .subscribe(() => {
-                console.log('Imagen cargada');
                 const formData: FormData = new FormData();
                 formData.append(this.nombreArchivoEscena, this.fileArchivoEscena,this.nombreArchivoEscena);
                 this.peticionesAPI.PonArchivoEscena(formData)
-                .subscribe(() => console.log('Archivo cargado'));
+                .subscribe(() => {});
                 Swal.fire("Agregada","La escena ha sido agregada con éxito",'success');
                 this.LimpiarCampos();
               });
             }
           } else {
             Swal.fire("Error","La escena no se ha podido agregar",'error');
-            console.log('fallo en la asignación');
           }
         },error=>{
           Swal.fire("Error","Inserte imagen y archivo",'error');
@@ -216,16 +197,16 @@ AgregarEscenaEscenario() {
   
 }
 
-// Utilizamos esta función para eliminar un cromo de la base de datos y de la lista de añadidos recientemente
+// Utilizamos esta función para eliminar una escena de la base de datos y de la lista de añadidos recientemente
 BorrarEscena(escena: EscenaEscaperoom) {
-  console.log('Id cromo ' + escena.id);
   this.peticionesAPI.BorrarEscenaEscaperoom(escena.id)
   .subscribe(() => {
-    // Elimino el cromo de la lista
     this.EscenasAgregadas = this.EscenasAgregadas.filter(res => res.id !== escena.id);
     this.EscenasAgregadasMostrar = this.EscenasAgregadasMostrar.filter(res => res.id !== escena.id);
     this.dataSourceMostrar= new MatTableDataSource(this.EscenasAgregadasMostrar);
+
     Swal.fire("Eliminada","Escena eliminada con éxito", 'success');
+
     if(escena.Tilesheet!== undefined && escena.Archivo!==undefined){
       this.peticionesAPI.BorrarImagenEscena (escena.Tilesheet).subscribe(_=>{
         this.peticionesAPI.BorrarArchivoEscena (escena.Archivo).subscribe();
@@ -234,34 +215,22 @@ BorrarEscena(escena: EscenaEscaperoom) {
   });
 }
 
-// Activa la función ExaminarImagenCromoDelante
 ActivarInputImagenEscena() {
-  console.log('Activar input');
   document.getElementById('inputEscenaImagen').click();
 }
 
-  // Activa la función ExaminarImagenCromoDetras
 ActivarInputEscenaArchivo() {
-    console.log('Activar input');
     document.getElementById('inputEscenaArchivo').click();
 }
 
-
-// Buscaremos la imagen en nuestro ordenador y después se mostrará en el form con la variable "imagen" y guarda el
-// nombre de la foto en la variable nombreImagen
-
 ExaminarImagenEscena($event) {
   this.fileImagenEscena = $event.target.files[0];
-
-  console.log('fichero ' + this.profesorId+this.fileImagenEscena.name);
-
 
   const reader = new FileReader();
   reader.readAsDataURL(this.fileImagenEscena);
   reader.onload = () => {
     this.nombreImagenEscena = this.profesorId+this.fileImagenEscena.name;
     this.nombreImagenEscenaMostrar=this.fileImagenEscena.name;
-    console.log('ya Escena');
     this.imagenCargadaEscena= true;
     this.imagenEscena = reader.result.toString();
   };
@@ -271,7 +240,6 @@ ExaminarImagenEscena($event) {
 ExaminarArchivoEscena($event) {
   this.fileArchivoEscena = $event.target.files[0];
 
-  console.log('fichero ' + this.profesorId+this.fileArchivoEscena.name);
   const fileInfo = $event.target.files[0];
   const reader = new FileReader();
   reader.readAsText(fileInfo, 'ISO-8859-1');
@@ -292,7 +260,7 @@ ExaminarArchivoEscena($event) {
   $event.target.value="";
 }
 
-// Limpiamos los campos del cromo
+// Limpiamos los campos
 LimpiarCampos() {
     this.nombreEscena = undefined;
     this.imagenEscena=undefined;

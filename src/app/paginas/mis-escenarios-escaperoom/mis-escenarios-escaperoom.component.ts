@@ -25,7 +25,6 @@ export class MisEscenariosEscaperoomComponent implements OnInit {
 
     this.profesorId = this.sesion.DameProfesor().id;
 
-    console.log(this.profesorId);
   }
 
 
