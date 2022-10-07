@@ -3867,7 +3867,7 @@ export class JuegoComponent implements OnInit {
   }
 
   FiltrarObjetosEscena(escena: EscenasActMostrar){
-    let objetosEscena=this.objetosEscenasMostrar.filter(obj=> obj.IdObjetoEscenaAct ==escena.IdEscenaAct);
+    let objetosEscena=this.objetosEscenasMostrar.filter(obj=> obj.OrdenEscenaAct ==escena.Orden);
     if (objetosEscena.length>0){
       this.dataSourceObjetosEscena= new MatTableDataSource(objetosEscena);
       this.tengoObjetosEscena=true;
@@ -4281,9 +4281,10 @@ export class JuegoComponent implements OnInit {
                 alumno.PuntosTotalesAlumno = 0;
                 alumno.Resuelto = false;
                 alumno.alumnoId = this.alumnosGrupo[i].id;
-                const id = this.juegoDeEscaperoom.id;
+                alumno.juegoDeEscaperoomId= juego.id;
+                //const id = this.juegoDeEscaperoom.id;
 
-                this.peticionesAPI.InscribeAlumnojuegoDeEscaperoom(alumno, id)
+                this.peticionesAPI.InscribeAlumnojuegoDeEscaperoom(alumno)
                   .subscribe((res) => {
                     console.log(res);
 
@@ -4312,26 +4313,35 @@ export class JuegoComponent implements OnInit {
                     obj.Lugar=objetosActivos[c].Lugar;
                     obj.PreguntaBool=objetosActivos[c].Pregunta;
                     obj.RequisitoObjeto=objetosActivos[c].EsRequisito;
+                    obj.objetoEscaperoomId=objetosActivos[c].IdObjetoAct;
 
                     this.peticionesAPI.CreaObjetoActivoEscaperoom(obj, res.id)
                     .subscribe(res=>{
                       let id=res.id;
                       this.objetosEscenasCreadas.push(res);
-                      let preguntasActivas= this.objetosMostrarConPreguntas.filter(obj=>obj.OrdenEscenaAct==orden && obj.IdObjetoAct==res.objetoEscaperoomId);
-                      for(let d=0; d<preguntasActivas.length; d++){
-                        let preg = new PreguntaActiva();
-                        preg.preguntaId= preguntasActivas[d].IdPreguntaAct;
-                        preg.PuntosRestar= preguntasActivas[d].Restar;
-                        preg.PuntosSumar= preguntasActivas[d].Sumar;
-                        this.peticionesAPI.CreaPreguntaActivaEscaperoom(preg, id)
-                        .subscribe(res=>{
-                          this.preguntasObjetosCreadas.push(res);
-                        },error=>{
+                      let preguntasActivas= this.objetosMostrarConPreguntas.filter(obj=>obj.OrdenEscenaAct==orden);
 
-                        })
+
+                      if(preguntasActivas.length>0){
+
+                        let preguntasActivas2=preguntasActivas.filter(obj=>obj.IdObjetoAct==res.objetoEscaperoomId);
+
+                        for(let d=0; d<preguntasActivas2.length; d++){
+                          let preg = new PreguntaActiva();
+                          preg.preguntaId= preguntasActivas[d].IdPreguntaAct;
+                          preg.PuntosRestar= preguntasActivas[d].Restar;
+                          preg.PuntosSumar= preguntasActivas[d].Sumar;
+                          preg.objetoActivoId = id;
+
+                          this.peticionesAPI.CreaPreguntaActivaEscaperoom(preg)
+                          .subscribe(res=>{
+                            this.preguntasObjetosCreadas.push(res);
+
+                          },error=>{
+  
+                          })
+                        }
                       }
-                  
-
                     },error=>{
 
                     })
@@ -4367,10 +4377,11 @@ export class JuegoComponent implements OnInit {
                 equipo.MaxObjetos = 4; 
                 equipo.PuntosTotalesEquipo = 0;
                 equipo.Resuelto = false;
-                equipo.equipoId = this.equiposGrupo[i].id;
-                const id = this.juegoDeEscaperoom.id;
+                equipo.equipoId = this.equiposGrupo[i].id;                
+                equipo.juegoDeEscaperoomId= juego.id;
+                //const id = this.juegoDeEscaperoom.id;
 
-                this.peticionesAPI.InscribeEquipojuegoDeEscaperoom(equipo, id)
+                this.peticionesAPI.InscribeEquipojuegoDeEscaperoom(equipo)
                   .subscribe((res) => {
                     console.log(res);
                   },(err) => {

@@ -201,9 +201,13 @@ export class PeticionesAPIService {
   private APIURLEscenariosEscaperoom = this.host + ':3000/api/escenarioescaperoom';
   private APIURLEscenasEscaperoom = this.host + ':3000/api/escenasescaperoom';
   private APIURLEscenasActivas= this.host + ':3000/api/escenaescaperoomactiva';
+  private APIUrlEquipoJuegoDeEscaperoom = this.host + ':3000/api/equipoescaperoom';
+  private APIUrlAlumnoJuegoDeEscaperoom = this.host + ':3000/api/alumnoescaperoom';
 
   private APIURLObjetosEscaperoom = this.host + ':3000/api/objetosescaperoom';
   private APIUrlObjetosActivos= this.host + ':3000/api/objetoactivoescaperoom';
+
+  private APIUrlPreguntasActivas =this.host + ':3000/api/preguntasactivas';
 
   private APIURLSkinsEscaperoom = this.host + ':3000/api/skins';
   
@@ -2815,15 +2819,13 @@ public ModificaInscripcionAlumnoJuegoDeVotacionAOpciones(inscripcion: AlumnoJueg
     return this.http.post<JuegoDeEscapeRoom>(this.APIUrlGrupos + '/' + grupoId + '/juegodeEscapeRooms', juegoEscaperoom);
   }
 
-  public InscribeAlumnojuegoDeEscaperoom(alumnoJuegoEscaperoom: AlumnoJuegoDeEscaperoom, id:number): Observable<AlumnoJuegoDeEscaperoom> {
-    return this.http.post<AlumnoJuegoDeEscaperoom>(this.APIURLJuegoDeEscaperoom + '/' + id  + '/alumnos',
-      alumnoJuegoEscaperoom);
+  public InscribeAlumnojuegoDeEscaperoom(alumnoJuegoEscaperoom: AlumnoJuegoDeEscaperoom): Observable<AlumnoJuegoDeEscaperoom> {
+    return this.http.post<AlumnoJuegoDeEscaperoom>(this.APIUrlAlumnoJuegoDeEscaperoom, alumnoJuegoEscaperoom);
 
   }
 
-  public InscribeEquipojuegoDeEscaperoom(equipoJuegoEscaperoom: EquipoJuegoDeEscaperoom, id:number): Observable<EquipoJuegoDeEscaperoom> {
-    return this.http.post<EquipoJuegoDeEscaperoom>(this.APIURLJuegoDeEscaperoom + '/' + id  + '/equipos',
-      equipoJuegoEscaperoom);
+  public InscribeEquipojuegoDeEscaperoom(equipoJuegoEscaperoom: EquipoJuegoDeEscaperoom): Observable<EquipoJuegoDeEscaperoom> {
+    return this.http.post<EquipoJuegoDeEscaperoom>(this.APIUrlEquipoJuegoDeEscaperoom, equipoJuegoEscaperoom);
 
   }
 
@@ -2837,8 +2839,8 @@ public ModificaInscripcionAlumnoJuegoDeVotacionAOpciones(inscripcion: AlumnoJueg
     objetoActivo);
   }
 
-  public CreaPreguntaActivaEscaperoom(preguntaAct: PreguntaActiva, id: number): Observable<PreguntaActiva>{
-    return this.http.post<PreguntaActiva>(this.APIUrlObjetosActivos+ '/' + id  + '/pregunta',
+  public CreaPreguntaActivaEscaperoom(preguntaAct: PreguntaActiva): Observable<PreguntaActiva>{
+    return this.http.post<PreguntaActiva>(this.APIUrlPreguntasActivas,
     preguntaAct);
   }
 
