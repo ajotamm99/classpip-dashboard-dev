@@ -2837,6 +2837,11 @@ public ModificaInscripcionAlumnoJuegoDeVotacionAOpciones(inscripcion: AlumnoJueg
     objetoActivo);
   }
 
+  public CreaPreguntaActivaEscaperoom(preguntaAct: PreguntaActiva, id: number): Observable<PreguntaActiva>{
+    return this.http.post<PreguntaActiva>(this.APIUrlObjetosActivos+ '/' + id  + '/pregunta',
+    preguntaAct);
+  }
+
 /*
   public PonObjetoActivo(objeto: ObjetoActivo): Observable<ObjetoActivo>{
     return this.http.post<ObjetoActivo>(this.APIUrlObjetosActivos, objeto);
