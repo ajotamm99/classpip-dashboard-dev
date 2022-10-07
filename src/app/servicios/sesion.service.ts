@@ -1,4 +1,4 @@
-import { Enigma } from './../clases/clasesParaJuegoDeEscapeRoom/Enigma';
+
 import { Skin } from './../clases/clasesParaJuegoDeEscapeRoom/Skin';
 import { ObjetoEscaperoom } from './../clases/clasesParaJuegoDeEscapeRoom/ObjetoEscaperoom';
 import { EscenaEscaperoom } from './../clases/clasesParaJuegoDeEscapeRoom/EscenaEscaperoom';
@@ -102,7 +102,6 @@ export class SesionService {
   EscenaEscaperoom: EscenaEscaperoom;
   objetoEscaperoom: ObjetoEscaperoom;
   skinEscaperoom: Skin;
-  enigmaEscaperoom: Enigma;
   objetosEscaperoom: ObjetoEscaperoom[];
   skinsEscaperoom: Skin[];
 
@@ -741,14 +740,6 @@ public TomaSkisnEscaperoom(skinsEscaperoom: Skin[]){
 
 public DameSkinsEscaperoom(){
   return this.skinsEscaperoom;
-}
-
-public TomaEnigmaEscaperoom(Enigma: Enigma){
-  this.enigmaEscaperoom =Enigma;
-}
-
-public DameEnigmaEscaperoom(){
-  return this.enigmaEscaperoom;
 }
 
 }

@@ -117,8 +117,6 @@ export * from './TablaAlumnoJuegoDeMemorama';
 
 export * from './clasesParaJuegoDeEscapeRoom/AlumnoJuegoDeEscaperoom';
 export * from './clasesParaJuegoDeEscapeRoom/EquipoJuegoDeEscaperoom';
-export * from './clasesParaJuegoDeEscapeRoom/Enigma';
-export * from './clasesParaJuegoDeEscapeRoom/EnigmaActivo';
 export * from './clasesParaJuegoDeEscapeRoom/ObjetoEscaperoom';
 export * from './clasesParaJuegoDeEscapeRoom/ObjetoActivo';
 export * from './clasesParaJuegoDeEscapeRoom/Skin';
