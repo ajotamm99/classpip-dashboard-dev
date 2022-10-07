@@ -2520,7 +2520,7 @@
                 <br>
                 <br>
                 <div class="btnCambiarStep">
-                  <button type="button" class="btn Back" matStepperPrevious>Atrás</button>
+                  <button type="button" class="btn Back"(click)="VolverAtrasEscenas()" matStepperPrevious>Atrás</button>
                   <button [disabled]="!tengoTiempos" type="button" class="btn Next" (click)="CrearRequisitos()"
                     matStepperNext>Siguiente</button>
                 </div>
@@ -2699,7 +2699,7 @@
                 </div>
                 <br>
                 <div class="btnCambiarStep">
-                  <button type="button" class="btn Back" matStepperPrevious>Atrás</button>
+                  <button type="button" class="btn Back" (click)="VolverAtrasObjetos()" matStepperPrevious>Atrás</button>
                   <button [disabled]="!tengoRequisitosObjetos || !tengoRequisitosObjetosConPuntos" type="button" class="btn Next" (click)="DameObjetosConPreguntas()"
                     matStepperNext>Siguiente</button>
                 </div>
@@ -2744,7 +2744,7 @@
                       </tr>
                     </table>
                   </div>
-
+                  <br>
 
 
                   <div align="center">
@@ -2828,7 +2828,7 @@
                 <br>
                 <br>
                 <div class="btnCambiarStep">
-                  <button type="button" class="btn Back" matStepperPrevious>Atrás</button>
+                  <button type="button" class="btn Back" (click)="VolverAtrasPreguntas()" matStepperPrevious>Atrás</button>
                   <button [disabled]="!tengoRequisitosObjetosConPreguntas" type="button" class="btn Next"
                     matStepperNext>Siguiente</button>
                 </div>

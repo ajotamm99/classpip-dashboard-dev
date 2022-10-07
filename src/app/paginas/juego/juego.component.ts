@@ -4155,6 +4155,50 @@ export class JuegoComponent implements OnInit {
     }
   }
 
+  VolverAtrasPreguntas(){    
+    this.tengoObjetosConPreguntas=false;
+    this.tengoRequisitosObjetosConPreguntas=undefined;
+    this.objetosMostrarConPreguntas=undefined;
+    this.dataSourceObjetosConPreguntas= undefined;    
+    this.requisitosEscenasPuntos=undefined;
+    this.dataSourceRequisitosEscenasPuntos=undefined;
+    this.preguntasDelProfesor=undefined;
+  }
+
+  VolverAtrasObjetos(){
+    this.tengoRequisitosObjetosConPuntos=true;
+    this.objetosEscenasMostrar=undefined;
+    this.dataSourceObjetosEscena=undefined;
+    this.tengoRequisitosObjetos=true;
+    this.requisitosEscenas=undefined;
+    this.objetosMostrar=undefined;
+    this.objetosPublicos=undefined;    
+    this.tengoObjetosEscena=false;
+    this.selection.clear();
+    this.escenaSeleccionada=false;
+    this.escenaObjetoSeleccionada=undefined;
+
+
+  }
+
+  VolverAtrasEscenas(){
+    this.selection.clear();
+    this.requisitosEscenas=undefined;
+    this.numeroEscenasActivas=0;
+    this.tiemposEscenas=0;
+    this.tengoTiempos=false;
+    this.tiempoRestante=1;
+    this.escenasActivasMostrar=undefined;
+    this.escenasActivasRecibidas=undefined;
+    this.tengoEscenasEscaperoom=false;
+    this.dataSourceEscenas=undefined;
+    this.escenarioEscaperoomRecibido = undefined;
+    this.tengoEscenarioEscaperoom = true;
+    this.escenasEscenarioRecibidas=undefined;
+    this.hayEscenas=false;
+
+  }
+
   CrearEscenasActivas(){
 
   }
