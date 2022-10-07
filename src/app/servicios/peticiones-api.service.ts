@@ -1,3 +1,5 @@
+import { EquipoJuegoDeEscaperoom } from './../clases/clasesParaJuegoDeEscapeRoom/EquipoJuegoDeEscaperoom';
+import { AlumnoJuegoDeEscaperoom } from './../clases/clasesParaJuegoDeEscapeRoom/AlumnoJuegoDeEscaperoom';
 import { PreguntaActiva } from './../clases/clasesParaJuegoDeEscapeRoom/PreguntaActiva';
 import { EscenaActiva } from './../clases/clasesParaJuegoDeEscapeRoom/EscenaActiva';
 import { ObjetoActivo } from './../clases/clasesParaJuegoDeEscapeRoom/ObjetoActivo';
@@ -2809,6 +2811,28 @@ public ModificaInscripcionAlumnoJuegoDeVotacionAOpciones(inscripcion: AlumnoJueg
     { responseType: ResponseContentType.Blob });
 
   }
+
+  public CreaJuegoEscaperoom(juegoEscaperoom: JuegoDeEscapeRoom, grupoId: number): Observable<JuegoDeEscapeRoom>{
+    return this.http.post<JuegoDeEscapeRoom>(this.APIUrlGrupos + '/' + grupoId + '/juegodeEscapeRooms', juegoEscaperoom);
+  }
+
+  public InscribeAlumnojuegoDeEscaperoom(alumnoJuegoEscaperoom: AlumnoJuegoDeEscaperoom, id:number): Observable<AlumnoJuegoDeEscaperoom> {
+    return this.http.post<AlumnoJuegoDeEscaperoom>(this.APIURLJuegoDeEscaperoom + '/' + id  + '/alumnos',
+      alumnoJuegoEscaperoom);
+
+  }
+
+  public InscribeEquipojuegoDeEscaperoom(equipoJuegoEscaperoom: EquipoJuegoDeEscaperoom, id:number): Observable<EquipoJuegoDeEscaperoom> {
+    return this.http.post<EquipoJuegoDeEscaperoom>(this.APIURLJuegoDeEscaperoom + '/' + id  + '/equipos',
+      equipoJuegoEscaperoom);
+
+  }
+
+  public CreaEscenaEscaperoomActiva(escenaActiva: EscenaActiva, id:number): Observable<EscenaActiva> {
+    return this.http.post<EscenaActiva>(this.APIURLJuegoDeEscaperoom + '/' + id  + '/escenaActivas',
+      escenaActiva);
+  }
+
 /*
   public PonObjetoActivo(objeto: ObjetoActivo): Observable<ObjetoActivo>{
     return this.http.post<ObjetoActivo>(this.APIUrlObjetosActivos, objeto);

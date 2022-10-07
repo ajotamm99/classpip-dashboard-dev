@@ -1,6 +1,9 @@
+import { EquipoJuegoDeEscaperoom } from './../../clases/clasesParaJuegoDeEscapeRoom/EquipoJuegoDeEscaperoom';
+import { AlumnoJuegoDeEscaperoom } from './../../clases/clasesParaJuegoDeEscapeRoom/AlumnoJuegoDeEscaperoom';
 import { AsignarPreguntasEscaperoomComponent } from './DialogosEscaperoom/asignar-preguntas-escaperoom/asignar-preguntas-escaperoom.component';
 import { EditarPreguntasActivasEscaperoomComponent } from './DialogosEscaperoom/editar-preguntas-activas-escaperoom/editar-preguntas-activas-escaperoom.component';
 import { ObjetoEscaperoom } from './../../clases/clasesParaJuegoDeEscapeRoom/ObjetoEscaperoom';
+import { JuegoDeEscapeRoom } from './../../clases/clasesParaJuegoDeEscapeRoom/JuegoDeEscaperoom';
 import { EditarObjetosActivosEscaperoomComponent } from './DialogosEscaperoom/editar-objetos-activos-escaperoom/editar-objetos-activos-escaperoom.component';
 import { AsignarObjetosEscaperoomComponent } from './DialogosEscaperoom/asignar-objetos-escaperoom/asignar-objetos-escaperoom.component';
 import { AsignarEscenasEscaperoomComponent } from './DialogosEscaperoom/asignar-escenas-escaperoom/asignar-escenas-escaperoom.component';
@@ -193,6 +196,7 @@ export class JuegoComponent implements OnInit {
   juegoDeGeocaching: JuegoDeGeocaching;
 
   juegoDeCuento: JuegoDeCuento;
+  juegoDeEscaperoom: JuegoDeEscapeRoom;
 
 
   // Informacion para todos los juegos
@@ -558,6 +562,8 @@ export class JuegoComponent implements OnInit {
   tengoRequisitosObjetosConPuntos: boolean;
   tengoObjetosConPreguntas: boolean;
   tengoRequisitosObjetosConPreguntas: boolean;
+
+  escenasActivasCreadas: EscenaActiva[]=[];
   
 
 
@@ -4212,7 +4218,119 @@ export class JuegoComponent implements OnInit {
 
   }
 
-  CrearJuegoEscaperoom(){
+  async CrearJuegoEscaperoom(){
+    
+    const juego = new JuegoDeEscapeRoom(this.escenarioEscaperoomRecibido.id,
+      this.grupo.id,
+      this.modalidadPresencialSeleccionada,
+      +this.tiempoLimiteEscaperoom,
+      this.nombreDelJuego,
+      this.tipoDeJuegoSeleccionado,
+      this.modoDeJuegoSeleccionado,
+      this.onlineSeleccionado=="Online",
+      true,
+      this.selectedMecanica
+      );
+
+
+    this.peticionesAPI.CreaJuegoEscaperoom(juego, this.grupo.id)
+      .subscribe(juego => {
+
+
+        this.juegoDeEscaperoom = juego;
+
+        if (this.modoDeJuegoSeleccionado === 'Individual') {
+          if(this.onlineSeleccionado=="Offline"){
+            if(this.modalidadPresencialSeleccionada=="Clase"){
+                  
+              console.log('Voy a inscribir a los alumnos del grupo');
+              // tslint:disable-next-line:prefer-for-of
+              for (let i = 0; i < this.alumnosGrupo.length; i++) {
+                // tslint:disable-next-line:max-line-length
+                console.log('inscribo');
+
+                const alumno = new AlumnoJuegoDeEscaperoom();
+                //Se podría añadir otro campo en el paso de creación de juego junto con la mecánica especial y Tiempo Límite
+                alumno.MaxObjetos = 4; 
+                alumno.PuntosTotalesAlumno = 0;
+                alumno.Resuelto = false;
+                alumno.alumnoId = this.alumnosGrupo[i].id;
+                const id = this.juegoDeEscaperoom.id;
+
+                this.peticionesAPI.InscribeAlumnojuegoDeEscaperoom(alumno, id)
+                  .subscribe((res) => {
+                    console.log(res);
+                  },(err) => {
+                      console.log(err);
+                  });
+
+              }
+              Swal.fire('Juego de escaperoom creado correctamente', ' ', 'success');
+
+            }else{
+              //Modo Casa todavía no operativo
+            }
+          }else{
+            //Modo Online todavía no operativo
+
+          }
+         
+        }else{
+          if(this.onlineSeleccionado=="Offline"){
+            if(this.modalidadPresencialSeleccionada=="Clase"){
+              console.log('Voy a inscribir a los alumnos del grupo');
+              // tslint:disable-next-line:prefer-for-of
+              for (let i = 0; i < this.equiposGrupo.length; i++) {
+                // tslint:disable-next-line:max-line-length
+                console.log('inscribo');
+
+                const equipo = new EquipoJuegoDeEscaperoom();
+                //Se podría añadir otro campo en el paso de creación de juego junto con la mecánica especial y Tiempo Límite
+                equipo.MaxObjetos = 4; 
+                equipo.PuntosTotalesEquipo = 0;
+                equipo.Resuelto = false;
+                equipo.equipoId = this.equiposGrupo[i].id;
+                const id = this.juegoDeEscaperoom.id;
+
+                this.peticionesAPI.InscribeEquipojuegoDeEscaperoom(equipo, id)
+                  .subscribe((res) => {
+                    console.log(res);
+                  },(err) => {
+                      console.log(err);
+                  });                  
+              }
+              for(let i=0; i<this.escenasActivasRecibidas.length; i++){
+                
+                this.peticionesAPI.CreaEscenaEscaperoomActiva(this.escenasActivasRecibidas[i],this.juegoDeEscaperoom.id).subscribe((res)=>{
+                  this.escenasActivasCreadas.push(res);
+                }, error=>{
+
+                })
+              }
+              Swal.fire('Juego de escaperoom creado correctamente', ' ', 'success');
+            }else{
+              //Modo Casa todavía no operativo
+            }
+          }else{
+            //Modo Online todavía no operativo
+
+          }
+
+        }
+
+        if (this.juegosActivos === undefined) {
+
+          this.juegosActivos = [];
+        }
+        this.juegosActivos.push(this.juegoDeEscaperoom);
+        this.Limpiar();
+
+        this.tabGroup.selectedIndex = 0;
+      });
+
+  }
+
+  LimpiarCamposEscaperoom(){
 
   }
 
