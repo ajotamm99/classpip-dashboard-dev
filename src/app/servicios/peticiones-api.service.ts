@@ -200,12 +200,11 @@ export class PeticionesAPIService {
   private APIURLJuegoDeEscaperoom = this.host + ':3000/api/juegoescaperoom';
   private APIURLEscenariosEscaperoom = this.host + ':3000/api/escenarioescaperoom';
   private APIURLEscenasEscaperoom = this.host + ':3000/api/escenasescaperoom';
+  private APIURLEscenasActivas= this.host + ':3000/api/escenaescaperoomactiva';
 
   private APIURLObjetosEscaperoom = this.host + ':3000/api/objetosescaperoom';
   private APIUrlObjetosActivos= this.host + ':3000/api/objetoactivoescaperoom';
-  private APIURLEnigmasEscaperoom = this.host + ':3000/api/enigmasescaperoom';
-  
-  private APIURLEnigmasActivos= this.host + ':3000/api/enigmaactivoescaperoom';
+
   private APIURLSkinsEscaperoom = this.host + ':3000/api/skins';
   
   private APIURLSkinsActivas = this.host + ':3000/api/skinactivas';
@@ -2831,6 +2830,11 @@ public ModificaInscripcionAlumnoJuegoDeVotacionAOpciones(inscripcion: AlumnoJueg
   public CreaEscenaEscaperoomActiva(escenaActiva: EscenaActiva, id:number): Observable<EscenaActiva> {
     return this.http.post<EscenaActiva>(this.APIURLJuegoDeEscaperoom + '/' + id  + '/escenaActivas',
       escenaActiva);
+  }
+
+  public CreaObjetoActivoEscaperoom(objetoActivo: ObjetoActivo, id: number): Observable<ObjetoActivo>{
+    return this.http.post<ObjetoActivo>(this.APIURLEscenasActivas+ '/' + id  + '/objetoActivos',
+    objetoActivo);
   }
 
 /*

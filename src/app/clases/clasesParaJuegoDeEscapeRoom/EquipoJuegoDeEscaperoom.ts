@@ -6,7 +6,8 @@ export class EquipoJuegoDeEscaperoom {
     juegoDeEscaperoomId: number;
     TiempoEnResolver: number;
     Resuelto: boolean;
-    MaxObjetos: number;
+    MaxObjetos: number;    
+    ObjetosActivosEnMochila:number[];
   
     constructor(equipoId?: number, juegoDeEscaperoomId?: number, PuntosTotalesEquipo?: number, MaxObjetos?:number) {
   
@@ -15,6 +16,7 @@ export class EquipoJuegoDeEscaperoom {
       this.juegoDeEscaperoomId = juegoDeEscaperoomId;
       this.TiempoEnResolver = 0;
       this.Resuelto = false;
-      this.MaxObjetos=MaxObjetos;
+      this.MaxObjetos=MaxObjetos;      
+      this.ObjetosActivosEnMochila=[];
     }
   }

@@ -532,7 +532,7 @@ export class JuegoComponent implements OnInit {
   tiempoRestante:number;
   displayedColumnsEscenas: string[] = ['Orden','Nombre', 'Tiempo Limite', 'Requisito', 'Iconos'];
 
-  objetosEscenasRecibidas: ObjetoActivo[]=[];
+  objetosEscenasCreadas: ObjetoActivo[]=[];
   objetosEscenasMostrar: ObjetoActMostrar[]=[];
   objetosEscaperoom: ObjetoEscaperoom[]=[];
   tengoObjetosActivos:  boolean;
@@ -545,7 +545,7 @@ export class JuegoComponent implements OnInit {
   displayedColumnsObjetos: string[] = ['Nombre', 'Pista', 'Pregunta', 'Movil','EsRequisito','Lugar', 'Iconos'];
   displayedColumnsEscenasObjetos: string[] = ['select','Orden','Nombre', 'Tiempo Limite', 'Requisito'];
 
-  preguntasObjetosRecibidas: PreguntaActiva[]=[];
+  preguntasObjetosCreadas: PreguntaActiva[]=[];
   preguntasDelProfesor: Pregunta[]=[];
   objetosConPreguntas: ObjetoActMostrar[]=[];
   objetosMostrarConPreguntas: ObjetoPreguntaActMostrar[]=[];
@@ -4206,16 +4206,41 @@ export class JuegoComponent implements OnInit {
 
   }
 
-  CrearEscenasActivas(){
-
-  }
-
   CrearObjetosActivos(){
+    for(let i=0; i<this.objetosEscenasMostrar.length; i++){
+      let obj=new ObjetoActivo(this.objetosEscenasMostrar[i].IdObjetoAct);
+      obj.EnMochila=false;
+      obj.Usado=false;
+      obj.MovilBool=this.objetosEscenasMostrar[i].Movil;      
+      obj.PistaBool=this.objetosEscenasMostrar[i].Pista;
+      if(this.objetosEscenasMostrar[i].Pista){
+        obj.PistaString=this.objetosEscenasMostrar[i].PistaString;
+      }
+      obj.escenaActivaId=+this.objetosEscenasMostrar[i].IdObjetoEscenaAct;
+      obj.Lugar=this.objetosEscenasMostrar[i].Lugar;
+      obj.PreguntaBool=this.objetosEscenasMostrar[i].Pregunta;
+      obj.RequisitoObjeto=this.objetosEscenasMostrar[i].EsRequisito;
 
+      this.objetosEscenasCreadas.push(obj);
+    }
   }
 
   CrearPreguntasActivas(){
+    for(let i=0; i<this.objetosMostrarConPreguntas.length; i++){
+      let obj=new PreguntaActiva();
+      obj.objetoActivoId=this.objetosMostrarConPreguntas[i].IdObjetoAct;
+      obj.preguntaId=this.objetosMostrarConPreguntas[i].IdPreguntaAct;
+      obj.PuntosRestar=this.objetosMostrarConPreguntas[i].Restar;
+      obj.PuntosSumar=this.objetosMostrarConPreguntas[i].Sumar;
 
+      this.preguntasObjetosCreadas.push(obj);
+    }
+  }
+
+  
+  BorrarObjetosYPreguntasActivas(){
+    this.objetosEscenasCreadas=[];
+    this.preguntasObjetosCreadas=[];
   }
 
   async CrearJuegoEscaperoom(){
@@ -4260,11 +4285,47 @@ export class JuegoComponent implements OnInit {
                 this.peticionesAPI.InscribeAlumnojuegoDeEscaperoom(alumno, id)
                   .subscribe((res) => {
                     console.log(res);
+
                   },(err) => {
                       console.log(err);
                   });
 
               }
+
+              for(let b=0; b<this.escenasActivasRecibidas.length; b++){
+                
+                this.peticionesAPI.CreaEscenaEscaperoomActiva(this.escenasActivasRecibidas[b],this.juegoDeEscaperoom.id).subscribe((res)=>{
+                  this.escenasActivasCreadas.push(res);
+                  let objetosActivos= this.objetosEscenasMostrar.filter(obj=>obj.OrdenEscenaAct==res.orden)
+                  for(let c=0; c<objetosActivos.length; c++){
+                    let obj= new ObjetoActivo();
+                    obj.EnMochila=false;
+                    obj.Usado=false;
+                    obj.MovilBool=objetosActivos[c].Movil;      
+                    obj.PistaBool=objetosActivos[c].Pista;
+                    if(objetosActivos[c].Pista){
+                      obj.PistaString=objetosActivos[c].PistaString;
+                    }
+                    obj.escenaActivaId=+objetosActivos[c].IdObjetoEscenaAct;
+                    obj.Lugar=objetosActivos[c].Lugar;
+                    obj.PreguntaBool=objetosActivos[c].Pregunta;
+                    obj.RequisitoObjeto=objetosActivos[c].EsRequisito;
+
+                    this.peticionesAPI.CreaObjetoActivoEscaperoom(obj, res.id)
+                    .subscribe(res=>{
+                      this.objetosEscenasCreadas.push(res);
+
+                    },error=>{
+
+                    })
+
+                  }
+                  
+                }, error=>{
+
+                })
+              }
+
               Swal.fire('Juego de escaperoom creado correctamente', ' ', 'success');
 
             }else{
