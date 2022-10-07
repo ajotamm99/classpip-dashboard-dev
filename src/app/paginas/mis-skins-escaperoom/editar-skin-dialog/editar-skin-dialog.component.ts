@@ -63,7 +63,7 @@ export class EditarSkinDialogComponent implements OnInit {
     // Cargo el imagen del cromo
     //this.TraeArchivosEscenas();
   }
-
+ /*
   ComprobarImagenesSkins(comprobar: String,skinId:number){
     
     return new Promise ((resolve, reject)=>{
@@ -84,12 +84,14 @@ export class EditarSkinDialogComponent implements OnInit {
 
     })
   }
+  */
 
   EditarSkin() {
-    console.log('Entro a editar');
+    /*
     this.ComprobarImagenesSkins(this.nombreImageSkinNueva,this.skinEscaperoom.id)
     .then(cont=>{
       if(cont==0){
+        */
         var skin=new Skin(this.nombreImageSkinNueva,  this.nombreSkin);
         skin.Publica=this.skinEscaperoom.Publica;
         this.peticionesAPI.ModificaSkin(skin, this.skinEscaperoom.id,this.profesorId)
@@ -129,16 +131,14 @@ export class EditarSkinDialogComponent implements OnInit {
             console.log('fallo editando');
           }
         });
+        /*
      }else if(cont>0){      
       Swal.fire("Error","Ya existe una skin con esa imagen",'error');
      }else{
       Swal.fire("Error","Error en el servidor",'error')
      }
-
     })
-    // tslint:disable-next-line:max-line-length
-    
-    // this.dialogRef.close(this.cromosEditados);
+    */
  }
 
    // Activa la función ExaminarImagenCromo

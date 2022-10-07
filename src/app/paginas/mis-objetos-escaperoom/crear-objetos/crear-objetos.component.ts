@@ -77,7 +77,7 @@ export class CrearObjetosComponent implements OnInit {
   
   }
 
-
+/*
   ComprobarImagenesObjetos(comprobar: String){
     return new Promise ((resolve, reject)=>{
       this.peticionesAPI.DameObjetosEscaperoomDelProfesor(this.profesorId).subscribe(data=>{
@@ -95,13 +95,16 @@ export class CrearObjetosComponent implements OnInit {
 
     })
   }
+  */
   
   // Creamos un escenario dandole un nombre y una descripcion
   CrearObjeto() {
 
+    /*
     this.ComprobarImagenesObjetos(this.nombreImagenObjeto)
     .then((cont)=>{
       if (cont==0){
+        */
         this.peticionesAPI.PonObjetoEscaperoom(new ObjetoEscaperoom(this.nombreObjeto,this.nombreImagenObjeto), this.profesorId)
       .subscribe((res) => {
         if (res != null) {
@@ -125,13 +128,14 @@ export class CrearObjetosComponent implements OnInit {
       },(error)=>{      
         Swal.fire('Error',"Fallo creando el objeto",'error');
       });
+      /*
       }else if(cont>0){        
         Swal.fire('Error',"Ya existe un objeto con esa imagen",'error');
       }else{
         Swal.fire('Error',"Error en el servidor",'error');
       }
       
-    })
+    })*/
     
   }
   

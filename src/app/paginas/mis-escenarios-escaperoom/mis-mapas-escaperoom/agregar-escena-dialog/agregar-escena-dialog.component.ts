@@ -62,7 +62,7 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
     this.EscenarioRecibido = this.data.escenario;
     this.profesorId=this.sesion.DameProfesor().id;
   }
-
+/*
   ComprobarImagenesyArchivosEscena(comprobarImagen: String, comprobarArchivo: String){
     
     return new Promise ((resolve, reject)=>{
@@ -89,6 +89,7 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
       });
     });
   }
+  */
 
   // Creamos una cromo y lo añadimos a la coleccion dandole un nombre, una probabilidad, un nivel y una imagen
   AgregarEscenaEscenario() {
@@ -97,12 +98,13 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
     console.log('Entro a asignar la escena al escenario' + this.EscenarioRecibido.id);
     console.log(this.nombreImagenEscena );
     console.log(this.nombreArchivoEscena );
-    //this.nombreArchivoEscena="pep.json";
+    /*
     this.ComprobarImagenesyArchivosEscena(this.nombreImagenEscena,this.nombreArchivoEscena)
     .then(data=>{
       console.log(data);
 
       if(data[0]==0 && data[1]==0){
+        */
         this.peticionesAPI.PonEscenaEscenario(
           new EscenaEscaperoom(this.nombreArchivoEscena, this.nombreImagenEscena, this.nombreEscena),this.EscenarioRecibido.id)
           .subscribe((res) => {
@@ -143,6 +145,7 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
           },error=>{
             Swal.fire("Error","Inserte imagen y archivo",'error');
           });
+          /*
       }else if(data[0]>0 && data[1]>0){        
         Swal.fire("Error","Ya hay escenas con este nombre de archivo e imagen",'error');
       }else if(data[0]>0 && data[1]==0){        
@@ -153,7 +156,7 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
         Swal.fire("Error","Error en el servidor",'error');
       }
     });
-    
+    */
   }
 
   // Utilizamos esta función para eliminar un cromo de la base de datos y de la lista de añadidos recientemente

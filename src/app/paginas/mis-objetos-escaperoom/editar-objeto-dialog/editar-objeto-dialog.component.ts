@@ -70,7 +70,7 @@ export class EditarObjetoDialogComponent implements OnInit {
     //this.select.value=(this.types.find(tp=>tp.id==this.tipoObjeto).id);
     //document.getElementById('select').value=(this.types.find(tp=> tp.id==this.tipoObjeto).id);   
   }
-
+ /*
   ComprobarImagenesObjeto(comprobar: String, objId:number){
     
     return new Promise ((resolve, reject)=>{
@@ -92,27 +92,23 @@ export class EditarObjetoDialogComponent implements OnInit {
 
     })
   }
+*/
 
   EditarObjeto() {
-    console.log('Entro a editar');
-    // tslint:disable-next-line:max-line-length
+    /*
     this.ComprobarImagenesObjeto(this.nombreImagenObjetoNueva, this.ObjetoEscaperoom.id)
     .then(cont=>{
       if(cont==0){
+        */
         var objeto=new ObjetoEscaperoom(this.nombreObjeto,  this.nombreImagenObjetoNueva);
         objeto.Publica=this.ObjetoEscaperoom.Publica;
         this.peticionesAPI.ModificaObjeto(objeto, this.ObjetoEscaperoom.id,this.profesorId)
         .subscribe((res) => {
           if (res != null) {
             this.ObjetoEscaperoom = res;
-            // this.cromosEditados.push (res);
-            // console.log('nombre del cromo + nivel' + this.cromosEditados[0].Nombre + this.cromosEditados[0].Nivel);
             if (this.imagenObjetoCargada === true) {
-              // HACEMOS EL POST DE LA NUEVA IMAGEN EN LA BASE DE DATOS
               console.log ('Nueva imagen'); 
               var cont=0;
-              //var object = this.ObjetosEscaperoom.find(obj => obj.id == this.ObjetoEscaperoom.id);
-              //var index = this.ObjetosEscaperoom.indexOf(object);
               for(let i=0; i<this.ObjetosEscaperoom.length; i++ ){
                 if(this.ObjetosEscaperoom[i].Imagen ==this.nombreImagenObjetoAntigua){
                   cont++;
@@ -138,16 +134,15 @@ export class EditarObjetoDialogComponent implements OnInit {
             console.log('fallo editando');
           }
         });
+        /*
       }else if(cont>0){        
         Swal.fire("Error","Ya hay objetos con esta imagen",'error');
       }else{        
         Swal.fire("Error","Error en el servidor",'error');
       }
-
-      
     })
     
-    // this.dialogRef.close(this.cromosEditados);
+    */
  }
 
    // Activa la función ExaminarImagenCromo

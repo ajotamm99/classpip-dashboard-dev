@@ -81,7 +81,7 @@ export class EditarEscenaDialogComponent implements OnInit {
     // Cargo el imagen del cromo
     //this.TraeArchivosEscenas();
   }
-
+  /*
   ComprobarImagenesyArchivosEscena(comprobarImagen: String, comprobarArchivo: String,escenaId:number){
     
     return new Promise ((resolve, reject)=>{
@@ -109,13 +109,15 @@ export class EditarEscenaDialogComponent implements OnInit {
         });        
       });
     });
-  }
+  }*/
 
   EditarEscena() {
     console.log('Entro a editar');
+    /*
     this.ComprobarImagenesyArchivosEscena(this.nombreImagenEscenaNueva,this.nombreArchivoEscenaNuevo,this.EscenaEscaperoom.id)
     .then(data=>{
       if(data[0]==0 && data[1]==0){
+        */
         this.peticionesAPI.ModificaEscenaEscenario(new EscenaEscaperoom( this.nombreArchivoEscenaNuevo, this.nombreImagenEscenaNueva, this.nombreEscena), this.EscenaEscaperoom.escenarioEscapeRoomId, this.EscenaEscaperoom.id)
         .subscribe((res) => {
           if (res != null) {
@@ -151,6 +153,7 @@ export class EditarEscenaDialogComponent implements OnInit {
         },error=>{
           Swal.fire("Error","Inserte imagen y archivo",'error');
         });
+        /*
       }else if(data[0]>0 && data[1]>0){        
         Swal.fire("Error","Ya hay escenas con este nombre de archivo e imagen",'error');
       }else if(data[0]>0 && data[1]==0){        
@@ -162,6 +165,7 @@ export class EditarEscenaDialogComponent implements OnInit {
       }
     });
     // tslint:disable-next-line:max-line-length
+    */
     
  }
 

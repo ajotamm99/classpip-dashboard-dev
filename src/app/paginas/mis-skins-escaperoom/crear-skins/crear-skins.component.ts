@@ -62,7 +62,7 @@ export class CrearSkinsComponent implements OnInit {
      nombreSkins: ['', Validators.required]
     });
   }
-  
+  /*
   ComprobarImagenesSkins(comprobar: String){
     return new Promise ((resolve, reject)=>{
       this.peticionesAPI.DameSkinsEscaperoomDelProfesor(this.profesorId).subscribe(data=>{
@@ -80,6 +80,7 @@ export class CrearSkinsComponent implements OnInit {
 
     })
   }
+  */
 
   DatoSkin(){
     this.nombreSkin=this.myForm.value.nombreSkins;  
@@ -87,9 +88,11 @@ export class CrearSkinsComponent implements OnInit {
   
   // Creamos un escenario dandole un nombre y una descripcion
   CrearSkin() {
+    /*
     this.ComprobarImagenesSkins(this.nombreImagenSkin)
     .then((cont)=>{
       if(cont==0){
+        */
         this.peticionesAPI.PonSkinEscaperoom (new Skin(this.nombreImagenSkin,this.nombreSkin), this.profesorId)
         .subscribe((res) => {
           if (res != null) {
@@ -115,6 +118,7 @@ export class CrearSkinsComponent implements OnInit {
           }
         },(error=>{
         }));
+        /*
       }else if(cont>0){
         
         Swal.fire('Error',"Ya existe una skin con esa imagen",'error');
@@ -122,9 +126,8 @@ export class CrearSkinsComponent implements OnInit {
         
         Swal.fire('Error',"Error en la base de datos",'error');
       }
-
-    
     });
+    */
     
   }
   
