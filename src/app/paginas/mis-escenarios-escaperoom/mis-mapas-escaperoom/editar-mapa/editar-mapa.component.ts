@@ -113,6 +113,7 @@ export class EditarMapaComponent implements OnInit {
 
      // RECUPERAREMOS LA NUEVA LISTA DE LOS CROMO Y VOLVEREMOS A BUSCAR LOS CROMOS QUE TIENE LA COLECCION
     dialogRef.afterClosed().subscribe(escenasAgregadas => {
+      try{
       console.log ('volvemos de agregar cromos ' + escenasAgregadas.length);
       // tslint:disable-next-line:prefer-for-of
       for (let i = 0 ; i < escenasAgregadas.length; i++) {
@@ -120,6 +121,7 @@ export class EditarMapaComponent implements OnInit {
       }
       //this.TraeImagenColeccion(this.coleccion);
       this.TraeArchivosEscenas();
+    }catch{}
 
      });
   }
@@ -153,6 +155,7 @@ export class EditarMapaComponent implements OnInit {
 
     // tslint:disable-next-line:no-shadowed-variable
     dialogRef.afterClosed().subscribe( escena => {
+      try{
       // tslint:disable-next-line:prefer-for-of
       if(escena!== null){
         console.log(escena.Nombre);
@@ -163,7 +166,7 @@ export class EditarMapaComponent implements OnInit {
         //this.EscenasdeEscenario.push (escena);
         this.TraeArchivosEscenas();
       }
-
+    }catch{}
 
     });
   }

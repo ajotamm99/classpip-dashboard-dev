@@ -149,7 +149,7 @@ VerSkinDialog(SkinEscaperoom: Skin) {
 
    // RECUPERAREMOS LA NUEVA LISTA DE LOS CROMO Y VOLVEREMOS A BUSCAR LOS CROMOS QUE TIENE LA COLECCION
   dialogRef.afterClosed().subscribe(nuevaSkin => {
-    
+    try{
     console.log ('skin editado ' + nuevaSkin);
     if(nuevaSkin!=null){
       //tslint:disable-next-line:prefer-for-of
@@ -161,6 +161,7 @@ VerSkinDialog(SkinEscaperoom: Skin) {
       this.TraeImagenesSkins();
       this.sesion.TomaSkisnEscaperoom(this.SkinsEscaperoom);
     }
+  }catch{}
    });
   //abrir dialog
   //this.router.navigate(['/inicio/' + this.profesorId + '/recursos/misRecursosEscaperoom/misObjetos']);

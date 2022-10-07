@@ -3565,50 +3565,125 @@ export class JuegoComponent implements OnInit {
     console.log(this.escenasActivasRecibidas);
      // RECUPERAREMOS LA NUEVA LISTA DE LOS CROMO Y VOLVEREMOS A BUSCAR LOS CROMOS QUE TIENE LA COLECCION
     dialogRef.afterClosed().subscribe(escenaAgregada => {
-      if(escenaAgregada!=null){
-      console.log(<EscenasActMostrar>escenaAgregada);
-      let ordenAgregada= escenaAgregada.Orden;
-        if(escenaActiva.Orden==escenaAgregada.Orden){
+      try{
+        if(escenaAgregada!=null){
+          console.log(<EscenasActMostrar>escenaAgregada);
+          let ordenAgregada= escenaAgregada.Orden;
+          if(escenaActiva.Orden==escenaAgregada.Orden){
 
-          if(escenaAgregada.Requisito=='puntos'){
+            if(escenaAgregada.Requisito=='puntos'){
+              
+              console.log("edito con mismo orden y tipo puntos");
+              let index=this.escenasActivasRecibidas.findIndex(sc=>sc.orden==escenaAgregada.Orden);
+              let escenaMod= this.escenasActivasRecibidas[index];
+              escenaMod.TiempoLimite= escenaAgregada.TiempoLimite;
+              escenaMod.TipoRequisito=escenaAgregada.Requisito;
+              escenaMod.RequisitoPuntos=escenaAgregada.Puntosrequisito;
+              this.escenasActivasRecibidas.splice(index,1,escenaMod);
+              this.escenasActivasMostrar.splice(this.escenasActivasMostrar.findIndex(sc=>sc.Orden==escenaAgregada.Orden),1,escenaAgregada)
+              this.dataSourceEscenas= new MatTableDataSource(this.escenasActivasMostrar);           
+              
+              console.log("2",this.escenasActivasMostrar);
+              console.log("2r",this.escenasActivasRecibidas);
+            }else{
+              console.log("edito con mismo orden y tipo objeto");
+              let index=this.escenasActivasRecibidas.findIndex(sc=>sc.orden==escenaAgregada.Orden);
+              let escenaMod= this.escenasActivasRecibidas[index];
+              escenaMod.TiempoLimite= escenaAgregada.TiempoLimite;
+              escenaMod.TipoRequisito=escenaAgregada.Requisito;
+              escenaMod.RequisitoPuntos=0;
+              this.escenasActivasRecibidas.splice(index,1,escenaMod);
+              this.escenasActivasMostrar.splice(this.escenasActivasMostrar.findIndex(sc=>sc.Orden==escenaAgregada.Orden),1,escenaAgregada);
+              
+              this.dataSourceEscenas= new MatTableDataSource(this.escenasActivasMostrar);
+              
+              console.log("2",this.escenasActivasMostrar);
+              console.log("2r",this.escenasActivasRecibidas);
+            }
             
-            console.log("edito con mismo orden y tipo puntos");
-            let index=this.escenasActivasRecibidas.findIndex(sc=>sc.orden==escenaAgregada.Orden);
-            let escenaMod= this.escenasActivasRecibidas[index];
-            escenaMod.TiempoLimite= escenaAgregada.TiempoLimite;
-            escenaMod.TipoRequisito=escenaAgregada.Requisito;
-            escenaMod.RequisitoPuntos=escenaAgregada.Puntosrequisito;
-            this.escenasActivasRecibidas.splice(index,1,escenaMod);
-            this.escenasActivasMostrar.splice(this.escenasActivasMostrar.findIndex(sc=>sc.Orden==escenaAgregada.Orden),1,escenaAgregada)
-            this.dataSourceEscenas= new MatTableDataSource(this.escenasActivasMostrar);           
-            
-            console.log("2",this.escenasActivasMostrar);
-            console.log("2r",this.escenasActivasRecibidas);
           }else{
-            console.log("edito con mismo orden y tipo objeto");
-            let index=this.escenasActivasRecibidas.findIndex(sc=>sc.orden==escenaAgregada.Orden);
-            let escenaMod= this.escenasActivasRecibidas[index];
-            escenaMod.TiempoLimite= escenaAgregada.TiempoLimite;
-            escenaMod.TipoRequisito=escenaAgregada.Requisito;
-            escenaMod.RequisitoPuntos=0;
-            this.escenasActivasRecibidas.splice(index,1,escenaMod);
-            this.escenasActivasMostrar.splice(this.escenasActivasMostrar.findIndex(sc=>sc.Orden==escenaAgregada.Orden),1,escenaAgregada);
-            
-            this.dataSourceEscenas= new MatTableDataSource(this.escenasActivasMostrar);
-            
-            console.log("2",this.escenasActivasMostrar);
-            console.log("2r",this.escenasActivasRecibidas);
-          }
-          
-        }else{
-          if(escenaAgregada.Requisito=='puntos'){
-             if(ordenAgregada<ordenEscenaActiva){
+            if(escenaAgregada.Requisito=='puntos'){
+              if(ordenAgregada<ordenEscenaActiva){
+                  let indexMostrar=this.escenasActivasMostrar.findIndex(sc=>sc.Orden==escenaActiva.Orden);
+                  let escenaMostrarModificar= this.escenasActivasMostrar[indexMostrar];    
+                  escenaMostrarModificar.Orden= ordenAgregada;
+                  escenaMostrarModificar.TiempoLimite= escenaAgregada.TiempoLimite;
+                  escenaMostrarModificar.Requisito=escenaAgregada.Requisito;
+                  escenaMostrarModificar.Puntosrequisito=escenaAgregada.Puntosrequisito;            
+                  this.escenasActivasMostrar[indexMostrar]=escenaMostrarModificar;
+                  
+                  let indexMostrar2=this.escenasActivasMostrar.findIndex(sc=>sc.Orden==escenaAgregada.Orden);        
+                  let escenaMostrarModificar2 = this.escenasActivasMostrar[indexMostrar2];
+                  escenaMostrarModificar2.Orden= ordenEscenaActiva;            
+                  this.escenasActivasMostrar[indexMostrar2]=escenaMostrarModificar2;
+                  this.escenasActivasMostrar.sort((a, b)=>a.Orden - b.Orden);
+                
+                  console.log(this.escenasActivasMostrar);
+                  this.dataSourceEscenas= new MatTableDataSource(this.escenasActivasMostrar);
+              
+                  //EscenasActRecibidas
+                  let index=this.escenasActivasRecibidas.findIndex(sc=>sc.orden==ordenEscenaActiva);
+                  this.escenaModificar= this.escenasActivasRecibidas[index]; 
+                  this.escenaModificar.orden= ordenAgregada;
+                  this.escenaModificar.TiempoLimite= escenaAgregada.TiempoLimite;
+                  this.escenaModificar.TipoRequisito=escenaAgregada.Requisito;
+                  this.escenaModificar.RequisitoPuntos=escenaAgregada.Puntosrequisito;            
+                  this.escenasActivasRecibidas[index]=this.escenaModificar;
+
+                  let index2=this.escenasActivasRecibidas.findIndex(sc=>sc.orden==ordenAgregada);
+                  this.escenaModificar2 = this.escenasActivasRecibidas[index2];
+                  this.escenaModificar2.orden= ordenEscenaActiva;         
+                  this.escenasActivasRecibidas[index2]=this.escenaModificar2;
+                  this.escenasActivasRecibidas.sort((a, b)=>a.orden - b.orden);
+                  console.log(this.escenasActivasRecibidas);
+              }else{
+                              
+                let indexMostrar2=this.escenasActivasMostrar.findIndex(sc=>sc.Orden==escenaAgregada.Orden);        
+                let escenaMostrarModificar2 = this.escenasActivasMostrar[indexMostrar2];
+                escenaMostrarModificar2.Orden= ordenEscenaActiva;            
+                this.escenasActivasMostrar[indexMostrar2]=escenaMostrarModificar2;
+
                 let indexMostrar=this.escenasActivasMostrar.findIndex(sc=>sc.Orden==escenaActiva.Orden);
                 let escenaMostrarModificar= this.escenasActivasMostrar[indexMostrar];    
                 escenaMostrarModificar.Orden= ordenAgregada;
                 escenaMostrarModificar.TiempoLimite= escenaAgregada.TiempoLimite;
                 escenaMostrarModificar.Requisito=escenaAgregada.Requisito;
                 escenaMostrarModificar.Puntosrequisito=escenaAgregada.Puntosrequisito;            
+                this.escenasActivasMostrar[indexMostrar]=escenaMostrarModificar;
+                
+                this.escenasActivasMostrar.sort((a, b)=>a.Orden - b.Orden);
+
+              
+                console.log(this.escenasActivasMostrar);
+                this.dataSourceEscenas= new MatTableDataSource(this.escenasActivasMostrar);
+            
+                //EscenasActRecibidas
+                let index2=this.escenasActivasRecibidas.findIndex(sc=>sc.orden==ordenAgregada);
+                this.escenaModificar2 = this.escenasActivasRecibidas[index2];
+                this.escenaModificar2.orden= ordenEscenaActiva;         
+                this.escenasActivasRecibidas[index2]=this.escenaModificar2;
+
+                let index=this.escenasActivasRecibidas.findIndex(sc=>sc.orden==ordenEscenaActiva);
+                this.escenaModificar= this.escenasActivasRecibidas[index]; 
+                this.escenaModificar.orden= ordenAgregada;
+                this.escenaModificar.TiempoLimite= escenaAgregada.TiempoLimite;
+                this.escenaModificar.TipoRequisito=escenaAgregada.Requisito;
+                this.escenaModificar.RequisitoPuntos=escenaAgregada.Puntosrequisito;            
+                this.escenasActivasRecibidas[index]=this.escenaModificar;
+
+
+                this.escenasActivasRecibidas.sort((a, b)=>a.orden - b.orden);
+              }
+              //EscenasActMostrar
+                
+
+            }else{
+              if(ordenAgregada<ordenEscenaActiva){
+                let indexMostrar=this.escenasActivasMostrar.findIndex(sc=>sc.Orden==escenaActiva.Orden);
+                let escenaMostrarModificar= this.escenasActivasMostrar[indexMostrar];    
+                escenaMostrarModificar.Orden= ordenAgregada;
+                escenaMostrarModificar.TiempoLimite= escenaAgregada.TiempoLimite;
+                escenaMostrarModificar.Requisito=escenaAgregada.Requisito;         
                 this.escenasActivasMostrar[indexMostrar]=escenaMostrarModificar;
                 
                 let indexMostrar2=this.escenasActivasMostrar.findIndex(sc=>sc.Orden==escenaAgregada.Orden);        
@@ -3625,8 +3700,7 @@ export class JuegoComponent implements OnInit {
                 this.escenaModificar= this.escenasActivasRecibidas[index]; 
                 this.escenaModificar.orden= ordenAgregada;
                 this.escenaModificar.TiempoLimite= escenaAgregada.TiempoLimite;
-                this.escenaModificar.TipoRequisito=escenaAgregada.Requisito;
-                this.escenaModificar.RequisitoPuntos=escenaAgregada.Puntosrequisito;            
+                this.escenaModificar.TipoRequisito=escenaAgregada.Requisito;          
                 this.escenasActivasRecibidas[index]=this.escenaModificar;
 
                 let index2=this.escenasActivasRecibidas.findIndex(sc=>sc.orden==ordenAgregada);
@@ -3635,7 +3709,7 @@ export class JuegoComponent implements OnInit {
                 this.escenasActivasRecibidas[index2]=this.escenaModificar2;
                 this.escenasActivasRecibidas.sort((a, b)=>a.orden - b.orden);
                 console.log(this.escenasActivasRecibidas);
-             }else{
+            }else{
                             
               let indexMostrar2=this.escenasActivasMostrar.findIndex(sc=>sc.Orden==escenaAgregada.Orden);        
               let escenaMostrarModificar2 = this.escenasActivasMostrar[indexMostrar2];
@@ -3646,8 +3720,7 @@ export class JuegoComponent implements OnInit {
               let escenaMostrarModificar= this.escenasActivasMostrar[indexMostrar];    
               escenaMostrarModificar.Orden= ordenAgregada;
               escenaMostrarModificar.TiempoLimite= escenaAgregada.TiempoLimite;
-              escenaMostrarModificar.Requisito=escenaAgregada.Requisito;
-              escenaMostrarModificar.Puntosrequisito=escenaAgregada.Puntosrequisito;            
+              escenaMostrarModificar.Requisito=escenaAgregada.Requisito;          
               this.escenasActivasMostrar[indexMostrar]=escenaMostrarModificar;
               
               this.escenasActivasMostrar.sort((a, b)=>a.Orden - b.Orden);
@@ -3662,39 +3735,6 @@ export class JuegoComponent implements OnInit {
               this.escenaModificar2.orden= ordenEscenaActiva;         
               this.escenasActivasRecibidas[index2]=this.escenaModificar2;
 
-              let index=this.escenasActivasRecibidas.findIndex(sc=>sc.orden==ordenEscenaActiva);
-              this.escenaModificar= this.escenasActivasRecibidas[index]; 
-              this.escenaModificar.orden= ordenAgregada;
-              this.escenaModificar.TiempoLimite= escenaAgregada.TiempoLimite;
-              this.escenaModificar.TipoRequisito=escenaAgregada.Requisito;
-              this.escenaModificar.RequisitoPuntos=escenaAgregada.Puntosrequisito;            
-              this.escenasActivasRecibidas[index]=this.escenaModificar;
-
-
-              this.escenasActivasRecibidas.sort((a, b)=>a.orden - b.orden);
-             }
-            //EscenasActMostrar
-              
-
-          }else{
-            if(ordenAgregada<ordenEscenaActiva){
-              let indexMostrar=this.escenasActivasMostrar.findIndex(sc=>sc.Orden==escenaActiva.Orden);
-              let escenaMostrarModificar= this.escenasActivasMostrar[indexMostrar];    
-              escenaMostrarModificar.Orden= ordenAgregada;
-              escenaMostrarModificar.TiempoLimite= escenaAgregada.TiempoLimite;
-              escenaMostrarModificar.Requisito=escenaAgregada.Requisito;         
-              this.escenasActivasMostrar[indexMostrar]=escenaMostrarModificar;
-              
-              let indexMostrar2=this.escenasActivasMostrar.findIndex(sc=>sc.Orden==escenaAgregada.Orden);        
-              let escenaMostrarModificar2 = this.escenasActivasMostrar[indexMostrar2];
-              escenaMostrarModificar2.Orden= ordenEscenaActiva;            
-              this.escenasActivasMostrar[indexMostrar2]=escenaMostrarModificar2;
-              this.escenasActivasMostrar.sort((a, b)=>a.Orden - b.Orden);
-            
-              console.log(this.escenasActivasMostrar);
-              this.dataSourceEscenas= new MatTableDataSource(this.escenasActivasMostrar);
-          
-              //EscenasActRecibidas
               let index=this.escenasActivasRecibidas.findIndex(sc=>sc.orden==ordenEscenaActiva);
               this.escenaModificar= this.escenasActivasRecibidas[index]; 
               this.escenaModificar.orden= ordenAgregada;
@@ -3702,60 +3742,22 @@ export class JuegoComponent implements OnInit {
               this.escenaModificar.TipoRequisito=escenaAgregada.Requisito;          
               this.escenasActivasRecibidas[index]=this.escenaModificar;
 
-              let index2=this.escenasActivasRecibidas.findIndex(sc=>sc.orden==ordenAgregada);
-              this.escenaModificar2 = this.escenasActivasRecibidas[index2];
-              this.escenaModificar2.orden= ordenEscenaActiva;         
-              this.escenasActivasRecibidas[index2]=this.escenaModificar2;
+
               this.escenasActivasRecibidas.sort((a, b)=>a.orden - b.orden);
-              console.log(this.escenasActivasRecibidas);
-           }else{
-                          
-            let indexMostrar2=this.escenasActivasMostrar.findIndex(sc=>sc.Orden==escenaAgregada.Orden);        
-            let escenaMostrarModificar2 = this.escenasActivasMostrar[indexMostrar2];
-            escenaMostrarModificar2.Orden= ordenEscenaActiva;            
-            this.escenasActivasMostrar[indexMostrar2]=escenaMostrarModificar2;
-
-            let indexMostrar=this.escenasActivasMostrar.findIndex(sc=>sc.Orden==escenaActiva.Orden);
-            let escenaMostrarModificar= this.escenasActivasMostrar[indexMostrar];    
-            escenaMostrarModificar.Orden= ordenAgregada;
-            escenaMostrarModificar.TiempoLimite= escenaAgregada.TiempoLimite;
-            escenaMostrarModificar.Requisito=escenaAgregada.Requisito;          
-            this.escenasActivasMostrar[indexMostrar]=escenaMostrarModificar;
+            }
+            }
             
-            this.escenasActivasMostrar.sort((a, b)=>a.Orden - b.Orden);
-
-          
-            console.log(this.escenasActivasMostrar);
-            this.dataSourceEscenas= new MatTableDataSource(this.escenasActivasMostrar);
-        
-            //EscenasActRecibidas
-            let index2=this.escenasActivasRecibidas.findIndex(sc=>sc.orden==ordenAgregada);
-            this.escenaModificar2 = this.escenasActivasRecibidas[index2];
-            this.escenaModificar2.orden= ordenEscenaActiva;         
-            this.escenasActivasRecibidas[index2]=this.escenaModificar2;
-
-            let index=this.escenasActivasRecibidas.findIndex(sc=>sc.orden==ordenEscenaActiva);
-            this.escenaModificar= this.escenasActivasRecibidas[index]; 
-            this.escenaModificar.orden= ordenAgregada;
-            this.escenaModificar.TiempoLimite= escenaAgregada.TiempoLimite;
-            this.escenaModificar.TipoRequisito=escenaAgregada.Requisito;          
-            this.escenasActivasRecibidas[index]=this.escenaModificar;
-
-
-            this.escenasActivasRecibidas.sort((a, b)=>a.orden - b.orden);
-           }
           }
-          
+          let tiempoAgregada= escenaAgregada.TiempoLimite;
+          this.tiemposEscenas=this.tiemposEscenas - tiempoEscenaActiva + tiempoAgregada;
+          this.tiempoRestante= this.tiempoLimiteEscaperoomNumber - this.tiemposEscenas;
+          if(this.tiempoRestante<=0){
+            this.tengoTiempos=true;
+          }else{
+            this.tengoTiempos=false;
+          }
         }
-        let tiempoAgregada= escenaAgregada.TiempoLimite;
-        this.tiemposEscenas=this.tiemposEscenas - tiempoEscenaActiva + tiempoAgregada;
-        this.tiempoRestante= this.tiempoLimiteEscaperoomNumber - this.tiemposEscenas;
-        if(this.tiempoRestante<=0){
-          this.tengoTiempos=true;
-        }else{
-          this.tengoTiempos=false;
-        }
-      }
+      }catch{}
     });
   }
 
@@ -3879,18 +3881,20 @@ export class JuegoComponent implements OnInit {
 
     // RECUPERAREMOS LA NUEVA LISTA DE LOS CROMO Y VOLVEREMOS A BUSCAR LOS CROMOS QUE TIENE LA COLECCION
     dialogRef.afterClosed().subscribe(objetoAgregado => {
-      if(objetoAgregado!=null && objetoAgregado!=undefined){
-        if(this.objetosEscenasMostrar.find(obj=> obj==objetoAgregado)==undefined){
-          console.log(objetoAgregado);
-          this.objetosEscenasMostrar.push(objetoAgregado);
-          this.tengoObjetosEscena=true;
-          this.FiltrarObjetosEscena(this.escenaObjetoSeleccionada);
-          this.ConfirmarRequisitosObjetos();           
-          this.ConfirmarHayObjetosPuntos();
-        }else{
-          Swal.fire("Error","Objeto duplicado no añadido",'error');
-        }         
-      }
+      try{
+        if(objetoAgregado!=null && objetoAgregado!=undefined){
+          if(this.objetosEscenasMostrar.find(obj=> obj==objetoAgregado)==undefined){
+            console.log(objetoAgregado);
+            this.objetosEscenasMostrar.push(objetoAgregado);
+            this.tengoObjetosEscena=true;
+            this.FiltrarObjetosEscena(this.escenaObjetoSeleccionada);
+            this.ConfirmarRequisitosObjetos();           
+            this.ConfirmarHayObjetosPuntos();
+          }else{
+            Swal.fire("Error","Objeto duplicado no añadido",'error');
+          }         
+        }
+      }catch{}
      });
   }
 
@@ -3907,20 +3911,22 @@ export class JuegoComponent implements OnInit {
 
     // RECUPERAREMOS LA NUEVA LISTA DE LOS CROMO Y VOLVEREMOS A BUSCAR LOS CROMOS QUE TIENE LA COLECCION
     dialogRef.afterClosed().subscribe(objetoAgregado => {
-      if(objetoAgregado!=null && objetoAgregado!=undefined){
-        if(this.objetosEscenasMostrar.find(obj=> obj==objetoAgregado)==undefined){
-          console.log(objetoAgregado);
-          this.objetosEscenasMostrar=this.objetosEscenasMostrar.filter(obj=>obj!=objetoActivo);
-          this.objetosEscenasMostrar.push(objetoAgregado);
-          this.tengoObjetosEscena=true;
-          this.FiltrarObjetosEscena(this.escenaObjetoSeleccionada);
-          this.ConfirmarRequisitosObjetos();             
-          this.ConfirmarHayObjetosPuntos();       
-        }else{          
-          Swal.fire("Error","Objeto duplicado no añadido",'error');
-        }
+      try{
+        if(objetoAgregado!=null && objetoAgregado!=undefined){
+          if(this.objetosEscenasMostrar.find(obj=> obj==objetoAgregado)==undefined){
+            console.log(objetoAgregado);
+            this.objetosEscenasMostrar=this.objetosEscenasMostrar.filter(obj=>obj!=objetoActivo);
+            this.objetosEscenasMostrar.push(objetoAgregado);
+            this.tengoObjetosEscena=true;
+            this.FiltrarObjetosEscena(this.escenaObjetoSeleccionada);
+            this.ConfirmarRequisitosObjetos();             
+            this.ConfirmarHayObjetosPuntos();       
+          }else{          
+            Swal.fire("Error","Objeto duplicado no añadido",'error');
+          }
 
-      }
+        }
+      }catch{}
      });
 
   }
@@ -4092,14 +4098,16 @@ export class JuegoComponent implements OnInit {
 
     // RECUPERAREMOS LA NUEVA LISTA DE LOS CROMO Y VOLVEREMOS A BUSCAR LOS CROMOS QUE TIENE LA COLECCION
     dialogRef.afterClosed().subscribe(preguntaAgregada => {
-      if(preguntaAgregada!=null && preguntaAgregada!=undefined){
-          console.log(preguntaAgregada);
-          this.objetosMostrarConPreguntas.splice(this.objetosMostrarConPreguntas.indexOf(objeto),1,preguntaAgregada)
-          this.dataSourceObjetosConPreguntas = new MatTableDataSource(this.objetosMostrarConPreguntas);
-          this.requisitosEscenasPuntos[this.requisitosEscenasPuntos.findIndex(req=> req.OrdenEscena == ordenEscena)].PuntosActuales+=preguntaAgregada.Sumar;
-          this.dataSourceRequisitosEscenasPuntos= new MatTableDataSource(this.requisitosEscenasPuntos);
-          this.ConfirmarRequisitosPuntosPreguntas();
-      }
+      try{
+        if(preguntaAgregada!=null && preguntaAgregada!=undefined){
+            console.log(preguntaAgregada);
+            this.objetosMostrarConPreguntas.splice(this.objetosMostrarConPreguntas.indexOf(objeto),1,preguntaAgregada)
+            this.dataSourceObjetosConPreguntas = new MatTableDataSource(this.objetosMostrarConPreguntas);
+            this.requisitosEscenasPuntos[this.requisitosEscenasPuntos.findIndex(req=> req.OrdenEscena == ordenEscena)].PuntosActuales+=preguntaAgregada.Sumar;
+            this.dataSourceRequisitosEscenasPuntos= new MatTableDataSource(this.requisitosEscenasPuntos);
+            this.ConfirmarRequisitosPuntosPreguntas();
+        }
+      }catch{}
      });
 
   }
@@ -4119,6 +4127,7 @@ export class JuegoComponent implements OnInit {
 
     // RECUPERAREMOS LA NUEVA LISTA DE LOS CROMO Y VOLVEREMOS A BUSCAR LOS CROMOS QUE TIENE LA COLECCION
     dialogRef.afterClosed().subscribe(preguntaAgregada => {
+      try{
       if(preguntaAgregada!=null && preguntaAgregada!=undefined){
         this.requisitosEscenasPuntos[this.requisitosEscenasPuntos.findIndex(req=> req.OrdenEscena == ordenEscena)].PuntosActuales+=(preguntaAgregada.Sumar-puntosSumar);
         this.dataSourceRequisitosEscenasPuntos= new MatTableDataSource(this.requisitosEscenasPuntos);
@@ -4126,6 +4135,7 @@ export class JuegoComponent implements OnInit {
         this.dataSourceObjetosConPreguntas= new MatTableDataSource(this.objetosMostrarConPreguntas);
         this.ConfirmarRequisitosPuntosPreguntas();
       }
+    }catch{}
      });
 
 

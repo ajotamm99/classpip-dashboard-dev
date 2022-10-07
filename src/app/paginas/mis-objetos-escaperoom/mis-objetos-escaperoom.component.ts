@@ -156,7 +156,8 @@ VerObjetoDialog(ObjetoEscaperoom: ObjetoEscaperoom) {
 
    // RECUPERAREMOS LA NUEVA LISTA DE LOS CROMO Y VOLVEREMOS A BUSCAR LOS CROMOS QUE TIENE LA COLECCION
   dialogRef.afterClosed().subscribe(nuevoObjeto => {
-    console.log ('objeto editado ' + nuevoObjeto);
+    try{
+      console.log ('objeto editado ' + nuevoObjeto);
     // tslint:disable-next-line:prefer-for-of
     if(nuevoObjeto!=null && nuevoObjeto!=undefined){
       //var objetoBuscar = this.ObjetosEscaperoom.filter(obj => obj.id == nuevoObjeto.id)[0];
@@ -169,6 +170,9 @@ VerObjetoDialog(ObjetoEscaperoom: ObjetoEscaperoom) {
       //this.TraeImagenColeccion(this.coleccion);
       this.TraeImagenesObjetos();
     }
+  }catch{
+    
+  }
 
    });
   //abrir dialog
