@@ -181,7 +181,6 @@ export class CrearObjetosComponent implements OnInit {
   
       this.imagenCargadaObjeto = false;
       this.stepper.reset();
-      this.select.value='';
       this.myForm.reset();
   
   }
@@ -192,7 +191,6 @@ export class CrearObjetosComponent implements OnInit {
   Finalizar() {
       // Al darle al botón de finalizar limpiamos el formulario y reseteamos el stepper
       this.myForm.reset();
-      this.select.value='';
       this.stepper.reset();
       // Tambien limpiamos las variables utilizadas para crear el nueva coleccion, por si queremos crear otra.
       this.LimpiarCampos()

@@ -4193,7 +4193,7 @@ export class JuegoComponent implements OnInit {
     this.tengoEscenasEscaperoom=false;
     this.dataSourceEscenas=undefined;
     this.escenarioEscaperoomRecibido = undefined;
-    this.tengoEscenarioEscaperoom = true;
+    this.tengoEscenarioEscaperoom = false;
     this.escenasEscenarioRecibidas=undefined;
     this.hayEscenas=false;
 
