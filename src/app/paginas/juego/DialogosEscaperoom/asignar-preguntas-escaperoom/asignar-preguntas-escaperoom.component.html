@@ -9,52 +9,54 @@
               <i class="material-icons" matSuffix>search</i>
             </mat-form-field>
           </div>
-
-          <table align="center" mat-table [dataSource]="dataSourcePreguntas" class="example-container mat-elevation-z8" id="tablaPA">
-  
-          <ng-container matColumnDef="Titulo">
-            <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla" style="text-align: left !important;"> Título </th>
-            <td style=" max-width: 100px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;" mat-cell *matCellDef="let pregunta"> {{pregunta.Titulo}} </td>
-          </ng-container>
-
-          <ng-container matColumnDef="Tipo">
-            <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla" style="text-align: left !important;"> Tipo </th>
-            <td mat-cell *matCellDef="let pregunta"> {{pregunta.Tipo}} </td>
-          </ng-container>
-
-          <ng-container matColumnDef="Pregunta">
-            <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla" style="text-align: left !important;"> Pregunta </th>
-            <td style=" max-width: 100px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;" mat-cell *matCellDef="let pregunta"> {{pregunta.Pregunta}} </td>
-          </ng-container>
-
-          <ng-container matColumnDef="Tematica">
-            <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla" style="text-align: left !important;"> Temática </th>
-            <td mat-cell *matCellDef="let pregunta"> {{pregunta.Tematica}} </td>
-          </ng-container>
-
-          <ng-container matColumnDef="Iconos">
-            <th  mat-header-cell *matHeaderCellDef class="tituloColumnaTabla"></th>
-            <td  mat-cell *matCellDef="let pregunta">
-              <div align="right">
-                <button  (click) = "SeleccionarPregunta(pregunta)" mat-icon-button matTooltip="Selecciona la pregunta">
-                  <i class="material-icons green md-36">add</i>
-                </button>
-
-              </div>
-          </td>
-        </ng-container>
           
-          <tr mat-header-row *matHeaderRowDef="displayedColumnsPreguntas"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumnsPreguntas;">
-          </tr>
-  
-        </table>
+          <div style="height:400 px; overflow:auto">
+            <table align="center" mat-table [dataSource]="dataSourcePreguntas" class="example-container mat-elevation-z8" id="tablaPA">
+    
+            <ng-container matColumnDef="Titulo">
+              <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla" style="text-align: left !important;"> Título </th>
+              <td style=" max-width: 100px;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;" mat-cell *matCellDef="let pregunta"> {{pregunta.Titulo}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Tipo">
+              <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla" style="text-align: left !important;"> Tipo </th>
+              <td mat-cell *matCellDef="let pregunta"> {{pregunta.Tipo}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Pregunta">
+              <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla" style="text-align: left !important;"> Pregunta </th>
+              <td style=" max-width: 100px;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;" mat-cell *matCellDef="let pregunta"> {{pregunta.Pregunta}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Tematica">
+              <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla" style="text-align: left !important;"> Temática </th>
+              <td mat-cell *matCellDef="let pregunta"> {{pregunta.Tematica}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Iconos">
+              <th  mat-header-cell *matHeaderCellDef class="tituloColumnaTabla"></th>
+              <td  mat-cell *matCellDef="let pregunta">
+                <div align="right">
+                  <button  (click) = "SeleccionarPregunta(pregunta)" mat-icon-button matTooltip="Selecciona la pregunta">
+                    <i class="material-icons green md-36">add</i>
+                  </button>
+
+                </div>
+            </td>
+          </ng-container>
+            
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsPreguntas"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsPreguntas;">
+            </tr>
+    
+            </table>
+          </div>
 
         <br>
         <br>        

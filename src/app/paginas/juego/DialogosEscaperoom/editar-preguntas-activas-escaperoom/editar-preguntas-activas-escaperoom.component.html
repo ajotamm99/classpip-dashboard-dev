@@ -9,6 +9,8 @@
                 <i class="material-icons" matSuffix>search</i>
               </mat-form-field>
             </div>
+            
+          <div style="height:400 px; overflow:auto">
             <table align="center" mat-table [dataSource]="dataSourcePreguntas" class="example-container mat-elevation-z8" id="tablaPA">
   
           <ng-container matColumnDef="Titulo">
@@ -53,7 +55,8 @@
           <tr mat-row *matRowDef="let row; columns: displayedColumnsPreguntas;">
           </tr>
   
-        </table>
+            </table>
+          </div>
 
         <br>
         <br>        
