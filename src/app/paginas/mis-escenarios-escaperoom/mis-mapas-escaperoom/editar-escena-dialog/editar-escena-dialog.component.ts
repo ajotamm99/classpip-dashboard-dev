@@ -185,8 +185,12 @@ ExaminarImagenEscena($event) {
   const reader = new FileReader();
   reader.readAsDataURL(this.fileImagenEscena);
   reader.onload = () => {
+    var date = new Date();
+    var timestamp= (date.getFullYear()).toString()+(date.getMonth).toString()+(date.getDay).toString()
+      +(date.getHours).toString()+(date.getMinutes).toString()+(date.getSeconds).toString()+(date.getMilliseconds).toString();
+      
     this.nombreImagenEscenaAntigua=this.nombreImagenEscenaNueva;
-    this.nombreImagenEscenaNueva = this.profesorId+ this.fileImagenEscena.name;
+    this.nombreImagenEscenaNueva = timestamp+this.profesorId+ this.fileImagenEscena.name;
     console.log('ya Escena');
     this.imagenEscenaCargada= true;
     // this.imagenCargadoCromo = true;
@@ -207,11 +211,14 @@ ExaminarArchivoEscena($event) {
   reader.readAsText(fileInfo, 'ISO-8859-1');
   reader.onload = () => {
     try {
-
+      var date = new Date();
+      var timestamp= (date.getFullYear()).toString()+(date.getMonth).toString()+(date.getDay).toString()
+        +(date.getHours).toString()+(date.getMinutes).toString()+(date.getSeconds).toString()+(date.getMilliseconds).toString();
+        
           this.infoArchivoEscena = JSON.parse(reader.result.toString());
           this.archivoEscenaCargado =true;
           this.nombreArchivoEscenaAntiguo = this.nombreArchivoEscenaNuevo;
-          this.nombreArchivoEscenaNuevo = this.profesorId+this.fileArchivoEscena.name;
+          this.nombreArchivoEscenaNuevo = timestamp+this.profesorId+this.fileArchivoEscena.name;
           this.nombreArchivoMostrar=this.fileArchivoEscena.name;
           this.cambios=true;
     }catch{

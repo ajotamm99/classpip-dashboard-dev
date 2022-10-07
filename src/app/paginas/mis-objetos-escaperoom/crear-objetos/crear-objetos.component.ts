@@ -154,7 +154,11 @@ export class CrearObjetosComponent implements OnInit {
     const reader = new FileReader();
     reader.readAsDataURL(this.fileImagenObjeto);
     reader.onload = () => {
-      this.nombreImagenObjeto = this.profesorId+this.fileImagenObjeto.name;
+      var date = new Date();
+      var timestamp= (date.getFullYear()).toString()+(date.getMonth).toString()+(date.getDay).toString()
+        +(date.getHours).toString()+(date.getMinutes).toString()+(date.getSeconds).toString()+(date.getMilliseconds).toString();
+        
+      this.nombreImagenObjeto = timestamp+this.profesorId+this.fileImagenObjeto.name;
       console.log('ya Escena');
       this.imagenCargadaObjeto= true;
       // this.imagenCargadoCromo = true;

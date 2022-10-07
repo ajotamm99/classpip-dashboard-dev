@@ -197,8 +197,12 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
     const reader = new FileReader();
     reader.readAsDataURL(this.fileImagenEscena);
     reader.onload = () => {
+      var date = new Date();
+      var timestamp= (date.getFullYear()).toString()+(date.getMonth).toString()+(date.getDay).toString()
+        +(date.getHours).toString()+(date.getMinutes).toString()+(date.getSeconds).toString()+(date.getMilliseconds).toString();
+        
       
-    this.nombreImagenEscena = this.profesorId+this.fileImagenEscena.name;
+    this.nombreImagenEscena = timestamp+this.profesorId+this.fileImagenEscena.name;
     this.nombreImagenEscenaMostrar=this.fileImagenEscena.name;
       console.log('ya Escena');
       this.imagenCargadaEscena= true;
@@ -218,8 +222,12 @@ displayedColumns: string[] = ['nombreEscena', 'Imagen', 'Archivo', ' '];
     reader.readAsText(fileInfo, 'ISO-8859-1');
     reader.onload = () => {
       try {
+        var date = new Date();
+        var timestamp= (date.getFullYear()).toString()+(date.getMonth).toString()+(date.getDay).toString()
+          +(date.getHours).toString()+(date.getMinutes).toString()+(date.getSeconds).toString()+(date.getMilliseconds).toString();
+          
         this.infoArchivoEscena = JSON.parse(reader.result.toString());        
-        this.nombreArchivoEscena = this.profesorId+this.fileArchivoEscena.name;         
+        this.nombreArchivoEscena = timestamp+this.profesorId+this.fileArchivoEscena.name;         
         this.nombreArchivoEscenaMostrar= this.fileArchivoEscena.name;
         this.archivoCargadoEscena =true;
       }catch{

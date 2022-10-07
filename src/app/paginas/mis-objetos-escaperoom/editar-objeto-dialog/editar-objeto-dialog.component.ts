@@ -166,8 +166,12 @@ ExaminarImagenObjeto($event) {
   reader.readAsDataURL(this.fileImagenObjeto);
 
   reader.onload = () => {
+    var date = new Date();
+    var timestamp= (date.getFullYear()).toString()+(date.getMonth).toString()+(date.getDay).toString()
+      +(date.getHours).toString()+(date.getMinutes).toString()+(date.getSeconds).toString()+(date.getMilliseconds).toString();
+      
     this.nombreImagenObjetoAntigua=this.nombreImagenObjetoNueva;
-    this.nombreImagenObjetoNueva = this.profesorId+this.fileImagenObjeto.name;
+    this.nombreImagenObjetoNueva = timestamp+this.profesorId+this.fileImagenObjeto.name;
   
     console.log('ya objeto');
     this.imagenObjetoCargada= true;
