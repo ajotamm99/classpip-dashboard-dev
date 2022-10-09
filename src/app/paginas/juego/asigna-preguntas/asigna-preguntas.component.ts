@@ -51,12 +51,10 @@ export class AsignaPreguntasComponent implements OnInit {
 
     // GUARDAMOS LOS VALORES NECESARIOS QUE TENEMOS DEL COMPONENTE ANTERIOR
     this.numeroDePuntosGeolocalizables = this.data.numeroDePuntosGeolocalizables;
-    console.log(this.numeroDePuntosGeolocalizables);
     this.profesorId = this.data.profesorId;
 
     this.peticionesAPI.DameTodasMisPreguntas (this.profesorId)
     .subscribe (res => {
-      console.log(res);
       this.misPreguntas = res;
       this.misPreguntas.sort((a, b) => a.Tematica.localeCompare(b.Tematica));
       this.dataSourceMisPreguntas = new MatTableDataSource (this.misPreguntas);
@@ -105,7 +103,6 @@ export class AsignaPreguntasComponent implements OnInit {
       // Añadimos las preguntas a la lista
       this.misPreguntasBasicas.push (pregunta);
       this.IDmisPreguntasBasicas.push (pregunta.id);
-      console.log(this.IDmisPreguntasBasicas);
       this.misPreguntasBasicas.sort((a, b) => a.Tematica.localeCompare(b.Tematica));
       this.dataSourceMisPreguntasBasicas = new MatTableDataSource (this.misPreguntasBasicas);
       this.misPreguntas = this.misPreguntas.filter (a => a.Titulo !== pregunta.Titulo && a.Pregunta !== pregunta.Pregunta);
@@ -121,7 +118,6 @@ export class AsignaPreguntasComponent implements OnInit {
       // Añadimos las preguntas a la lista
       this.misPreguntasBonus.push (pregunta);
       this.IDmisPreguntasBonus.push (pregunta.id);
-      console.log(this.IDmisPreguntasBonus);
       this.misPreguntasBonus.sort((a, b) => a.Tematica.localeCompare(b.Tematica));
       this.dataSourceMisPreguntasBonus = new MatTableDataSource (this.misPreguntasBonus);
       this.misPreguntas = this.misPreguntas.filter (a => a.Titulo !== pregunta.Titulo && a.Pregunta !== pregunta.Pregunta);
