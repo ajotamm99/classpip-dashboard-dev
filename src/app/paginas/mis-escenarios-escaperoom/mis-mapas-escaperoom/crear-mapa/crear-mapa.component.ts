@@ -229,7 +229,11 @@ ExaminarImagenEscena($event) {
   const reader = new FileReader();
   reader.readAsDataURL(this.fileImagenEscena);
   reader.onload = () => {
-    this.nombreImagenEscena = this.profesorId+this.fileImagenEscena.name;
+    var date = new Date();
+        var timestamp= (date.getFullYear()).toString()+(date.getMonth()).toString()+(date.getDay()).toString()
+          +(date.getHours()).toString()+(date.getMinutes()).toString()+(date.getSeconds()).toString()+(date.getMilliseconds()).toString();
+          
+    this.nombreImagenEscena = timestamp+this.profesorId+this.fileImagenEscena.name;
     this.nombreImagenEscenaMostrar=this.fileImagenEscena.name;
     this.imagenCargadaEscena= true;
     this.imagenEscena = reader.result.toString();
@@ -245,7 +249,11 @@ ExaminarArchivoEscena($event) {
   reader.readAsText(fileInfo, 'ISO-8859-1');
   reader.onload = () => {
     try {
-      this.nombreArchivoEscena = this.profesorId+this.fileArchivoEscena.name;
+      var date = new Date();
+        var timestamp= (date.getFullYear()).toString()+(date.getMonth()).toString()+(date.getDay()).toString()
+          +(date.getHours()).toString()+(date.getMinutes()).toString()+(date.getSeconds()).toString()+(date.getMilliseconds()).toString();
+          
+      this.nombreArchivoEscena = timestamp+this.profesorId+this.fileArchivoEscena.name;
       
       this.nombreArchivoEscenaMostrar=this.fileArchivoEscena.name;
       this.infoArchivoEscena = JSON.parse(reader.result.toString());
