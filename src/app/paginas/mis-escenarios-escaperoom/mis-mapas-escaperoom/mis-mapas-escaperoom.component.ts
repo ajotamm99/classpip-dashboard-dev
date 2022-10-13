@@ -282,7 +282,7 @@ BorrarEscenarioEscaperoom(EscenarioEscaperoom: EscenarioEscaperoom) {
               this.JuegoEscaperoom=res;
               var cont =0;
               for (let i =0; i<this.JuegoEscaperoom.length; i++){
-                if(this.JuegoEscaperoom[i].Terminado=true){
+                if(this.JuegoEscaperoom[i].JuegoTerminado=true){
                   cont++;
                 }
               }

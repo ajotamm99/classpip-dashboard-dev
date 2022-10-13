@@ -2829,7 +2829,7 @@
                 <br>
                 <div class="btnCambiarStep">
                   <button type="button" class="btn Back" (click)="VolverAtrasPreguntas()" matStepperPrevious>Atrás</button>
-                  <button [disabled]="!tengoRequisitosObjetosConPreguntas" type="button" class="btn Next"
+                  <button [disabled]="!tengoRequisitosObjetosConPreguntas" type="button" class="btn Next" (click)="PrintObjetosEsce()"
                     matStepperNext>Siguiente</button>
                 </div>
               </mat-step>
