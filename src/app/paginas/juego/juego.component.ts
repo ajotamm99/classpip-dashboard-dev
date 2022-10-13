@@ -4264,6 +4264,7 @@ export class JuegoComponent implements OnInit {
                 
                 this.peticionesAPI.CreaEscenaEscaperoomActiva(this.escenasActivasRecibidas[b],this.juegoDeEscaperoom.id)
                 .subscribe((res)=>{
+                  let juegoId= juego.id;
                   console.log('escenaact',res);
                   let objpregapi= objpreg;
                   this.escenasActivasCreadas.push(res);
@@ -4274,6 +4275,7 @@ export class JuegoComponent implements OnInit {
                   for(let c=0; c<objapi.length; c++){
                     if(objapi[c].OrdenEscenaAct==orden){
                     let obj= new ObjetoActivo();
+                    obj.juegoDeEscaperoomId=juegoId;
                     obj.EnMochila=false;
                     obj.Usado=false;
                     obj.MovilBool=objapi[c].Movil;      
@@ -4289,6 +4291,7 @@ export class JuegoComponent implements OnInit {
 
                     this.peticionesAPI.CreaObjetoActivoEscaperoom(obj, res.id)
                     .subscribe(res=>{
+                      let juegoId2= juegoId;
                       let id=res.id;
                       this.objetosEscenasCreadas.push(res);
                       let preguntasActivas= objpregapi.filter(obj=>obj.OrdenEscenaAct==orden);
@@ -4300,6 +4303,7 @@ export class JuegoComponent implements OnInit {
 
                         for(let d=0; d<preguntasActivas2.length; d++){
                           let preg = new PreguntaActiva();
+                          preg.juegoDeEscaperoomId= juegoId2;
                           preg.preguntaId= preguntasActivas[d].IdPreguntaAct;
                           preg.PuntosRestar= preguntasActivas[d].Restar;
                           preg.PuntosSumar= preguntasActivas[d].Sumar;
