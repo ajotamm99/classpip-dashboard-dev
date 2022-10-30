@@ -83,6 +83,7 @@ export class MisObjetosEscaperoomComponent implements OnInit {
 
       if (res[0] !== undefined) {
           this.ObjetosEscaperoomPublicos= res;
+          this.ObjetosEscaperoomPublicos= this.ObjetosEscaperoomPublicos.filter(obj=>obj.profesorId!=this.profesorId);
           this.dataSourcePublicas = new MatTableDataSource(this.ObjetosEscaperoomPublicos);
           for(let i=0; i<this.ObjetosEscaperoomPublicos.length; i++){
             this.imagenesObjetosEscaperoomPublicos[i]=this.ObjetosEscaperoomPublicos[i].Imagen;
@@ -116,20 +117,12 @@ Descargar(objetoEscaperoom: ObjetoEscaperoom) {
 
 HazPublico(objetoEscaperoom: ObjetoEscaperoom){
   objetoEscaperoom.Publica = true;
-  this.peticionesAPI.ModificaObjeto(objetoEscaperoom, objetoEscaperoom.id, this.profesorId).subscribe(res=>{
-    this.ObjetosEscaperoomPublicos.push(res);
-    this.ObjetosEscaperoom.splice(this.EscenariosProfesor.findIndex(sc=>sc.id==objetoEscaperoom.id),1,res);  
-    this.dataSourcePublicas = new MatTableDataSource(this.ObjetosEscaperoomPublicos);
-  });
+  this.peticionesAPI.ModificaObjeto(objetoEscaperoom, objetoEscaperoom.id, this.profesorId).subscribe(res=>{});
 }
 
 HazPrivado(objetoEscaperoom: ObjetoEscaperoom){
   objetoEscaperoom.Publica = false;
-  this.peticionesAPI.ModificaObjeto(objetoEscaperoom, objetoEscaperoom.id, this.profesorId).subscribe(res=>{
-    this.ObjetosEscaperoomPublicos=this.ObjetosEscaperoomPublicos.filter(sc=>sc.id!=res.id);
-    this.ObjetosEscaperoom.splice(this.ObjetosEscaperoom.findIndex(sc=>sc.id==objetoEscaperoom.id),1,res);
-    this.dataSourcePublicas = new MatTableDataSource(this.ObjetosEscaperoomPublicos);
-  });
+  this.peticionesAPI.ModificaObjeto(objetoEscaperoom, objetoEscaperoom.id, this.profesorId).subscribe(res=>{});
 }
 
 
@@ -150,10 +143,10 @@ VerObjetoDialog(ObjetoEscaperoom: ObjetoEscaperoom) {
     // tslint:disable-next-line:prefer-for-of
     if(nuevoObjeto!=null && nuevoObjeto!=undefined){
       this.ObjetosEscaperoom.splice(this.ObjetosEscaperoom.findIndex(obj => obj.id == nuevoObjeto.id), 1 ,nuevoObjeto);
-      this.ObjetosEscaperoomPublicos.splice(this.ObjetosEscaperoomPublicos.findIndex(obj => obj.id == nuevoObjeto.id), 1 ,nuevoObjeto)
+      //this.ObjetosEscaperoomPublicos.splice(this.ObjetosEscaperoomPublicos.findIndex(obj => obj.id == nuevoObjeto.id), 1 ,nuevoObjeto)
       this.sesion.TomaObjetosEscaperoomProfesor;
       this.dataSource = new MatTableDataSource(this.ObjetosEscaperoom);
-      this.dataSourcePublicas = new MatTableDataSource(this.ObjetosEscaperoomPublicos);
+      //this.dataSourcePublicas = new MatTableDataSource(this.ObjetosEscaperoomPublicos);
       this.TraeImagenesObjetos();
     }
   }catch{
@@ -192,9 +185,9 @@ BorrarObjetoEscaperoom(objetoEscaperoom: ObjetoEscaperoom) {
 
 
     this.ObjetosEscaperoom = this.ObjetosEscaperoom.filter(obj => obj.id !== objetoEscaperoom.id);
-    this.ObjetosEscaperoomPublicos = this.ObjetosEscaperoomPublicos.filter(obj => obj.id !== objetoEscaperoom.id);
+    //this.ObjetosEscaperoomPublicos = this.ObjetosEscaperoomPublicos.filter(obj => obj.id !== objetoEscaperoom.id);
     this.sesion.TomaObjetosEscaperoomProfesor(this.ObjetosEscaperoom);
-    this.dataSourcePublicas= new MatTableDataSource(this.ObjetosEscaperoomPublicos);
+    //this.dataSourcePublicas= new MatTableDataSource(this.ObjetosEscaperoomPublicos);
     this.dataSource = new MatTableDataSource(this.ObjetosEscaperoom);
 }
 

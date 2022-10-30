@@ -846,7 +846,11 @@ export class JuegoComponent implements OnInit {
      // Swal.fire('Alerta', 'Aún no es posible el juego de votación en equipo', 'warning');
     } else if ((this.tipoDeJuegoSeleccionado === 'Juego De Cuestionario de Satisfacción') && (this.modoDeJuegoSeleccionado === 'Equipos')) {
       Swal.fire('Alerta', 'No existe el juego de cuestionario de satisfacción en equipo', 'warning');
-    } else {
+    }else if((this.tipoDeJuegoSeleccionado=='Juego De Escaperoom')&&(this.modoDeJuegoSeleccionado=='Equipos')){
+      Swal.fire('Alerta','Aún no es posible el juego de escaperoom en equipos','warning')
+      this.tengoModo=false;
+      
+    }else {
       if (this.modoDeJuegoSeleccionado === 'Individual') {
         if (this.alumnosGrupo === undefined) {
           Swal.fire('Alerta', 'No hay ningún alumno en este grupo', 'warning');
@@ -4288,6 +4292,7 @@ export class JuegoComponent implements OnInit {
                     obj.PreguntaBool=objapi[c].Pregunta;
                     obj.RequisitoObjeto=objapi[c].EsRequisito;
                     obj.objetoEscaperoomId=objapi[c].IdObjetoAct;
+                    console.log('preguntas', objpregapi);
 
                     this.peticionesAPI.CreaObjetoActivoEscaperoom(obj, res.id)
                     .subscribe(res=>{
@@ -4342,9 +4347,11 @@ export class JuegoComponent implements OnInit {
           }
          
         }else{
+          //Modo Equipos todavía no operativo
           if(this.onlineSeleccionado=="Offline"){
             if(this.modalidadPresencialSeleccionada=="Clase"){
               // tslint:disable-next-line:prefer-for-of
+              /*
               for (let i = 0; i < this.equiposGrupo.length; i++) {
                 // tslint:disable-next-line:max-line-length
 
@@ -4370,7 +4377,7 @@ export class JuegoComponent implements OnInit {
 
                 })
               }
-              Swal.fire('Juego de escaperoom creado correctamente', ' ', 'success');
+              Swal.fire('Juego de escaperoom creado correctamente', ' ', 'success');*/
             }else{
               //Modo Casa todavía no operativo
             }

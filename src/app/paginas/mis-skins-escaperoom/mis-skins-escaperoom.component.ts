@@ -77,13 +77,13 @@ export class MisSkinsEscaperoomComponent implements OnInit {
 
       if (res[0] !== undefined) {
           this.SkinsEscaperoomPublicas= res;
+          this.SkinsEscaperoomPublicas=this.SkinsEscaperoomPublicas.filter(sk=>sk.profesorId!=this.profesorId);
           this.dataSourcePublicas = new MatTableDataSource(this.SkinsEscaperoomPublicas);
+          for(let i=0; i<this.SkinsEscaperoomPublicas.length; i++){
+            this.imagenesSkinsEscaperoomPublicos[i]=this.SkinsEscaperoomPublicas[i].Spritesheet;
+          }
       }
     });
-
-    for(let i=0; i<this.SkinsEscaperoomPublicas.length; i++){
-      this.imagenesSkinsEscaperoomPublicos[i]=this.SkinsEscaperoomPublicas[i].Spritesheet;
-    }
   }
 
 
@@ -110,20 +110,12 @@ Descargar(skinEscaperoom: Skin) {
 
 HazPublica(skinEscaperoom: Skin){
   skinEscaperoom.Publica = true;
-  this.peticionesAPI.ModificaSkin(skinEscaperoom, skinEscaperoom.id, this.profesorId).subscribe(res=>{
-    this.SkinsEscaperoomPublicas.push(res);
-    this.SkinsEscaperoom.splice(this.SkinsEscaperoom.findIndex(sc=>sc.id==skinEscaperoom.id),1,res);  
-    this.dataSourcePublicas = new MatTableDataSource(this.SkinsEscaperoomPublicas);
-  });
+  this.peticionesAPI.ModificaSkin(skinEscaperoom, skinEscaperoom.id, this.profesorId).subscribe(res=>{});
 }
 
 HazPrivada(skinEscaperoom: Skin){
   skinEscaperoom.Publica = false;
-  this.peticionesAPI.ModificaSkin(skinEscaperoom, skinEscaperoom.id, this.profesorId).subscribe(res=>{
-    this.SkinsEscaperoomPublicas=this.SkinsEscaperoomPublicas.filter(sc=>sc.id!=res.id);
-    this.SkinsEscaperoom.splice(this.SkinsEscaperoom.findIndex(sc=>sc.id==skinEscaperoom.id),1,res);
-    this.dataSourcePublicas = new MatTableDataSource(this.SkinsEscaperoomPublicas);
-  });
+  this.peticionesAPI.ModificaSkin(skinEscaperoom, skinEscaperoom.id, this.profesorId).subscribe(res=>{});
 }
 
 VerSkinDialog(SkinEscaperoom: Skin) {
@@ -143,9 +135,9 @@ VerSkinDialog(SkinEscaperoom: Skin) {
     if(nuevaSkin!=null){
       
       this.SkinsEscaperoom.splice(this.SkinsEscaperoom.findIndex(sk=> sk.id== nuevaSkin.id),1,nuevaSkin);
-      this.SkinsEscaperoomPublicas.splice(this.SkinsEscaperoom.findIndex(sk=> sk.id== nuevaSkin.id),1,nuevaSkin);
+      //this.SkinsEscaperoomPublicas.splice(this.SkinsEscaperoom.findIndex(sk=> sk.id== nuevaSkin.id),1,nuevaSkin);
       this.dataSource = new MatTableDataSource(this.SkinsEscaperoom);
-      this.dataSourcePublicas = new MatTableDataSource(this.SkinsEscaperoomPublicas);
+      //this.dataSourcePublicas = new MatTableDataSource(this.SkinsEscaperoomPublicas);
       this.TraeImagenesSkins();
       this.sesion.TomaSkisnEscaperoom(this.SkinsEscaperoom);
     }
@@ -183,10 +175,10 @@ BorrarSkinEscaperoom(skinEscaperoom: Skin) {
 
 
     this.SkinsEscaperoom = this.SkinsEscaperoom.filter(sk => sk.id !== skinEscaperoom.id);
-    this.SkinsEscaperoomPublicas = this.SkinsEscaperoomPublicas.filter(sk => sk.id !== skinEscaperoom.id);
+    //this.SkinsEscaperoomPublicas = this.SkinsEscaperoomPublicas.filter(sk => sk.id !== skinEscaperoom.id);
     this.sesion.TomaSkisnEscaperoom(this.SkinsEscaperoom);
     this.dataSource = new MatTableDataSource(this.SkinsEscaperoom);
-    this.dataSourcePublicas = new MatTableDataSource(this.SkinsEscaperoomPublicas);
+    //this.dataSourcePublicas = new MatTableDataSource(this.SkinsEscaperoomPublicas);
 }
 
 

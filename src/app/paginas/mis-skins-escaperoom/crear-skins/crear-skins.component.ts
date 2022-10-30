@@ -140,7 +140,7 @@ export class CrearSkinsComponent implements OnInit {
       var timestamp= (date.getFullYear()).toString()+(date.getMonth()).toString()+(date.getDay()).toString()
       +(date.getHours()).toString()+(date.getMinutes()).toString()+(date.getSeconds()).toString()+(date.getMilliseconds()).toString();
       
-    this.nombreImagenSkin = timestamp +this.profesorId+this.fileImagenSkin.name;
+      this.nombreImagenSkin = timestamp +this.profesorId+this.fileImagenSkin.name;
       this.imagenCargadaSkin= true;
       this.imagenSkin = reader.result.toString();
     };

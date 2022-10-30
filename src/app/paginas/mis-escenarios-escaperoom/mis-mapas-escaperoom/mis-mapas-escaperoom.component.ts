@@ -83,6 +83,7 @@ export class MisMapasEscaperoomComponent implements OnInit {
       if (res[0] !== undefined) {
 
           this.EscenariosPublicos= res;
+          this.EscenariosPublicos=this.EscenariosPublicos.filter(sc=>sc.profesorId!=this.profesorId);
           this.dataSourcePublicas = new MatTableDataSource(this.EscenariosPublicos);
       }
     });
@@ -162,20 +163,12 @@ blobToBase64(blob: Blob) {
 
 HazPublico(escenarioEscaperoom: EscenarioEscaperoom){
   escenarioEscaperoom.Publica = true;
-  this.peticionesAPI.ModificaEscenarioEscaperoom(escenarioEscaperoom, this.profesorId, escenarioEscaperoom.id).subscribe(res=>{
-    this.EscenariosPublicos.push(res);
-    this.EscenariosProfesor.splice(this.EscenariosProfesor.findIndex(sc=>sc.id==escenarioEscaperoom.id),1,res);  
-    this.dataSourcePublicas = new MatTableDataSource(this.EscenariosPublicos);
-  });
+  this.peticionesAPI.ModificaEscenarioEscaperoom(escenarioEscaperoom, this.profesorId, escenarioEscaperoom.id).subscribe(res=>{});
 }
 
 HazPrivado(escenarioEscaperoom: EscenarioEscaperoom){
   escenarioEscaperoom.Publica = false;
-  this.peticionesAPI.ModificaEscenarioEscaperoom(escenarioEscaperoom, this.profesorId, escenarioEscaperoom.id).subscribe(res=>{
-    this.EscenariosPublicos=this.EscenariosPublicos.filter(sc=>sc.id!=res.id);
-    this.EscenariosProfesor.splice(this.EscenariosProfesor.findIndex(sc=>sc.id==escenarioEscaperoom.id),1,res);
-    this.dataSourcePublicas = new MatTableDataSource(this.EscenariosPublicos);
-  });
+  this.peticionesAPI.ModificaEscenarioEscaperoom(escenarioEscaperoom, this.profesorId, escenarioEscaperoom.id).subscribe(res=>{});
 }
 
 Crear(){
@@ -253,9 +246,9 @@ BorrarEscenarioEscaperoom(EscenarioEscaperoom: EscenarioEscaperoom) {
     });
 
     this.EscenariosProfesor = this.EscenariosProfesor.filter(escenario => escenario.id !== EscenarioEscaperoom.id);
-    this.EscenariosPublicos=this.EscenariosPublicos.filter(escenario => escenario.id !== EscenarioEscaperoom.id);
+    //this.EscenariosPublicos=this.EscenariosPublicos.filter(escenario => escenario.id !== EscenarioEscaperoom.id);
     this.dataSource = new MatTableDataSource(this.EscenariosProfesor);
-    this.dataSourcePublicas = new MatTableDataSource(this.EscenariosPublicos);
+    //this.dataSourcePublicas = new MatTableDataSource(this.EscenariosPublicos);
     //this.ngOnInit();
 }
 
